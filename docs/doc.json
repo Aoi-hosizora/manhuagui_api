@@ -19,16 +19,16 @@
     }
   ],
   "paths": {
-    "/v1/manga/{id}": {
+    "/v1/manga/{mid}": {
       "get": {
         "summary": "Get manga page",
-        "operationId": "-v1-manga-id-get",
+        "operationId": "-v1-manga-mid-get",
         "tags": [
           "Manga"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "mid",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -39,8 +39,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "MangaPageDto",
-              "$ref": "#/definitions/MangaPageDto"
+              "originRef": "_Result<MangaPageDto>",
+              "$ref": "#/definitions/_Result<MangaPageDto>"
             }
           }
         }
@@ -74,8 +74,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "MangaChapterDto",
-              "$ref": "#/definitions/MangaChapterDto"
+              "originRef": "_Result<MangaChapterDto>",
+              "$ref": "#/definitions/_Result<MangaChapterDto>"
             }
           }
         }
@@ -142,9 +142,18 @@
     },
     "MangaPageDto": {
       "type": "object",
-      "required": [],
+      "required": [
+        "mid"
+      ],
       "description": "Mange page response",
-      "properties": {}
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        }
+      }
     },
     "Result": {
       "type": "object",
@@ -164,6 +173,62 @@
           "type": "string",
           "required": true,
           "description": "status message"
+        }
+      }
+    },
+    "_Result<MangaChapterDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "MangaChapterDto",
+          "$ref": "#/definitions/MangaChapterDto"
+        }
+      }
+    },
+    "_Result<MangaPageDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "MangaPageDto",
+          "$ref": "#/definitions/MangaPageDto"
         }
       }
     }

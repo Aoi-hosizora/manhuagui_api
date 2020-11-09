@@ -27,6 +27,10 @@ func run() {
 	if err != nil {
 		log.Fatalln("Failed to generate swagger:", err)
 	}
+	_, err = goapidoc.GenerateApib("./docs/doc.apib")
+	if err != nil {
+		log.Fatalln("Failed to generate apib:", err)
+	}
 
 	err = provide.Provide(*fConfig)
 	if err != nil {

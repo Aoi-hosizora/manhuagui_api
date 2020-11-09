@@ -8,7 +8,9 @@ import (
 func init() {
 	goapidoc.AddDefinitions(
 		goapidoc.NewDefinition("MangaPageDto", "Mange page response").
-			Properties(),
+			Properties(
+				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
+			),
 
 		goapidoc.NewDefinition("MangaChapterDto", "Mange chapter response").
 			Properties(
@@ -24,10 +26,13 @@ func init() {
 }
 
 type MangaPageDto struct {
+	Mid uint64 `json:"mid"`
 }
 
 func BuildMangaPageDto(page *vo.MangaPage) *MangaPageDto {
-	return &MangaPageDto{}
+	return &MangaPageDto{
+		Mid: page.Bid,
+	}
 }
 
 func BuildMangaPageDtos(pages []*vo.MangaPage) []*MangaPageDto {

@@ -1,7 +1,7 @@
 # manhuagui-backend
 
-+ An unofficial backend for manhuagui(https://www.manhuagui.com/) written in golang/gin
++ An unofficial backend for manhuagui (https://www.manhuagui.com/) written in golang/gin
 
 ### Reference
 
-+ [pieroxy/lz-string](https://github.com/pieroxy/lz-string)
++ [austinh115/lz-string-go](https://github.com/austinh115/lz-string-go)

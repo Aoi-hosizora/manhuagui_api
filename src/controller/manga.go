@@ -14,12 +14,12 @@ import (
 
 func init() {
 	goapidoc.AddRoutePaths(
-		goapidoc.NewRoutePath("GET", "/v1/manga/{id}", "Get manga page").
+		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}", "Get manga page").
 			Tags("Manga").
 			Params(
-				goapidoc.NewPathParam("id", "integer#int64", true, "manga id"),
+				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
 			).
-			Responses(goapidoc.NewResponse(200, "MangaPageDto")),
+			Responses(goapidoc.NewResponse(200, "_Result<MangaPageDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}/{cid}", "Get manga chapter").
 			Tags("Manga").
@@ -27,7 +27,7 @@ func init() {
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewPathParam("cid", "integer#int64", true, "manga chapter id"),
 			).
-			Responses(goapidoc.NewResponse(200, "MangaChapterDto")),
+			Responses(goapidoc.NewResponse(200, "_Result<MangaChapterDto>")),
 	)
 }
 
@@ -51,6 +51,8 @@ func (m *MangaController) GetMangaPage(c *gin.Context) *result.Result {
 	page, err := m.mangaService.GetMangaPage(id)
 	if err != nil {
 		return result.Error(exception.GetMangaPageError).SetError(err, c)
+	} else if page == nil {
+		return result.Error(exception.MangaPageNotFoundError)
 	}
 
 	res := dto.BuildMangaPageDto(page)
@@ -68,6 +70,8 @@ func (m *MangaController) GetMangaChapter(c *gin.Context) *result.Result {
 	chapter, err := m.mangaService.GetMangaChapter(id, cid)
 	if err != nil {
 		return result.Error(exception.GetMangaChapterError).SetError(err, c)
+	} else if chapter == nil {
+		return result.Error(exception.MangaChapterNotFoundError)
 	}
 
 	res := dto.BuildMangaChapterDto(chapter)

@@ -10,3 +10,4 @@ logs/*.*
 logs/*
 !.gitkeep
 config.yaml
+temp/

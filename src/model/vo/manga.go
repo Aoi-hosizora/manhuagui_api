@@ -1,6 +1,7 @@
 package vo
 
 type MangaPage struct {
+	Bid uint64 `json:"bid"`
 }
 
 type MangaChapter struct {

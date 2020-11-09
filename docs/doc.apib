@@ -1,0 +1,111 @@
+FORMAT: 1A
+HOST: localhost:10018/
+
+# manhuagui-backend (1.0)
+
+An unofficial backend for manhuagui written in golang/gin
+
+[Aoi-hosizora - Website](https://github.com/Aoi-hosizora)
+
+[Send email to Aoi-hosizora](mailto:aoihosizora@hotmail.com)
+
+# Group Manga
+
+manga-controller
+
+## Get manga page [/v1/manga/{mid}]
+
+### Get manga page [GET]
+
+`GET /v1/manga/{mid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<MangaPageDto>)
+
+    + Headers
+
+    + Body
+
+## Get manga chapter [/v1/manga/{mid}/{cid}]
+
+### Get manga chapter [GET]
+
+`GET /v1/manga/{mid}/{cid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+    + cid (number, required) - manga chapter id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<MangaChapterDto>)
+
+    + Headers
+
+    + Body
+
+# Data Structures
+
+## Result (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
+
+## MangaPageDto (object)
+
++ mid (number, required) - manga id
+    (format: int64)
+
+## MangaChapterDto (object)
+
++ mid (number, required) - manga id
+    (format: int64)
++ mname (string, required) - manga name
++ cid (number, required) - manga chapter id
+    (format: int64)
++ cname (string, required) - manga chapter name
++ pages (array[string], required) - manga pages
++ next_cid (number, required) - manga next chapter id
+    (format: int64)
++ prev_cid (number, required) - manga prev chapter id
+    (format: int64)
+
+## _Result<MangaPageDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (MangaPageDto, required) - response data
+
+## _Result<MangaChapterDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (MangaChapterDto, required) - response data
