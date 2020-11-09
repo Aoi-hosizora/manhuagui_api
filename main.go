@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
@@ -10,7 +12,19 @@ import (
 )
 
 func main() {
-	req, err := http.NewRequest("GET", "https://www.manhuagui.com/comic/34707/472931.html", nil)
+	obj := getMangaImages("https://www.manhuagui.com/comic/34707/472931.html")
+	urls := make([]string, 0, len(obj.Files))
+	for _, url := range obj.Files {
+		urls = append(urls, fmt.Sprintf("%s%s%s?e=%d&m=%s", "https://i.hamreus.com", obj.Path, url, obj.Sl.E, obj.Sl.M))
+	}
+
+	for _, url := range urls {
+		log.Println(url) // Referer: https://www.manhuagui.com/
+	}
+}
+
+func getMangaImages(url string) *manga {
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -47,12 +61,36 @@ func main() {
 	c, _ := strconv.Atoi(found[0][3]) // 00
 	k := found[0][4]                  // ~['\x73\x70\x6c\x69\x63']('\x7c')
 
-	log.Println(p)
-	log.Println(a)
-	log.Println(c)
-	log.Println(k)
+	decodeString := decode(p, a, c, k)
+	found = regexp.MustCompile(`SMH.imgData\((.+)\).preInit`).FindAllStringSubmatch(decodeString, 1)
+	if len(found) == 0 {
+		log.Fatalf("could not find decode json")
+	}
+	decodeJson := found[0][1]
+	obj := &manga{}
+	err = json.Unmarshal([]byte(decodeJson), &obj)
+	if err != nil {
+		log.Fatalln("failed to decode json")
+	}
+	return obj
+}
 
-	log.Println(decode(p, a, c, k))
+type manga struct {
+	Bid      int32    `json:"bid"`
+	Bname    string   `json:"bname"`
+	Bpic     string   `json:"bpic"`
+	Cid      int32    `json:"cid"`
+	Cname    string   `json:"cname"`
+	Files    []string `json:"files"`
+	Finished bool     `json:"finished"`
+	Len      int32    `json:"len"`
+	Path     string   `json:"path"`
+	NextId   int32    `json:"nextId"`
+	PrevId   int32    `json:"prevId"`
+	Sl       *struct {
+		E int64  `json:"e"`
+		M string `json:"m"`
+	} `json:"sl"`
 }
 
 func decode(p string, a, c int, k string) string {
@@ -81,7 +119,7 @@ func decode(p string, a, c int, k string) string {
 	}
 
 	d := map[string]string{}
-	for c--; c > 0; c-- {
+	for ; c >= 0; c-- {
 		if len(ks) <= c || ks[c] == "" {
 			d[e(c)] = e(c)
 		} else {
@@ -143,6 +181,32 @@ func decode(p string, a, c int, k string) string {
 LZString.decompressFromBase64(
 	'D41hWAODmwO4FMBGliBpvAjMDhd6JAZgBYB2ABmOEgCcEBJAOwEsAXYRgW2gBEBDZn4ADNGTAM4ALBABNspIYwA2CUcADG9HuwQgSAJgCc+LKsYyUjVcEAAcoDh0q4Eag4Eg1anp4EvrYsgngtHakKL4wABCcACiPADiAIoAWgByjAD60ACCAML0ABwAEnkACroA8gCOsdgAbKQArIa1ORi6wKIKlDQAbrQyevrELfQIAB7MPZR84sAAygCyeU4KAPaqANYpqpai/MwArioYohhT+voYGEA='
 ).split('|')
+
+=>
+
 '||||||||||jpg|webp|第1|1话||34707|preInit|imgData|finished|10|files|cname||472931|cid|bpic|一霎一花|bname|bid|len|11|false|ps3|BwEaGQZNi_gACn8HHP2OqQ|1605935812|sl|prevId|472972|nextId|path|SMH|block_cc|status|1s1h|9911'
+
+=>
+
+SMH.imgData({"bid":34707,"bname":"一霎一花","bpic":"34707.jpg","cid":472931,"cname":"第1.1话","files":[".jpg.webp","1.jpg.webp","2.jpg.webp","3.jpg.webp","4.jpg.webp","5.jpg.webp","6.jpg.webp","7.jpg.webp","8.jpg.webp","9.jpg.webp","10.jpg.webp"],"finished":false,"len":11,"path":"/ps3/-9/9911/1s1h/第1.1话/","s3us":1,"block_cc":"","nextId":472972,"prevId":,"sl":{"e":1605935812,"m":"BwEaGQZNi_gACn8HHP2OqQ"}}).preInit()
+
+=>
+
+{
+	"bid":34707,
+	"bname":"一霎一花",
+	"bpic":"34707.jpg",
+	"cid":472931,
+	"cname":"第1.1话",
+	"files":[".jpg.webp","1.jpg.webp","2.jpg.webp","3.jpg.webp","4.jpg.webp","5.jpg.webp","6.jpg.webp","7.jpg.webp","8.jpg.webp","9.jpg.webp","10.jpg.webp"],
+	"finished":false,
+	"len":11,
+	"path":"/ps3/-9/9911/1s1h/第1.1话/",
+	"s3us":1,
+	"block_cc":"",
+	"nextId":472972,
+	"prevId":,
+	"sl":{"e":1605935812,"m":"BwEaGQZNi_gACn8HHP2OqQ"}
+}
 
 */
