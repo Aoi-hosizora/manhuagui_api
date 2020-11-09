@@ -8,5 +8,5 @@ const (
 	SLogger xdi.ServiceName = "logger" // *logrus.Logger
 
 	// service
-	// SDemoService xdi.ServiceName = "demo-service" // *service.DemoService
+	SMangaService xdi.ServiceName = "manga-service" // *service.MangaService
 )

@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/common/result"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/controller"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -23,5 +24,28 @@ func initRoute(engine *gin.Engine) {
 	})
 
 	// controller
-	_ = engine.Group("v1")
+	v1 := engine.Group("v1")
+
+	var (
+		mangaController = controller.NewMangaController()
+	)
+
+	mangaGroup := v1.Group("manga") // /v1/manga
+	{
+		mangaGroup.GET(":mid", j(mangaController.GetMangaPage))
+		mangaGroup.GET(":mid/:cid", j(mangaController.GetMangaChapter))
+	}
+}
+
+// j Simplify controller's functions.
+func j(fn func(c *gin.Context) *result.Result) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		if c.IsAborted() {
+			return
+		}
+		r := fn(c)
+		if r != nil {
+			r.JSON(c)
+		}
+	}
 }

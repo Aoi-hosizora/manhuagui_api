@@ -1,0 +1,171 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:10018",
+  "basePath": "/",
+  "info": {
+    "title": "manhuagui-backend",
+    "description": "An unofficial backend for manhuagui written in golang/gin",
+    "version": "1.0",
+    "contact": {
+      "name": "Aoi-hosizora",
+      "url": "https://github.com/Aoi-hosizora",
+      "email": "aoihosizora@hotmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Manga",
+      "description": "manga-controller"
+    }
+  ],
+  "paths": {
+    "/v1/manga/{id}": {
+      "get": {
+        "summary": "Get manga page",
+        "operationId": "-v1-manga-id-get",
+        "tags": [
+          "Manga"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "MangaPageDto",
+              "$ref": "#/definitions/MangaPageDto"
+            }
+          }
+        }
+      }
+    },
+    "/v1/manga/{mid}/{cid}": {
+      "get": {
+        "summary": "Get manga chapter",
+        "operationId": "-v1-manga-mid-cid-get",
+        "tags": [
+          "Manga"
+        ],
+        "parameters": [
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga chapter id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "MangaChapterDto",
+              "$ref": "#/definitions/MangaChapterDto"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "MangaChapterDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "mname",
+        "cid",
+        "cname",
+        "pages",
+        "next_cid",
+        "prev_cid"
+      ],
+      "description": "Mange chapter response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        },
+        "mname": {
+          "type": "string",
+          "required": true,
+          "description": "manga name"
+        },
+        "cid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga chapter id",
+          "format": "int64"
+        },
+        "cname": {
+          "type": "string",
+          "required": true,
+          "description": "manga chapter name"
+        },
+        "pages": {
+          "type": "array",
+          "required": true,
+          "description": "manga pages",
+          "items": {
+            "type": "string"
+          }
+        },
+        "next_cid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga next chapter id",
+          "format": "int64"
+        },
+        "prev_cid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga prev chapter id",
+          "format": "int64"
+        }
+      }
+    },
+    "MangaPageDto": {
+      "type": "object",
+      "required": [],
+      "description": "Mange page response",
+      "properties": {}
+    },
+    "Result": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        }
+      }
+    }
+  }
+}

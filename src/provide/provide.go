@@ -5,6 +5,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/common/logger"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
 	"log"
 )
 
@@ -26,7 +27,7 @@ func Provide(configPath string) error {
 	// ///////////////////////////////////////////////////////////////////////
 
 	// services
-	// xdi.ProvideName(sn.SDemoService, service.NewDemoService()) // *service.DemoService
+	xdi.ProvideName(sn.SMangaService, service.NewMangaService()) // *service.MangaService
 
 	return nil
 }

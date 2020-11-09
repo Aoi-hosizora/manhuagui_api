@@ -4,6 +4,9 @@
 .history/
 .idea/
 
-### Build ###
+### Project ###
 build/
-logs/
+logs/*.*
+logs/*
+!.gitkeep
+config.yaml

@@ -1,0 +1,7 @@
+meta:
+  port: 10018
+  run-mode: debug
+  log-path: ./logs/
+  log-name: console
+  def-limit: 20
+  max-limit: 50
