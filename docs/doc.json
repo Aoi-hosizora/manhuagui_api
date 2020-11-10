@@ -86,27 +86,15 @@
     "MangaChapterDto": {
       "type": "object",
       "required": [
-        "mid",
-        "mname",
         "cid",
         "cname",
+        "url",
         "pages",
         "next_cid",
         "prev_cid"
       ],
       "description": "Mange chapter response",
       "properties": {
-        "mid": {
-          "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
-        },
-        "mname": {
-          "type": "string",
-          "required": true,
-          "description": "manga name"
-        },
         "cid": {
           "type": "integer",
           "required": true,
@@ -117,6 +105,11 @@
           "type": "string",
           "required": true,
           "description": "manga chapter name"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "manga chapter link"
         },
         "pages": {
           "type": "array",
@@ -140,10 +133,101 @@
         }
       }
     },
+    "MangaChapterGroupDto": {
+      "type": "object",
+      "required": [
+        "title",
+        "links"
+      ],
+      "description": "Mange chapter group response",
+      "properties": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "chapter group title"
+        },
+        "links": {
+          "type": "array",
+          "required": true,
+          "description": "chapter group links",
+          "items": {
+            "originRef": "MangaChapterLinkDto",
+            "$ref": "#/definitions/MangaChapterLinkDto"
+          }
+        }
+      }
+    },
+    "MangaChapterLinkDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "mname",
+        "cid",
+        "cname",
+        "pages",
+        "url",
+        "new"
+      ],
+      "description": "Manga chapter group url response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        },
+        "mname": {
+          "type": "string",
+          "required": true,
+          "description": "manga name"
+        },
+        "cid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga chapter id",
+          "format": "int64"
+        },
+        "cname": {
+          "type": "string",
+          "required": true,
+          "description": "manga chapter title"
+        },
+        "pages": {
+          "type": "integer",
+          "required": true,
+          "description": "manga chapter page number",
+          "format": "int32"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "manga chapter link"
+        },
+        "new": {
+          "type": "boolean",
+          "required": true,
+          "description": "manga chapter is uploaded newly"
+        }
+      }
+    },
     "MangaPageDto": {
       "type": "object",
       "required": [
-        "mid"
+        "mid",
+        "mname",
+        "cover",
+        "url",
+        "publish_year",
+        "alphabet_index",
+        "type",
+        "author_name",
+        "alias",
+        "finished",
+        "newest_chapter",
+        "newest_date",
+        "introduction",
+        "rank",
+        "chapters"
       ],
       "description": "Mange page response",
       "properties": {
@@ -152,6 +236,80 @@
           "required": true,
           "description": "manga id",
           "format": "int64"
+        },
+        "mname": {
+          "type": "string",
+          "required": true,
+          "description": "manga name"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "manga cover"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "manga link"
+        },
+        "publish_year": {
+          "type": "string",
+          "required": true,
+          "description": "manga publish year"
+        },
+        "alphabet_index": {
+          "type": "string",
+          "required": true,
+          "description": "manga alphabet index"
+        },
+        "type": {
+          "type": "string",
+          "required": true,
+          "description": "manga type"
+        },
+        "author_name": {
+          "type": "string",
+          "required": true,
+          "description": "manga author name"
+        },
+        "alias": {
+          "type": "string",
+          "required": true,
+          "description": "manga alias name"
+        },
+        "finished": {
+          "type": "boolean",
+          "required": true,
+          "description": "manga is finished"
+        },
+        "newest_chapter": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update chapter"
+        },
+        "newest_date": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update date"
+        },
+        "introduction": {
+          "type": "string",
+          "required": true,
+          "description": "manga introduction"
+        },
+        "rank": {
+          "type": "string",
+          "required": true,
+          "description": "manga rank"
+        },
+        "chapters": {
+          "type": "array",
+          "required": true,
+          "description": "manga chapters",
+          "items": {
+            "originRef": "MangaChapterGroupDto",
+            "$ref": "#/definitions/MangaChapterGroupDto"
+          }
         }
       }
     },

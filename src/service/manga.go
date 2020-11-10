@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/util"
@@ -43,7 +44,85 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 		return nil, nil
 	}
 
-	return &vo.MangaPage{Bid: mid}, nil
+	// get details
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(bs))
+	if err != nil {
+		return nil, fmt.Errorf("document error: %v", err)
+	}
+
+	bname := doc.Find("div.book-title").Text()
+	bpic := doc.Find("p.hcover img").AttrOr("src", "")
+	detailUl := doc.Find("ul.detail-list")
+	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
+	zone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
+	alphabetIndex := detailUl.Find("li:nth-child(1) span:nth-child(3) a").Text()
+	mangaType := detailUl.Find("li:nth-child(2) span:nth-child(1) a").Text()
+	authorName := detailUl.Find("li:nth-child(2) span:nth-child(2) a").Text()
+	alias := detailUl.Find("li:nth-child(3) span:nth-child(1)").Text()
+	status := detailUl.Find("li:nth-child(4) span:nth-child(2)").Text()
+	newestChapter := detailUl.Find("li:nth-child(4) a").Text()
+	newestDate := detailUl.Find("li:nth-child(4) span:nth-child(3)").Text()
+	introduction := doc.Find("div#intro-all").Text()
+	rank := doc.Find("div.rank").Text()
+	obj := &vo.MangaPage{
+		Bid:           mid,
+		Bname:         bname,
+		Bpic:          bpic,
+		Url:           url,
+		PublishYear:   publishYear,
+		Zone:          zone,
+		AlphabetIndex: alphabetIndex,
+		Type:          mangaType,
+		AuthorName:    authorName,
+		Alias:         strings.TrimPrefix(alias, "漫画别名："),
+		Finished:      status == "已完结",
+		NewestChapter: newestChapter,
+		NewestDate:    newestDate,
+		Introduction:  strings.TrimSpace(introduction),
+		Rank:          rank,
+	}
+
+	// get chapter groups
+	groupTitleH4s := doc.Find("div.chapter h4").Children()
+	groupListDivs := doc.Find("div.chapter div.chapter-list")
+	groupTitles := make([]string, groupTitleH4s.Length())
+	groups := make([]*vo.MangaChapterGroup, len(groupTitles))
+	groupTitleH4s.Each(func(idx int, sel *goquery.Selection) {
+		groupTitles[idx] = sel.Text()
+	})
+	groupListDivs.Each(func(idx int, sel *goquery.Selection) {
+		links := make([]*vo.MangaChapterLink, 0)
+		sel.Find("ul").Each(func(idx int, sel *goquery.Selection) {
+			linksInUl := make([]*vo.MangaChapterLink, 0)
+			sel.Find("li").Each(func(idx int, sel *goquery.Selection) {
+				cname := sel.Find("a").AttrOr("title", "")
+				pages, _ := xnumber.Atoi32(strings.TrimSuffix(sel.Find("i").Text(), "p"))
+				url := sel.Find("a").AttrOr("href", "")
+				if url != "" {
+					url = static.HOMEPAGE_URL + url
+				}
+				sp := strings.Split(url, "/")
+				cid, _ := xnumber.Atou64(strings.TrimSuffix(sp[len(sp)-1], ".html"))
+				em := sel.Find("em").AttrOr("class", "")
+				linksInUl = append(linksInUl, &vo.MangaChapterLink{
+					Cid:   cid,
+					Cname: cname,
+					Url:   url,
+					Pages: pages,
+					New:   em != "",
+				})
+			})
+			links = append(linksInUl, links...)
+		})
+		groups[idx] = &vo.MangaChapterGroup{
+			Title: groupTitles[idx],
+			Links: links,
+		}
+	})
+	obj.Chapters = groups
+
+	// return
+	return obj, nil
 }
 
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {
@@ -106,13 +185,15 @@ func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error
 	if err != nil {
 		return nil, fmt.Errorf("chapter script error: %v", err)
 	}
+	obj.Url = url
 	for idx := range obj.Files {
 		// 自动 h: "i" (100) | "us" (1)
 		// 电信 h: "eu" (100) | "i" (1) | "us" (1)
 		// 联通 h: "us" (100) | "i" (1) | "eu" (1)
-		obj.Files[idx] = fmt.Sprintf("%s%s%s?e=%d&m=%s", fmt.Sprintf(static.MANGA_SOURCE_URL, "i"), obj.Path, url, obj.Sl.E, obj.Sl.M)
+		obj.Files[idx] = fmt.Sprintf("%s%s%s?e=%d&m=%s", fmt.Sprintf(static.MANGA_SOURCE_URL, "i"), obj.Path, obj.Files[idx], obj.Sl.E, obj.Sl.M)
 	}
 
+	// return
 	return obj, nil
 }
 

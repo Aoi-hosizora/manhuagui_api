@@ -81,15 +81,45 @@ manga-controller
 
 + mid (number, required) - manga id
     (format: int64)
++ mname (string, required) - manga name
++ cover (string, required) - manga cover
++ url (string, required) - manga link
++ publish_year (string, required) - manga publish year
++ alphabet_index (string, required) - manga alphabet index
++ type (string, required) - manga type
++ author_name (string, required) - manga author name
++ alias (string, required) - manga alias name
++ finished (boolean, required) - manga is finished
++ newest_chapter (string, required) - manga last update chapter
++ newest_date (string, required) - manga last update date
++ introduction (string, required) - manga introduction
++ rank (string, required) - manga rank
++ chapters (array[MangaChapterGroupDto], required) - manga chapters
 
-## MangaChapterDto (object)
+## MangaChapterGroupDto (object)
+
++ title (string, required) - chapter group title
++ links (array[MangaChapterLinkDto], required) - chapter group links
+
+## MangaChapterLinkDto (object)
 
 + mid (number, required) - manga id
     (format: int64)
 + mname (string, required) - manga name
 + cid (number, required) - manga chapter id
     (format: int64)
++ cname (string, required) - manga chapter title
++ pages (number, required) - manga chapter page number
+    (format: int32)
++ url (string, required) - manga chapter link
++ new (boolean, required) - manga chapter is uploaded newly
+
+## MangaChapterDto (object)
+
++ cid (number, required) - manga chapter id
+    (format: int64)
 + cname (string, required) - manga chapter name
++ url (string, required) - manga chapter link
 + pages (array[string], required) - manga pages
 + next_cid (number, required) - manga next chapter id
     (format: int64)
