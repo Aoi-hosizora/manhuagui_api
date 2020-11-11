@@ -5,6 +5,7 @@ const (
 	HOMEPAGE_URL      = "https://www.manhuagui.com"
 	MANGA_PAGE_URL    = "https://www.manhuagui.com/comic/%d"
 	MANGA_CHAPTER_URL = "https://www.manhuagui.com/comic/%d/%d.html"
+	MANGA_SCORE_URL   = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_SOURCE_URL  = "https://%s.hamreus.com"
 )
 

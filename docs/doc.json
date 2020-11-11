@@ -265,6 +265,7 @@
       "type": "object",
       "required": [
         "title",
+        "top_group",
         "groups",
         "other_groups"
       ],
@@ -274,6 +275,12 @@
           "type": "string",
           "required": true,
           "description": "manga group title"
+        },
+        "top_group": {
+          "required": true,
+          "description": "manga top page group",
+          "originRef": "MangaPageGroupDto",
+          "$ref": "#/definitions/MangaPageGroupDto"
         },
         "groups": {
           "type": "array",
@@ -312,6 +319,9 @@
         "newest_date",
         "introduction",
         "rank",
+        "average_score",
+        "score_count",
+        "per_scores",
         "groups"
       ],
       "description": "Mange page response",
@@ -386,6 +396,27 @@
           "type": "string",
           "required": true,
           "description": "manga rank"
+        },
+        "average_score": {
+          "type": "number",
+          "required": true,
+          "description": "manga average score",
+          "format": "float"
+        },
+        "score_count": {
+          "type": "integer",
+          "required": true,
+          "description": "manga score count",
+          "format": "int32"
+        },
+        "per_scores": {
+          "type": "array",
+          "required": true,
+          "description": "manga per scores, from 0 to 5",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
         },
         "groups": {
           "type": "array",

@@ -10,6 +10,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/util"
 	"github.com/PuerkitoBio/goquery"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -64,6 +65,46 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 		NewestDate:    newestDate,
 		Introduction:  strings.TrimSpace(introduction),
 		Rank:          rank,
+	}
+
+	// get score
+	scoreUrl := fmt.Sprintf(static.MANGA_SCORE_URL, mid)
+	scoreJsonBs, err := m.httpService.HttpGet(scoreUrl)
+	if err != nil {
+		return nil, err
+	}
+	scoreMap := make(map[string]interface{})
+	err = json.Unmarshal(scoreJsonBs, &scoreMap)
+	if err != nil {
+		return nil, err
+	}
+	scoreErr := fmt.Errorf("failed to get score result")
+	if resultItf, ok := scoreMap["success"]; !ok {
+		return nil, scoreErr
+	} else if result, ok := resultItf.(bool); !ok || !result {
+		return nil, scoreErr
+	}
+	if scoreJsonItf, ok := scoreMap["data"]; !ok {
+		return nil, scoreErr
+	} else if scoreJson, ok := scoreJsonItf.(map[string]interface{}); !ok {
+		return nil, scoreErr
+	} else {
+		s1 := scoreJson["s1"].(float64)
+		s2 := scoreJson["s2"].(float64)
+		s3 := scoreJson["s3"].(float64)
+		s4 := scoreJson["s4"].(float64)
+		s5 := scoreJson["s5"].(float64)
+		tot := s1 + s2 + s3 + s4 + s5
+		avg := (s1*1 + s2*2 + s3*3 + s4*4 + s5*5) / (tot * 5)
+		per1 := float32(math.Round((s1/tot)*1000) / 1000) // 00.0%
+		per2 := float32(math.Round((s2/tot)*1000) / 1000)
+		per3 := float32(math.Round((s3/tot)*1000) / 1000)
+		per4 := float32(math.Round((s4/tot)*1000) / 1000)
+		per5 := float32(math.Round((s5/tot)*1000) / 1000)
+
+		obj.ScoreCount = int32(tot)
+		obj.AverageScore = float32(math.Round(avg*100) / 100) // 0.00
+		obj.PerScores = [6]float32{0, per1, per2, per3, per4, per5}
 	}
 
 	// get chapter groups

@@ -160,6 +160,11 @@ manga-controller
 + newest_date (string, required) - manga last update date
 + introduction (string, required) - manga introduction
 + rank (string, required) - manga rank
++ average_score (number, required) - manga average score
+    (format: float)
++ score_count (number, required) - manga score count
+    (format: int32)
++ per_scores (array[number], required) - manga per scores, from 0 to 5
 + groups (array[MangaChapterGroupDto], required) - manga chapter groups
 
 ## MangaChapterDto (object)
@@ -210,6 +215,7 @@ manga-controller
 ## MangaGroupListDto (object)
 
 + title (string, required) - manga group title
++ top_group (MangaPageGroupDto, required) - manga top page group
 + groups (array[MangaPageGroupDto], required) - manga page groups
 + other_groups (array[MangaPageGroupDto], required) - manga other page groups
 

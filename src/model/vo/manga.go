@@ -17,6 +17,9 @@ type MangaPage struct {
 	NewestDate    string               // 更新时间
 	Introduction  string               // 漫画介绍
 	Rank          string               // 漫画排名
+	AverageScore  float32              // 平均给分
+	ScoreCount    int32                // 给分人数
+	PerScores     [6]float32           // 具体给分
 	Groups        []*MangaChapterGroup // 章节链接
 }
 
@@ -40,7 +43,7 @@ type MangaChapter struct {
 	} `json:"sl"` // 查询加密
 }
 
-// 漫画页的链接
+// 漫画页的链接 (Link)
 type MangaPageLink struct {
 	Bid           uint64 // 漫画编号
 	Bname         string // 漫画标题
@@ -50,7 +53,7 @@ type MangaPageLink struct {
 	NewestChapter string // 最新一话
 }
 
-// 漫画章节的链接
+// 漫画章节的链接 (Link)
 type MangaChapterLink struct {
 	Cid       uint64 // 章节编号
 	Cname     string // 章节标题
@@ -59,13 +62,13 @@ type MangaChapterLink struct {
 	New       bool   // 最近发布
 }
 
-// 漫画页分组
+// 漫画页分组 (Group)
 type MangaPageGroup struct {
 	Title  string           // 分组标题
 	Mangas []*MangaPageLink // 章节集合
 }
 
-// 漫画章节分组
+// 漫画章节分组 (Group)
 type MangaChapterGroup struct {
 	Title    string              // 分组标题
 	Chapters []*MangaChapterLink // 章节集合
@@ -74,6 +77,7 @@ type MangaChapterGroup struct {
 // 主页的漫画列表
 type MangaGroupList struct {
 	Title       string            // 分组标题
-	Groups      []*MangaPageGroup // 漫画分组
+	TopGroup    *MangaPageGroup   // 置顶分组
+	Groups      []*MangaPageGroup // 类别分组
 	OtherGroups []*MangaPageGroup // 其他分组
 }

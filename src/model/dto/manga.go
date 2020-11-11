@@ -23,6 +23,9 @@ func init() {
 				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
 				goapidoc.NewProperty("introduction", "string", true, "manga introduction"),
 				goapidoc.NewProperty("rank", "string", true, "manga rank"),
+				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
+				goapidoc.NewProperty("score_count", "integer#int32", true, "manga score count"),
+				goapidoc.NewProperty("per_scores", "number#float[]", true, "manga per scores, from 0 to 5"),
 				goapidoc.NewProperty("groups", "MangaChapterGroupDto[]", true, "manga chapter groups"),
 			),
 
@@ -72,6 +75,7 @@ func init() {
 		goapidoc.NewDefinition("MangaGroupListDto", "Manga group list").
 			Properties(
 				goapidoc.NewProperty("title", "string", true, "manga group title"),
+				goapidoc.NewProperty("top_group", "MangaPageGroupDto", true, "manga top page group"),
 				goapidoc.NewProperty("groups", "MangaPageGroupDto[]", true, "manga page groups"),
 				goapidoc.NewProperty("other_groups", "MangaPageGroupDto[]", true, "manga other page groups"),
 			),
@@ -95,6 +99,9 @@ type MangaPageDto struct {
 	NewestDate    string                  `json:"newest_date"`
 	Introduction  string                  `json:"introduction"`
 	Rank          string                  `json:"rank"`
+	AverageScore  float32                 `json:"average_score"`
+	ScoreCount    int32                   `json:"score_count"`
+	PerScores     [6]float32              `json:"per_scores"`
 	Groups        []*MangaChapterGroupDto `json:"groups"`
 }
 
@@ -115,6 +122,9 @@ func BuildMangaPageDto(page *vo.MangaPage) *MangaPageDto {
 		NewestDate:    page.NewestDate,
 		Introduction:  page.Introduction,
 		Rank:          page.Rank,
+		AverageScore:  page.AverageScore,
+		ScoreCount:    page.ScoreCount,
+		PerScores:     page.PerScores,
 		Groups:        BuildMangaChapterGroupDtos(page.Groups),
 	}
 }
@@ -261,6 +271,7 @@ func BuildMangaChapterGroupDtos(groups []*vo.MangaChapterGroup) []*MangaChapterG
 // 主页的漫画列表 vo.MangaGroupList
 type MangaGroupListDto struct {
 	Title       string               `json:"title"`
+	TopGroup    *MangaPageGroupDto   `json:"top_group"`
 	Groups      []*MangaPageGroupDto `json:"groups"`
 	OtherGroups []*MangaPageGroupDto `json:"other_groups"`
 }
@@ -268,6 +279,7 @@ type MangaGroupListDto struct {
 func BuildMangaGroupListDto(list *vo.MangaGroupList) *MangaGroupListDto {
 	return &MangaGroupListDto{
 		Title:       list.Title,
+		TopGroup:    BuildMangaPageGroupDto(list.TopGroup),
 		Groups:      BuildMangaPageGroupDtos(list.Groups),
 		OtherGroups: BuildMangaPageGroupDtos(list.OtherGroups),
 	}
