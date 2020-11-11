@@ -27,7 +27,9 @@ func Provide(configPath string) error {
 	// ///////////////////////////////////////////////////////////////////////
 
 	// services
-	xdi.ProvideName(sn.SMangaService, service.NewMangaService()) // *service.MangaService
+	xdi.ProvideName(sn.SHttpService, service.NewHttpService())           // *service.HttpService
+	xdi.ProvideName(sn.SMangaService, service.NewMangaService())         // *service.MangaService
+	xdi.ProvideName(sn.SMangaListService, service.NewMangaListService()) // *service.MangaListService
 
 	return nil
 }

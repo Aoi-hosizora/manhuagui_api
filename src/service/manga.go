@@ -1,55 +1,39 @@
 package service
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/util"
 	"github.com/PuerkitoBio/goquery"
-	"io/ioutil"
-	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 type MangaService struct {
+	httpService *HttpService
 }
 
 func NewMangaService() *MangaService {
-	return &MangaService{}
+	return &MangaService{
+		httpService: xdi.GetByNameForce(sn.SHttpService).(*HttpService),
+	}
 }
 
 func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
+	// get document
 	url := fmt.Sprintf(static.MANGA_PAGE_URL, mid)
-
-	// get html
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("User-Agent", static.USER_AGENT)
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	doc, err := m.httpService.HttpGetDocument(url)
 	if err != nil {
-		return nil, fmt.Errorf("network error: %v", err)
-	}
-	body := resp.Body
-	defer body.Close()
-	bs, err := ioutil.ReadAll(body)
-	if err != nil {
-		return nil, fmt.Errorf("response error: %v", err)
-	}
-	if bytes.Contains(bs, []byte(static.NOT_FOUND_TOKEN)) {
-		return nil, nil
+		return nil, err
 	}
 
-	// get details
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(bs))
-	if err != nil {
-		return nil, fmt.Errorf("document error: %v", err)
-	}
-
+	// get basic information
 	bname := doc.Find("div.book-title").Text()
 	bpic := doc.Find("p.hcover img").AttrOr("src", "")
 	detailUl := doc.Find("ul.detail-list")
@@ -91,66 +75,46 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 		groupTitles[idx] = sel.Text()
 	})
 	groupListDivs.Each(func(idx int, sel *goquery.Selection) {
-		links := make([]*vo.MangaChapterLink, 0)
+		chapters := make([]*vo.MangaChapterLink, 0)
 		sel.Find("ul").Each(func(idx int, sel *goquery.Selection) {
-			linksInUl := make([]*vo.MangaChapterLink, 0)
+			chaptersInUl := make([]*vo.MangaChapterLink, 0)
 			sel.Find("li").Each(func(idx int, sel *goquery.Selection) {
 				cname := sel.Find("a").AttrOr("title", "")
-				pages, _ := xnumber.Atoi32(strings.TrimSuffix(sel.Find("i").Text(), "p"))
+				pageCount, _ := xnumber.Atoi32(strings.TrimSuffix(sel.Find("i").Text(), "p"))
 				url := sel.Find("a").AttrOr("href", "")
-				if url != "" {
-					url = static.HOMEPAGE_URL + url
-				}
 				sp := strings.Split(url, "/")
 				cid, _ := xnumber.Atou64(strings.TrimSuffix(sp[len(sp)-1], ".html"))
 				em := sel.Find("em").AttrOr("class", "")
-				linksInUl = append(linksInUl, &vo.MangaChapterLink{
-					Cid:   cid,
-					Cname: cname,
-					Url:   url,
-					Pages: pages,
-					New:   em != "",
+				chaptersInUl = append(chaptersInUl, &vo.MangaChapterLink{
+					Cid:       cid,
+					Cname:     cname,
+					Url:       static.HOMEPAGE_URL + url,
+					PageCount: pageCount,
+					New:       em != "",
 				})
 			})
-			links = append(linksInUl, links...)
+			chapters = append(chaptersInUl, chapters...)
 		})
 		groups[idx] = &vo.MangaChapterGroup{
-			Title: groupTitles[idx],
-			Links: links,
+			Title:    groupTitles[idx],
+			Chapters: chapters,
 		}
 	})
-	obj.Chapters = groups
+	obj.Groups = groups
 
 	// return
 	return obj, nil
 }
 
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {
+	// get document
 	url := fmt.Sprintf(static.MANGA_CHAPTER_URL, mid, cid)
-
-	// get html
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("User-Agent", static.USER_AGENT)
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	doc, err := m.httpService.HttpGetDocument(url)
 	if err != nil {
-		return nil, fmt.Errorf("network error: %v", err)
-	}
-	body := resp.Body
-	defer body.Close()
-	bs, err := ioutil.ReadAll(body)
-	if err != nil {
-		return nil, fmt.Errorf("response error: %v", err)
-	}
-	if bytes.Contains(bs, []byte(static.NOT_FOUND_TOKEN)) {
-		return nil, nil
+		return nil, err
 	}
 
 	// get script
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(bs))
-	if err != nil {
-		return nil, fmt.Errorf("document error: %v", err)
-	}
 	var script *goquery.Selection
 	doc.Find("script").Each(func(i int, sel *goquery.Selection) {
 		_, ok := sel.Attr("src")

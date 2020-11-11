@@ -35,6 +35,13 @@ func initRoute(engine *gin.Engine) {
 		mangaGroup.GET(":mid", j(mangaController.GetMangaPage))
 		mangaGroup.GET(":mid/:cid", j(mangaController.GetMangaChapter))
 	}
+
+	listGroup := v1.Group("list") // /v1/list
+	{
+		listGroup.GET("serial", j(mangaController.GetHotSerialMangas))
+		listGroup.GET("finish", j(mangaController.GetFinishedMangas))
+		listGroup.GET("latest", j(mangaController.GetLatestMangas))
+	}
 }
 
 // j Simplify controller's functions.

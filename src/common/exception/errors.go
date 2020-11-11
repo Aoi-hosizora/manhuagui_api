@@ -25,6 +25,9 @@ var (
 	MangaPageNotFoundError    = New(404, ce(), "manga page not found")
 	GetMangaChapterError      = New(500, se(), "failed to get manga chapter")
 	MangaChapterNotFoundError = New(404, ce(), "manga chapter not found")
+	GetHotSerialMangasError   = New(500, se(), "failed to get hot serial mangas")
+	GetFinishedMangasError    = New(500, se(), "failed to get finished mangas")
+	GetLatestMangasError      = New(500, se(), "failed to get latest mangas")
 )
 
 func WrapValidationError(err error) *Error {
