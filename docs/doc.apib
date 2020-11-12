@@ -135,6 +135,35 @@ manga-controller
 
     + Body
 
+## Get latest mangas [/v1/list/updated{?page,limit}]
+
+### Get latest mangas [GET]
+
+`GET /v1/list/updated`
+
++ Parameters
+
+    + page (number, optional) - current page
+        (format: int32)
+    + limit (number, optional) - page size
+        (format: int32)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<MangaPageLinkDto>>)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -191,6 +220,7 @@ manga-controller
 + url (string, required) - manga link
 + finished (boolean, required) - manga is finished
 + newest_chapter (string, required) - manga last update chapter
++ newest_date (string, required) - manga last update date
 
 ## MangaChapterLinkDto (object)
 
@@ -239,3 +269,20 @@ manga-controller
     (format: int32)
 + message (string, required) - status message
 + data (MangaGroupListDto, required) - response data
+
+## _Result<_Page<MangaPageLinkDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<MangaPageLinkDto>, required) - response data
+
+## _Page<MangaPageLinkDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[MangaPageLinkDto], required) - page data

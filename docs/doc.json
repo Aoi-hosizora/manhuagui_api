@@ -70,6 +70,41 @@
         }
       }
     },
+    "/v1/list/updated": {
+      "get": {
+        "summary": "Get latest mangas",
+        "operationId": "-v1-list-updated-get",
+        "tags": [
+          "Manga"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "page size",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<MangaPageLinkDto>>",
+              "$ref": "#/definitions/_Result<_Page<MangaPageLinkDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/manga/{mid}": {
       "get": {
         "summary": "Get manga page",
@@ -461,7 +496,8 @@
         "cover",
         "url",
         "finished",
-        "newest_chapter"
+        "newest_chapter",
+        "newest_date"
       ],
       "description": "Manga page link response",
       "properties": {
@@ -495,6 +531,11 @@
           "type": "string",
           "required": true,
           "description": "manga last update chapter"
+        },
+        "newest_date": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update date"
         }
       }
     },
@@ -516,6 +557,45 @@
           "type": "string",
           "required": true,
           "description": "status message"
+        }
+      }
+    },
+    "_Page<MangaPageLinkDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "MangaPageLinkDto",
+            "$ref": "#/definitions/MangaPageLinkDto"
+          }
         }
       }
     },
@@ -600,6 +680,34 @@
           "description": "response data",
           "originRef": "MangaPageDto",
           "$ref": "#/definitions/MangaPageDto"
+        }
+      }
+    },
+    "_Result<_Page<MangaPageLinkDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cMangaPageLinkDto\u003e",
+          "$ref": "#/definitions/_Page\u003cMangaPageLinkDto\u003e"
         }
       }
     }

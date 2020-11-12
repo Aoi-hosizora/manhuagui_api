@@ -5,6 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/common/exception"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/common/result"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
@@ -40,16 +41,23 @@ func init() {
 		goapidoc.NewRoutePath("GET", "/v1/list/latest", "Get latest mangas").
 			Tags("Manga").
 			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
+
+		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get latest mangas").
+			Tags("Manga").
+			Params(param.ADPage, param.ADLimit).
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<MangaPageLinkDto>>")),
 	)
 }
 
 type MangaController struct {
+	config           *config.Config
 	mangaService     *service.MangaService
 	mangaListService *service.MangaListService
 }
 
 func NewMangaController() *MangaController {
 	return &MangaController{
+		config:           xdi.GetByNameForce(sn.SConfig).(*config.Config),
 		mangaService:     xdi.GetByNameForce(sn.SMangaService).(*service.MangaService),
 		mangaListService: xdi.GetByNameForce(sn.SMangaListService).(*service.MangaListService),
 	}
@@ -123,4 +131,16 @@ func (m *MangaController) GetLatestMangas(c *gin.Context) *result.Result {
 
 	res := dto.BuildMangaGroupListDto(list)
 	return result.Ok().SetData(res)
+}
+
+// GET /v1/list/updated
+func (m *MangaController) GetUpdatedMangas(c *gin.Context) *result.Result {
+	pa := param.BindPage(c, m.config)
+	pages, tot, err := m.mangaListService.GetUpdatedMangas(pa)
+	if err != nil {
+		return result.Error(exception.GetUpdatedMangasError).SetError(err, c)
+	}
+
+	res := dto.BuildMangaPageLinkDtos(pages)
+	return result.Ok().SetPage(pa.Page, pa.Limit, tot, res)
 }

@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
@@ -129,7 +130,6 @@ func (m *MangaListService) GetFinishedMangas() (*vo.MangaGroupList, error) {
 	}
 
 	topGroup, groups, otherGroups := m.getMangas(doc, 2, "finish")
-
 	return &vo.MangaGroupList{
 		Title:       "经典完结",
 		TopGroup:    topGroup,
@@ -146,11 +146,19 @@ func (m *MangaListService) GetLatestMangas() (*vo.MangaGroupList, error) {
 	}
 
 	topGroup, groups, otherGroups := m.getMangas(doc, 3, "latest")
-
 	return &vo.MangaGroupList{
 		Title:       "最新上架",
 		TopGroup:    topGroup,
 		Groups:      groups,
 		OtherGroups: otherGroups,
 	}, nil
+}
+
+func (m *MangaListService) GetUpdatedMangas(pa *param.PageParam) ([]*vo.MangaPageLink, int32, error) {
+	doc, err := m.httpService.HttpGetDocument(static.MANGA_UPDATE_URL)
+	if err != nil {
+		return nil, 0, err
+	}
+	_ = doc
+	return nil, 0, nil
 }

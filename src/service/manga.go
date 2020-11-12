@@ -103,7 +103,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 		per5 := float32(math.Round((s5/tot)*1000) / 1000)
 
 		obj.ScoreCount = int32(tot)
-		obj.AverageScore = float32(math.Round(avg*100) / 100) // 0.00
+		obj.AverageScore = float32(math.Round(avg*100) / 10) // 0.0
 		obj.PerScores = [6]float32{0, per1, per2, per3, per4, per5}
 	}
 

@@ -11,18 +11,11 @@ import (
 var (
 	ADPage  = goapidoc.NewQueryParam("page", "integer#int32", false, "current page")
 	ADLimit = goapidoc.NewQueryParam("limit", "integer#int32", false, "page size")
-	ADOrder = goapidoc.NewQueryParam("order", "string", false, "order string")
 )
 
 type PageParam struct {
 	Page  int32
 	Limit int32
-}
-
-type PageOrderParam struct {
-	Page  int32
-	Limit int32
-	Order string
 }
 
 // Bind ?page&limit
@@ -40,13 +33,6 @@ func BindPage(c *gin.Context, config *config.Config) *PageParam {
 	}
 
 	return &PageParam{Page: page, Limit: limit}
-}
-
-// Bind ?page&limit&order
-func BindPageOrder(c *gin.Context, config *config.Config) *PageOrderParam {
-	page := BindPage(c, config)
-	order := c.DefaultQuery("order", "")
-	return &PageOrderParam{Page: page.Page, Limit: page.Limit, Order: order}
 }
 
 // Bind :xid

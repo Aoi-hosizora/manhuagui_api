@@ -28,6 +28,7 @@ var (
 	GetHotSerialMangasError   = New(500, se(), "failed to get hot serial mangas")
 	GetFinishedMangasError    = New(500, se(), "failed to get finished mangas")
 	GetLatestMangasError      = New(500, se(), "failed to get latest mangas")
+	GetUpdatedMangasError      = New(500, se(), "failed to get updated mangas")
 )
 
 func WrapValidationError(err error) *Error {

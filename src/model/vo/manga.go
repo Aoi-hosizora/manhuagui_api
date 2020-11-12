@@ -51,6 +51,7 @@ type MangaPageLink struct {
 	Url           string // 漫画链接
 	Finished      bool   // 是否完结
 	NewestChapter string // 最新一话
+	NewestDate    string // 更新时间
 }
 
 // 漫画章节的链接 (Link)

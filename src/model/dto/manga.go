@@ -49,6 +49,7 @@ func init() {
 				goapidoc.NewProperty("url", "string", true, "manga link"),
 				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
 				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
+				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
 			),
 
 		goapidoc.NewDefinition("MangaChapterLinkDto", "Manga chapter link response").
@@ -178,6 +179,7 @@ type MangaPageLinkDto struct {
 	Url           string `json:"url"`
 	Finished      bool   `json:"finished"`
 	NewestChapter string `json:"newest_chapter"`
+	NewestDate    string `json:"newest_date"`
 }
 
 func BuildMangaPageLinkDto(link *vo.MangaPageLink) *MangaPageLinkDto {
@@ -188,6 +190,7 @@ func BuildMangaPageLinkDto(link *vo.MangaPageLink) *MangaPageLinkDto {
 		Url:           link.Url,
 		Finished:      link.Finished,
 		NewestChapter: link.NewestChapter,
+		NewestDate:    link.NewestDate,
 	}
 }
 
