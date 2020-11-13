@@ -85,7 +85,7 @@ manga-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaGroupListDto>)
+    + Attributes (_Result<MangaPageGroupListDto>)
 
     + Headers
 
@@ -107,7 +107,7 @@ manga-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaGroupListDto>)
+    + Attributes (_Result<MangaPageGroupListDto>)
 
     + Headers
 
@@ -129,7 +129,7 @@ manga-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaGroupListDto>)
+    + Attributes (_Result<MangaPageGroupListDto>)
 
     + Headers
 
@@ -158,7 +158,7 @@ manga-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<MangaPageLinkDto>>)
+    + Attributes (_Result<_Page<TinyMangaPageDto>>)
 
     + Headers
 
@@ -176,75 +176,80 @@ manga-controller
 
 + mid (number, required) - manga id
     (format: int64)
-+ mname (string, required) - manga name
++ title (string, required) - manga name
 + cover (string, required) - manga cover
 + url (string, required) - manga link
 + publish_year (string, required) - manga publish year
++ manga_zone (string, required) - manga zone
 + alphabet_index (string, required) - manga alphabet index
-+ type (string, required) - manga type
++ category (string, required) - manga category
 + author_name (string, required) - manga author name
 + alias (string, required) - manga alias name
 + finished (boolean, required) - manga is finished
 + newest_chapter (string, required) - manga last update chapter
 + newest_date (string, required) - manga last update date
 + introduction (string, required) - manga introduction
-+ rank (string, required) - manga rank
++ manga_rank (string, required) - manga rank
 + average_score (number, required) - manga average score
     (format: float)
 + score_count (number, required) - manga score count
     (format: int32)
 + per_scores (array[number], required) - manga per scores, from 0 to 5
-+ groups (array[MangaChapterGroupDto], required) - manga chapter groups
++ chapter_groups (array[MangaChapterGroupDto], required) - manga chapter groups
 
 ## MangaChapterDto (object)
 
++ cid (number, required) - chapter id
+    (format: int64)
++ title (string, required) - chapter name
 + mid (number, required) - manga id
     (format: int64)
-+ mname (string, required) - manga name
-+ cid (number, required) - manga chapter id
++ manga_title (string, required) - manga name
++ url (string, required) - chapter link
++ pages (array[string], required) - chapter pages
++ page_count (number, required) - chapter pages count
+    (format: int32)
++ next_cid (number, required) - next chapter id
     (format: int64)
-+ cname (string, required) - manga chapter name
-+ url (string, required) - manga chapter link
-+ pages (array[string], required) - manga chapter pages
-+ next_cid (number, required) - manga next chapter id
-    (format: int64)
-+ prev_cid (number, required) - manga prev chapter id
++ prev_cid (number, required) - prev chapter id
     (format: int64)
 
-## MangaPageLinkDto (object)
+## TinyMangaPageDto (object)
 
 + mid (number, required) - manga id
     (format: int64)
-+ mname (string, required) - manga name
++ title (string, required) - manga name
 + cover (string, required) - manga cover
 + url (string, required) - manga link
 + finished (boolean, required) - manga is finished
 + newest_chapter (string, required) - manga last update chapter
 + newest_date (string, required) - manga last update date
 
-## MangaChapterLinkDto (object)
+## TinyMangaChapterDto (object)
 
-+ cid (number, required) - manga chapter id
++ cid (number, required) - chapter id
     (format: int64)
-+ cname (string, required) - manga chapter name
-+ page_count (number, required) - manga chapter page number
++ title (string, required) - chapter name
++ mid (number, required) - manga id
+    (format: int64)
++ url (string, required) - chapter link
++ page_count (number, required) - chapter pages count
     (format: int32)
-+ url (string, required) - manga chapter link
-+ new (boolean, required) - manga chapter is uploaded newly
++ is_new (boolean, required) - chapter is uploaded newly
 
 ## MangaPageGroupDto (object)
 
-+ title (string, required) - manga group title
-+ mangas (array[MangaChapterLinkDto], required) - manga group mangas
++ title (string, required) - group title
++ mangas (array[TinyMangaChapterDto], required) - group mangas
 
 ## MangaChapterGroupDto (object)
 
-+ title (string, required) - chapter group title
-+ chapters (array[MangaChapterLinkDto], required) - chapter group chapters
++ title (string, required) - group title
++ chapters (array[TinyMangaChapterDto], required) - group chapters
 
-## MangaGroupListDto (object)
+## MangaPageGroupListDto (object)
 
-+ title (string, required) - manga group title
++ title (string, required) - list title
 + top_group (MangaPageGroupDto, required) - manga top page group
 + groups (array[MangaPageGroupDto], required) - manga page groups
 + other_groups (array[MangaPageGroupDto], required) - manga other page groups
@@ -263,21 +268,21 @@ manga-controller
 + message (string, required) - status message
 + data (MangaChapterDto, required) - response data
 
-## _Result<MangaGroupListDto> (object)
+## _Result<MangaPageGroupListDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (MangaGroupListDto, required) - response data
++ data (MangaPageGroupListDto, required) - response data
 
-## _Result<_Page<MangaPageLinkDto>> (object)
+## _Result<_Page<TinyMangaPageDto>> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<MangaPageLinkDto>, required) - response data
++ data (_Page<TinyMangaPageDto>, required) - response data
 
-## _Page<MangaPageLinkDto> (object)
+## _Page<TinyMangaPageDto> (object)
 
 + page (number, required) - current page
     (format: int32)
@@ -285,4 +290,4 @@ manga-controller
     (format: int32)
 + total (number, required) - data count
     (format: int32)
-+ data (array[MangaPageLinkDto], required) - page data
++ data (array[TinyMangaPageDto], required) - page data

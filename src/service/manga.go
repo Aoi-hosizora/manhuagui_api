@@ -35,36 +35,36 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	}
 
 	// get basic information
-	bname := doc.Find("div.book-title").Text()
-	bpic := doc.Find("p.hcover img").AttrOr("src", "")
+	title := doc.Find("div.book-title").Text()
+	cover := doc.Find("p.hcover img").AttrOr("src", "")
 	detailUl := doc.Find("ul.detail-list")
 	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
-	zone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
+	mangaZone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
 	alphabetIndex := detailUl.Find("li:nth-child(1) span:nth-child(3) a").Text()
-	mangaType := detailUl.Find("li:nth-child(2) span:nth-child(1) a").Text()
+	category := detailUl.Find("li:nth-child(2) span:nth-child(1) a").Text()
 	authorName := detailUl.Find("li:nth-child(2) span:nth-child(2) a").Text()
 	alias := detailUl.Find("li:nth-child(3) span:nth-child(1)").Text()
 	status := detailUl.Find("li:nth-child(4) span:nth-child(2)").Text()
 	newestChapter := detailUl.Find("li:nth-child(4) a").Text()
 	newestDate := detailUl.Find("li:nth-child(4) span:nth-child(3)").Text()
 	introduction := doc.Find("div#intro-all").Text()
-	rank := doc.Find("div.rank").Text()
+	mangaRank := doc.Find("div.rank").Text()
 	obj := &vo.MangaPage{
-		Bid:           mid,
-		Bname:         bname,
-		Bpic:          bpic,
+		Mid:           mid,
+		Title:         title,
+		Cover:         cover,
 		Url:           url,
 		PublishYear:   publishYear,
-		Zone:          zone,
+		MangaZone:     mangaZone,
 		AlphabetIndex: alphabetIndex,
-		Type:          mangaType,
+		Category:      category,
 		AuthorName:    authorName,
 		Alias:         strings.TrimPrefix(alias, "漫画别名："),
 		Finished:      status == "已完结",
 		NewestChapter: newestChapter,
 		NewestDate:    newestDate,
 		Introduction:  strings.TrimSpace(introduction),
-		Rank:          rank,
+		MangaRank:     mangaRank,
 	}
 
 	// get score
@@ -116,22 +116,23 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 		groupTitles[idx] = sel.Text()
 	})
 	groupListDivs.Each(func(idx int, sel *goquery.Selection) {
-		chapters := make([]*vo.MangaChapterLink, 0)
+		chapters := make([]*vo.TinyMangaChapter, 0)
 		sel.Find("ul").Each(func(idx int, sel *goquery.Selection) {
-			chaptersInUl := make([]*vo.MangaChapterLink, 0)
+			chaptersInUl := make([]*vo.TinyMangaChapter, 0)
 			sel.Find("li").Each(func(idx int, sel *goquery.Selection) {
-				cname := sel.Find("a").AttrOr("title", "")
+				title := sel.Find("a").AttrOr("title", "")
 				pageCount, _ := xnumber.Atoi32(strings.TrimSuffix(sel.Find("i").Text(), "p"))
 				url := sel.Find("a").AttrOr("href", "")
 				sp := strings.Split(url, "/")
 				cid, _ := xnumber.Atou64(strings.TrimSuffix(sp[len(sp)-1], ".html"))
 				em := sel.Find("em").AttrOr("class", "")
-				chaptersInUl = append(chaptersInUl, &vo.MangaChapterLink{
+				chaptersInUl = append(chaptersInUl, &vo.TinyMangaChapter{
 					Cid:       cid,
-					Cname:     cname,
+					Title:     title,
+					Mid:       mid,
 					Url:       static.HOMEPAGE_URL + url,
 					PageCount: pageCount,
-					New:       em != "",
+					IsNew:     em != "",
 				})
 			})
 			chapters = append(chaptersInUl, chapters...)
@@ -141,7 +142,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 			Chapters: chapters,
 		}
 	})
-	obj.Groups = groups
+	obj.ChapterGroups = groups
 
 	// return
 	return obj, nil
@@ -191,11 +192,11 @@ func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error
 		return nil, fmt.Errorf("chapter script error: %v", err)
 	}
 	obj.Url = url
-	for idx := range obj.Files {
+	for idx := range obj.Pages {
 		// 自动 h: "i" (100) | "us" (1)
 		// 电信 h: "eu" (100) | "i" (1) | "us" (1)
 		// 联通 h: "us" (100) | "i" (1) | "eu" (1)
-		obj.Files[idx] = fmt.Sprintf("%s%s%s?e=%d&m=%s", fmt.Sprintf(static.MANGA_SOURCE_URL, "i"), obj.Path, obj.Files[idx], obj.Sl.E, obj.Sl.M)
+		obj.Pages[idx] = fmt.Sprintf("%s%s%s?e=%d&m=%s", fmt.Sprintf(static.MANGA_SOURCE_URL, "i"), obj.Path, obj.Pages[idx], obj.Sl.E, obj.Sl.M)
 	}
 
 	// return

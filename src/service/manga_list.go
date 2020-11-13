@@ -23,7 +23,7 @@ func NewMangaListService() *MangaListService {
 
 func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagName string) (*vo.MangaPageGroup, []*vo.MangaPageGroup, []*vo.MangaPageGroup) {
 	// get top mangas
-	topMangas := make([]*vo.MangaPageLink, 0)
+	topMangas := make([]*vo.TinyMangaPage, 0)
 	topMangaUl := doc.Find("div.cmt-cont ul:nth-child(" + xnumber.Itoa(tagIndex) + ")") // <<<
 	topMangaUl.Find("li").Each(func(idx int, li *goquery.Selection) {
 		topMangas = append(topMangas, m.getMangaPageLinkFromLi(li, true))
@@ -38,7 +38,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 	otherMangaUl := doc.Find("div#" + tagName + "Cont ul") // <<<
 	otherMangaUl.Each(func(idx int, sel *goquery.Selection) {
 		groupTitle := doc.Find("div#" + tagName + "Bar li:nth-child(" + xnumber.Itoa(idx+1) + ")").Text() // <<<
-		groupMangas := make([]*vo.MangaPageLink, 0)
+		groupMangas := make([]*vo.TinyMangaPage, 0)
 		sel.Find("li").Each(func(idx int, li *goquery.Selection) {
 			groupMangas = append(groupMangas, m.getMangaPageLinkFromLi(li, true))
 		})
@@ -53,7 +53,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 	if tagIndex == 1 || tagIndex == 2 {
 		scContDiv := doc.Find("div.idx-sc-cont")
 		scContDiv.Each(func(idx int, sel *goquery.Selection) {
-			groupMangas := make([]*vo.MangaPageLink, 0)
+			groupMangas := make([]*vo.TinyMangaPage, 0)
 			groupTitle := sel.Find("h4").Text()
 			otherMangaUl := sel.Find("div.idx-sc-list ul:nth-child(" + xnumber.Itoa(tagIndex) + ")") // <<<
 			otherMangaUl.Children().Each(func(idx int, li *goquery.Selection) {
@@ -71,23 +71,23 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 	return topGroup, groups, otherGroups
 }
 
-func (m *MangaListService) getMangaPageLinkFromLi(li *goquery.Selection, hasCover bool) *vo.MangaPageLink {
+func (m *MangaListService) getMangaPageLinkFromLi(li *goquery.Selection, hasCover bool) *vo.TinyMangaPage {
 	if hasCover {
 		url := li.Find("a").AttrOr("href", "")
 		sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-		bid, _ := xnumber.Atou64(sp[len(sp)-1])
+		mid, _ := xnumber.Atou64(sp[len(sp)-1])
 		title := li.Find("a").AttrOr("title", "")
-		pic := li.Find("a img").AttrOr("src", "")
-		if pic == "" {
-			pic = li.Find("a img").AttrOr("data-src", "")
+		cover := li.Find("a img").AttrOr("src", "")
+		if cover == "" {
+			cover = li.Find("a img").AttrOr("data-src", "")
 		}
 		tt := li.Find("span.tt").Text()
 		newestChapter := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(tt, "更新至"), "共"), "[全]")
 		newestDate := li.Find("span.dt").Text()
-		return &vo.MangaPageLink{
-			Bid:           bid,
-			Bname:         title,
-			Bpic:          pic,
+		return &vo.TinyMangaPage{
+			Mid:           mid,
+			Title:         title,
+			Cover:         cover,
 			Url:           static.HOMEPAGE_URL + url,
 			Finished:      strings.HasPrefix(tt, "共"),
 			NewestChapter: newestChapter,
@@ -97,27 +97,27 @@ func (m *MangaListService) getMangaPageLinkFromLi(li *goquery.Selection, hasCove
 		title := li.Find("h6 a").AttrOr("title", "")
 		url := li.Find("h6 a").AttrOr("href", "")
 		sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-		bid, _ := xnumber.Atou64(sp[len(sp)-1])
+		mid, _ := xnumber.Atou64(sp[len(sp)-1])
 		newestChapter := li.Find("h6 span a").AttrOr("title", "")
-		return &vo.MangaPageLink{
-			Bid:           bid,
-			Bname:         title,
-			Bpic:          "",
+		return &vo.TinyMangaPage{
+			Mid:           mid,
+			Title:         title,
+			Cover:         "",
 			Url:           static.HOMEPAGE_URL + url,
-			Finished:      true,
+			Finished:      true, // true
 			NewestChapter: newestChapter,
 		}
 	}
 }
 
-func (m *MangaListService) GetHotSerialMangas() (*vo.MangaGroupList, error) {
+func (m *MangaListService) GetHotSerialMangas() (*vo.MangaPageGroupList, error) {
 	doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL)
 	if err != nil {
 		return nil, err
 	}
 
 	topGroup, groups, otherGroups := m.getMangas(doc, 1, "serial")
-	return &vo.MangaGroupList{
+	return &vo.MangaPageGroupList{
 		Title:       "热门连载",
 		TopGroup:    topGroup,
 		Groups:      groups,
@@ -125,30 +125,29 @@ func (m *MangaListService) GetHotSerialMangas() (*vo.MangaGroupList, error) {
 	}, nil
 }
 
-func (m *MangaListService) GetFinishedMangas() (*vo.MangaGroupList, error) {
+func (m *MangaListService) GetFinishedMangas() (*vo.MangaPageGroupList, error) {
 	doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL)
 	if err != nil {
 		return nil, err
 	}
 
 	topGroup, groups, otherGroups := m.getMangas(doc, 2, "finish")
-	return &vo.MangaGroupList{
+	return &vo.MangaPageGroupList{
 		Title:       "经典完结",
 		TopGroup:    topGroup,
 		Groups:      groups,
 		OtherGroups: otherGroups,
 	}, nil
-
 }
 
-func (m *MangaListService) GetLatestMangas() (*vo.MangaGroupList, error) {
+func (m *MangaListService) GetLatestMangas() (*vo.MangaPageGroupList, error) {
 	doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL)
 	if err != nil {
 		return nil, err
 	}
 
 	topGroup, groups, otherGroups := m.getMangas(doc, 3, "latest")
-	return &vo.MangaGroupList{
+	return &vo.MangaPageGroupList{
 		Title:       "最新上架",
 		TopGroup:    topGroup,
 		Groups:      groups,
@@ -156,20 +155,20 @@ func (m *MangaListService) GetLatestMangas() (*vo.MangaGroupList, error) {
 	}, nil
 }
 
-func (m *MangaListService) GetUpdatedMangas(pa *param.PageParam) ([]*vo.MangaPageLink, int32, error) {
+func (m *MangaListService) GetRecentUpdatedMangas(pa *param.PageParam) ([]*vo.TinyMangaPage, int32, error) {
 	doc, err := m.httpService.HttpGetDocument(static.MANGA_UPDATE_URL)
 	if err != nil {
 		return nil, 0, err
 	}
 
 	latestLis := doc.Find("div.latest-list li")
-	allMangas := make([]*vo.MangaPageLink, latestLis.Length())
+	allMangas := make([]*vo.TinyMangaPage, latestLis.Length())
 	latestLis.Each(func(idx int, li *goquery.Selection) {
 		allMangas[idx] = m.getMangaPageLinkFromLi(li, true)
 	})
 	totalLength := int32(len(allMangas))
 
-	out := make([]*vo.MangaPageLink, 0)
+	out := make([]*vo.TinyMangaPage, 0)
 	start := pa.Limit * (pa.Page - 1)
 	end := start + pa.Limit
 	for i := start; i < end && i < totalLength; i++ {
