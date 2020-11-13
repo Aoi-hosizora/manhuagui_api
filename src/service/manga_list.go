@@ -83,6 +83,7 @@ func (m *MangaListService) getMangaPageLinkFromLi(li *goquery.Selection, hasCove
 		}
 		tt := li.Find("span.tt").Text()
 		newestChapter := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(tt, "更新至"), "共"), "[全]")
+		newestDate := li.Find("span.dt").Text()
 		return &vo.MangaPageLink{
 			Bid:           bid,
 			Bname:         title,
@@ -90,6 +91,7 @@ func (m *MangaListService) getMangaPageLinkFromLi(li *goquery.Selection, hasCove
 			Url:           static.HOMEPAGE_URL + url,
 			Finished:      strings.HasPrefix(tt, "共"),
 			NewestChapter: newestChapter,
+			NewestDate:    newestDate,
 		}
 	} else {
 		title := li.Find("h6 a").AttrOr("title", "")
@@ -159,6 +161,19 @@ func (m *MangaListService) GetUpdatedMangas(pa *param.PageParam) ([]*vo.MangaPag
 	if err != nil {
 		return nil, 0, err
 	}
-	_ = doc
-	return nil, 0, nil
+
+	latestLis := doc.Find("div.latest-list li")
+	allMangas := make([]*vo.MangaPageLink, latestLis.Length())
+	latestLis.Each(func(idx int, li *goquery.Selection) {
+		allMangas[idx] = m.getMangaPageLinkFromLi(li, true)
+	})
+	totalLength := int32(len(allMangas))
+
+	out := make([]*vo.MangaPageLink, 0)
+	start := pa.Limit * (pa.Page - 1)
+	end := start + pa.Limit
+	for i := start; i < end && i < totalLength; i++ {
+		out = append(out, allMangas[i])
+	}
+	return out, totalLength, nil
 }
