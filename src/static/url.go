@@ -7,6 +7,7 @@ const (
 	MANGA_CHAPTER_URL  = "https://www.manhuagui.com/comic/%d/%d.html"
 	MANGA_UPDATE_URL   = "https://www.manhuagui.com/update/d30.html"
 	MANGA_CATEGORY_URL = "https://www.manhuagui.com/list"
+	MANGA_SEARCH_URL   = "https://www.manhuagui.com/s/%s_p%d.html"
 	MANGA_SCORE_URL    = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_SOURCE_URL   = "https://%s.hamreus.com"
 )
@@ -16,6 +17,7 @@ const (
 	USER_AGENT       = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"
 	NOT_FOUND_TOKEN  = "您正访问的页面不存在"
 	NOT_FOUND2_TOKEN = "暂时没有此类别组合的漫画"
+	NOT_FOUND3_TOKEN = "很抱歉，没有查找到与"
 )
 
 /*

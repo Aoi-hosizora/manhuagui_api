@@ -29,7 +29,9 @@ func init() {
 
 	goapidoc.SetTags(
 		goapidoc.NewTag("Manga", "manga-controller"),
+		goapidoc.NewTag("MangaList", "manga-list-controller"),
 		goapidoc.NewTag("Category", "category-controller"),
+		goapidoc.NewTag("Search", "search-controller"),
 	)
 }
 

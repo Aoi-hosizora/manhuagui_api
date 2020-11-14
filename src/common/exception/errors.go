@@ -36,9 +36,15 @@ var (
 var (
 	GetGenresError      = New(500, se(), "failed to get genres")
 	GetZonesError       = New(500, se(), "failed to get zones")
-	GetAgesError       = New(500, se(), "failed to get ages")
+	GetAgesError        = New(500, se(), "failed to get ages")
 	GetGenreMangasError = New(500, se(), "failed to get genre mangas")
 	GenreNotFoundError  = New(404, ce(), "genre not found")
+)
+
+// search
+var (
+	SearchMangasError   = New(500, se(), "failed to search mangas")
+	SearchNotFoundError = New(404, ce(), "search result not found")
 )
 
 func WrapValidationError(err error) *Error {

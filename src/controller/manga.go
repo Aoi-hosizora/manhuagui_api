@@ -34,39 +34,20 @@ func init() {
 				goapidoc.NewPathParam("cid", "integer#int64", true, "manga chapter id"),
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<MangaChapterDto>")),
-
-		goapidoc.NewRoutePath("GET", "/v1/list/serial", "Get hot serial mangas").
-			Tags("Manga").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
-
-		goapidoc.NewRoutePath("GET", "/v1/list/finish", "Get finished mangas").
-			Tags("Manga").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
-
-		goapidoc.NewRoutePath("GET", "/v1/list/latest", "Get latest mangas").
-			Tags("Manga").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
-
-		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get latest mangas").
-			Tags("Manga").
-			Params(param.ADPage, param.ADLimit).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
 	)
 }
 
 type MangaController struct {
-	config           *config.Config
-	mangaService     *service.MangaService
-	mangaListService *service.MangaListService
-	categoryService  *service.CategoryService
+	config          *config.Config
+	mangaService    *service.MangaService
+	categoryService *service.CategoryService
 }
 
 func NewMangaController() *MangaController {
 	return &MangaController{
-		config:           xdi.GetByNameForce(sn.SConfig).(*config.Config),
-		mangaService:     xdi.GetByNameForce(sn.SMangaService).(*service.MangaService),
-		mangaListService: xdi.GetByNameForce(sn.SMangaListService).(*service.MangaListService),
-		categoryService:  xdi.GetByNameForce(sn.SCategoryService).(*service.CategoryService),
+		config:          xdi.GetByNameForce(sn.SConfig).(*config.Config),
+		mangaService:    xdi.GetByNameForce(sn.SMangaService).(*service.MangaService),
+		categoryService: xdi.GetByNameForce(sn.SCategoryService).(*service.CategoryService),
 	}
 }
 
@@ -118,49 +99,4 @@ func (m *MangaController) GetMangaChapter(c *gin.Context) *result.Result {
 
 	res := dto.BuildMangaChapterDto(chapter)
 	return result.Ok().SetData(res)
-}
-
-// GET /v1/list/serial
-func (m *MangaController) GetHotSerialMangas(c *gin.Context) *result.Result {
-	list, err := m.mangaListService.GetHotSerialMangas()
-	if err != nil {
-		return result.Error(exception.GetHotSerialMangasError).SetError(err, c)
-	}
-
-	res := dto.BuildMangaPageGroupListDto(list)
-	return result.Ok().SetData(res)
-}
-
-// GET /v1/list/finish
-func (m *MangaController) GetFinishedMangas(c *gin.Context) *result.Result {
-	list, err := m.mangaListService.GetFinishedMangas()
-	if err != nil {
-		return result.Error(exception.GetFinishedMangasError).SetError(err, c)
-	}
-
-	res := dto.BuildMangaPageGroupListDto(list)
-	return result.Ok().SetData(res)
-}
-
-// GET /v1/list/latest
-func (m *MangaController) GetLatestMangas(c *gin.Context) *result.Result {
-	list, err := m.mangaListService.GetLatestMangas()
-	if err != nil {
-		return result.Error(exception.GetLatestMangasError).SetError(err, c)
-	}
-
-	res := dto.BuildMangaPageGroupListDto(list)
-	return result.Ok().SetData(res)
-}
-
-// GET /v1/list/updated
-func (m *MangaController) GetRecentUpdatedMangas(c *gin.Context) *result.Result {
-	pa := param.BindPage(c, m.config)
-	pages, tot, err := m.mangaListService.GetRecentUpdatedMangas(pa)
-	if err != nil {
-		return result.Error(exception.GetUpdatedMangasError).SetError(err, c)
-	}
-
-	res := dto.BuildTinyMangaPageDtos(pages)
-	return result.Ok().SetPage(pa.Page, pa.Limit, tot, res)
 }

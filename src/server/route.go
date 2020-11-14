@@ -27,8 +27,10 @@ func initRoute(engine *gin.Engine) {
 	v1 := engine.Group("v1")
 
 	var (
-		mangaController    = controller.NewMangaController()
-		categoryController = controller.NewCategoryController()
+		mangaController     = controller.NewMangaController()
+		mangaListController = controller.NewMangaListController()
+		categoryController  = controller.NewCategoryController()
+		searchController    = controller.NewSearchController()
 	)
 
 	mangaGroup := v1.Group("manga") // /v1/manga
@@ -40,10 +42,10 @@ func initRoute(engine *gin.Engine) {
 
 	listGroup := v1.Group("list") // /v1/list
 	{
-		listGroup.GET("serial", j(mangaController.GetHotSerialMangas))
-		listGroup.GET("finish", j(mangaController.GetFinishedMangas))
-		listGroup.GET("latest", j(mangaController.GetLatestMangas))
-		listGroup.GET("updated", j(mangaController.GetRecentUpdatedMangas))
+		listGroup.GET("serial", j(mangaListController.GetHotSerialMangas))
+		listGroup.GET("finish", j(mangaListController.GetFinishedMangas))
+		listGroup.GET("latest", j(mangaListController.GetLatestMangas))
+		listGroup.GET("updated", j(mangaListController.GetRecentUpdatedMangas))
 	}
 
 	categoryGroup := v1.Group("category") // /v1/category
@@ -52,6 +54,11 @@ func initRoute(engine *gin.Engine) {
 		categoryGroup.GET("zone", j(categoryController.GetZones))
 		categoryGroup.GET("age", j(categoryController.GetAges))
 		categoryGroup.GET("genre/:genre", j(categoryController.GetGenreMangas))
+	}
+
+	searchGroup := v1.Group("search") // /v1/search
+	{
+		searchGroup.GET(":keyword", j(searchController.SearchMangas))
 	}
 }
 

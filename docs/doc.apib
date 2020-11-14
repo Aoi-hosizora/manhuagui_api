@@ -97,6 +97,10 @@ manga-controller
 
     + Body
 
+# Group MangaList
+
+manga-list-controller
+
 ## Get hot serial mangas [/v1/list/serial]
 
 ### Get hot serial mangas [GET]
@@ -274,6 +278,39 @@ category-controller
     + zone (string, optional) - manga zone
     + age (string, optional) - manga age, (shaonv|shaonian|qingnian|ertong|tongyong)
     + status (string, optional) - manga status, (lianzai|wanjie)
+    + page (number, optional) - current page
+        (format: int32)
+    + order (string, optional) - order string
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<TinyMangaPageDto>>)
+
+    + Headers
+
+    + Body
+
+# Group Search
+
+search-controller
+
+## Search mangas [/v1/search/{keyword}{?page,order}]
+
+### Search mangas [GET]
+
+`GET /v1/search/{keyword}`
+
++ Parameters
+
+    + keyword (string, required) - search keyword
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
