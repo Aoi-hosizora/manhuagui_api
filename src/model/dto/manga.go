@@ -16,11 +16,12 @@ func init() {
 				goapidoc.NewProperty("publish_year", "string", true, "manga publish year"),
 				goapidoc.NewProperty("manga_zone", "string", true, "manga zone"),
 				goapidoc.NewProperty("genres", "CategoryDto[]", true, "manga genres"),
-				goapidoc.NewProperty("author_name", "string", true, "manga author name"),
+				goapidoc.NewProperty("authors", "TinyAuthorDto[]", true, "manga authors"),
 				goapidoc.NewProperty("alias", "string", true, "manga alias name"),
 				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
 				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
 				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
+				goapidoc.NewProperty("brief_introduction", "string", true, "manga brief introduction"),
 				goapidoc.NewProperty("introduction", "string", true, "manga introduction"),
 				goapidoc.NewProperty("manga_rank", "string", true, "manga rank"),
 				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
@@ -42,7 +43,7 @@ func init() {
 				goapidoc.NewProperty("prev_cid", "integer#int64", true, "prev chapter id"),
 			),
 
-		goapidoc.NewDefinition("TinyMangaPageDto", "Manga page link response").
+		goapidoc.NewDefinition("TinyMangaPageDto", "Tiny manga page response").
 			Properties(
 				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewProperty("title", "string", true, "manga name"),
@@ -53,7 +54,7 @@ func init() {
 				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
 			),
 
-		goapidoc.NewDefinition("TinyMangaChapterDto", "Manga chapter link response").
+		goapidoc.NewDefinition("TinyMangaChapterDto", "Tiny manga chapter response").
 			Properties(
 				goapidoc.NewProperty("cid", "integer#int64", true, "chapter id"),
 				goapidoc.NewProperty("title", "string", true, "chapter name"),
@@ -87,46 +88,48 @@ func init() {
 
 // 漫画页的完整信息 vo.MangaPage
 type MangaPageDto struct {
-	Mid           uint64                  `json:"mid"`
-	Title         string                  `json:"title"`
-	Cover         string                  `json:"cover"`
-	Url           string                  `json:"url"`
-	PublishYear   string                  `json:"publish_year"`
-	MangaZone     string                  `json:"manga_zone"`
-	Genres        []*CategoryDto          `json:"genres"`
-	AuthorName    string                  `json:"author_name"`
-	Alias         string                  `json:"alias"`
-	Finished      bool                    `json:"finished"`
-	NewestChapter string                  `json:"newest_chapter"`
-	NewestDate    string                  `json:"newest_date"`
-	Introduction  string                  `json:"introduction"`
-	MangaRank     string                  `json:"manga_rank"`
-	AverageScore  float32                 `json:"average_score"`
-	ScoreCount    int32                   `json:"score_count"`
-	PerScores     [6]float32              `json:"per_scores"`
-	ChapterGroups []*MangaChapterGroupDto `json:"chapter_groups"`
+	Mid               uint64                  `json:"mid"`
+	Title             string                  `json:"title"`
+	Cover             string                  `json:"cover"`
+	Url               string                  `json:"url"`
+	PublishYear       string                  `json:"publish_year"`
+	MangaZone         string                  `json:"manga_zone"`
+	Genres            []*CategoryDto          `json:"genres"`
+	Authors           []*TinyAuthorDto        `json:"authors"`
+	Alias             string                  `json:"alias"`
+	Finished          bool                    `json:"finished"`
+	NewestChapter     string                  `json:"newest_chapter"`
+	NewestDate        string                  `json:"newest_date"`
+	BriefIntroduction string                  `json:"brief_introduction"`
+	Introduction      string                  `json:"introduction"`
+	MangaRank         string                  `json:"manga_rank"`
+	AverageScore      float32                 `json:"average_score"`
+	ScoreCount        int32                   `json:"score_count"`
+	PerScores         [6]float32              `json:"per_scores"`
+	ChapterGroups     []*MangaChapterGroupDto `json:"chapter_groups"`
 }
 
 func BuildMangaPageDto(page *vo.MangaPage) *MangaPageDto {
 	return &MangaPageDto{
-		Mid:           page.Mid,
-		Title:         page.Title,
-		Cover:         page.Cover,
-		Url:           page.Url,
-		PublishYear:   page.PublishYear,
-		MangaZone:     page.MangaZone,
-		Genres:        BuildCategoryDtos(page.Genres),
-		AuthorName:    page.AuthorName,
-		Alias:         page.Alias,
-		Finished:      page.Finished,
-		NewestChapter: page.NewestChapter,
-		NewestDate:    page.NewestDate,
-		Introduction:  page.Introduction,
-		MangaRank:     page.MangaRank,
-		AverageScore:  page.AverageScore,
-		ScoreCount:    page.ScoreCount,
-		PerScores:     page.PerScores,
-		ChapterGroups: BuildMangaChapterGroupDtos(page.ChapterGroups),
+		Mid:               page.Mid,
+		Title:             page.Title,
+		Cover:             page.Cover,
+		Url:               page.Url,
+		PublishYear:       page.PublishYear,
+		MangaZone:         page.MangaZone,
+		Genres:            BuildCategoryDtos(page.Genres),
+		Authors:           BuildTinyAuthorDtos(page.Authors),
+		Alias:             page.Alias,
+		Finished:          page.Finished,
+		NewestChapter:     page.NewestChapter,
+		NewestDate:        page.NewestDate,
+		Introduction:      page.Introduction,
+		BriefIntroduction: page.BriefIntroduction,
+		MangaRank:         page.MangaRank,
+		AverageScore:      page.AverageScore,
+		ScoreCount:        page.ScoreCount,
+		PerScores:         page.PerScores,
+		ChapterGroups:     BuildMangaChapterGroupDtos(page.ChapterGroups),
 	}
 }
 
@@ -173,7 +176,7 @@ func BuildMangaChapterDtos(chapters []*vo.MangaChapter) []*MangaChapterDto {
 	return out
 }
 
-// 漫画页的链接 vo.TinyMangaPage
+// 漫画页的部分信息 vo.TinyMangaPage
 type TinyMangaPageDto struct {
 	Mid           uint64 `json:"mid"`
 	Title         string `json:"title"`
@@ -204,7 +207,7 @@ func BuildTinyMangaPageDtos(pages []*vo.TinyMangaPage) []*TinyMangaPageDto {
 	return out
 }
 
-// 漫画章节的链接 vo.TinyMangaChapter
+// 漫画章节的部分信息 vo.TinyMangaChapter
 type TinyMangaChapterDto struct {
 	Cid       uint64 `json:"cid"`
 	Title     string `json:"title"`

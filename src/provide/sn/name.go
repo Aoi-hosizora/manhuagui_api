@@ -13,4 +13,5 @@ const (
 	SMangaListService xdi.ServiceName = "manga-list-service" // *service.MangaListService
 	SCategoryService  xdi.ServiceName = "category-service"   // *service.CategoryService
 	SSearchService    xdi.ServiceName = "search-service"     // *service.SearchService
+	SAuthorService    xdi.ServiceName = "author-service"     // *service.AuthorService
 )

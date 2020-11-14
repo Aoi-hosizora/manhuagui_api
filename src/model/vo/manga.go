@@ -2,25 +2,26 @@ package vo
 
 // 漫画页的完整信息
 type MangaPage struct {
-	Mid           uint64               // 漫画编号
-	Title         string               // 漫画标题
-	Cover         string               // 漫画封面
-	Url           string               // 漫画链接
-	PublishYear   string               // 出品年代
-	MangaZone     string               // 漫画地区
-	AlphabetIndex string               // 字母索引
-	Genres        []*Category          // 漫画剧情
-	AuthorName    string               // 漫画作者
-	Alias         string               // 漫画别名
-	Finished      bool                 // 是否完结
-	NewestChapter string               // 最新一话
-	NewestDate    string               // 更新时间
-	Introduction  string               // 漫画介绍
-	MangaRank     string               // 漫画排名
-	AverageScore  float32              // 平均给分
-	ScoreCount    int32                // 给分人数
-	PerScores     [6]float32           // 具体给分
-	ChapterGroups []*MangaChapterGroup // 章节链接
+	Mid               uint64               // 漫画编号
+	Title             string               // 漫画标题
+	Cover             string               // 漫画封面
+	Url               string               // 漫画链接
+	PublishYear       string               // 出品年代
+	MangaZone         string               // 漫画地区
+	AlphabetIndex     string               // 字母索引
+	Genres            []*Category          // 漫画剧情
+	Authors           []*TinyAuthor        // 漫画作者
+	Alias             string               // 漫画别名
+	Finished          bool                 // 是否完结
+	NewestChapter     string               // 最新一话
+	NewestDate        string               // 更新时间
+	BriefIntroduction string               // 简介介绍
+	Introduction      string               // 漫画介绍
+	MangaRank         string               // 漫画排名
+	AverageScore      float32              // 平均给分
+	ScoreCount        int32                // 给分人数
+	PerScores         [6]float32           // 具体给分
+	ChapterGroups     []*MangaChapterGroup // 章节链接
 }
 
 // 漫画章节的完整信息
@@ -43,7 +44,7 @@ type MangaChapter struct {
 	} `json:"sl"` // 查询加密
 }
 
-// 漫画页的链接 (Tiny)
+// 漫画页的部分信息 (Tiny)
 type TinyMangaPage struct {
 	Mid           uint64 // 漫画编号
 	Title         string // 漫画标题
@@ -54,7 +55,7 @@ type TinyMangaPage struct {
 	NewestDate    string // 更新时间
 }
 
-// 漫画章节的链接 (Tiny)
+// 漫画章节的部分信息 (Tiny)
 type TinyMangaChapter struct {
 	Cid       uint64 // 章节编号
 	Title     string // 章节标题

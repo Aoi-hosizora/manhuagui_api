@@ -28,6 +28,10 @@
     {
       "name": "Search",
       "description": "search-controller"
+    },
+    {
+      "name": "Author",
+      "description": "author-controller"
     }
   ],
   "paths": {
@@ -369,6 +373,33 @@
     }
   },
   "definitions": {
+    "AuthorDto": {
+      "type": "object",
+      "required": [
+        "aid",
+        "name",
+        "url"
+      ],
+      "description": "Author response",
+      "properties": {
+        "aid": {
+          "type": "integer",
+          "required": true,
+          "description": "author id",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "author name"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "author url"
+        }
+      }
+    },
     "CategoryDto": {
       "type": "object",
       "required": [
@@ -499,12 +530,13 @@
         "publish_year",
         "manga_zone",
         "genres",
-        "author_name",
+        "authors",
         "alias",
         "finished",
         "newest_chapter",
         "newest_date",
         "introduction",
+        "brief_introduction",
         "manga_rank",
         "average_score",
         "score_count",
@@ -553,10 +585,14 @@
             "$ref": "#/definitions/CategoryDto"
           }
         },
-        "author_name": {
-          "type": "string",
+        "authors": {
+          "type": "array",
           "required": true,
-          "description": "manga author name"
+          "description": "manga authors",
+          "items": {
+            "originRef": "TinyAuthorDto",
+            "$ref": "#/definitions/TinyAuthorDto"
+          }
         },
         "alias": {
           "type": "string",
@@ -582,6 +618,11 @@
           "type": "string",
           "required": true,
           "description": "manga introduction"
+        },
+        "brief_introduction": {
+          "type": "string",
+          "required": true,
+          "description": "manga brief introduction"
         },
         "manga_rank": {
           "type": "string",
@@ -706,6 +747,33 @@
         }
       }
     },
+    "TinyAuthorDto": {
+      "type": "object",
+      "required": [
+        "aid",
+        "name",
+        "url"
+      ],
+      "description": "Tiny author response",
+      "properties": {
+        "aid": {
+          "type": "integer",
+          "required": true,
+          "description": "author id",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "author name"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "author url"
+        }
+      }
+    },
     "TinyMangaChapterDto": {
       "type": "object",
       "required": [
@@ -716,7 +784,7 @@
         "page_count",
         "is_new"
       ],
-      "description": "Manga chapter link response",
+      "description": "Tiny manga chapter response",
       "properties": {
         "cid": {
           "type": "integer",
@@ -764,7 +832,7 @@
         "newest_chapter",
         "newest_date"
       ],
-      "description": "Manga page link response",
+      "description": "Tiny manga page response",
       "properties": {
         "mid": {
           "type": "integer",

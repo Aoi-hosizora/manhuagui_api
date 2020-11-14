@@ -19,12 +19,14 @@ import (
 type MangaService struct {
 	httpService     *HttpService
 	categoryService *CategoryService
+	authorService   *AuthorService
 }
 
 func NewMangaService() *MangaService {
 	return &MangaService{
 		httpService:     xdi.GetByNameForce(sn.SHttpService).(*HttpService),
 		categoryService: xdi.GetByNameForce(sn.SCategoryService).(*CategoryService),
+		authorService:   xdi.GetByNameForce(sn.SAuthorService).(*AuthorService),
 	}
 }
 
@@ -46,34 +48,41 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
 	mangaZone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
 	alphabetIndex := detailUl.Find("li:nth-child(1) span:nth-child(3) a").Text()
-	authorName := detailUl.Find("li:nth-child(2) span:nth-child(2) a").Text()
 	alias := detailUl.Find("li:nth-child(3) span:nth-child(1)").Text()
 	status := detailUl.Find("li:nth-child(4) span:nth-child(2)").Text()
 	newestChapter := detailUl.Find("li:nth-child(4) a").Text()
 	newestDate := detailUl.Find("li:nth-child(4) span:nth-child(3)").Text()
+	briefIntroduction := doc.Find("div#intro-cut").Text()
 	introduction := doc.Find("div#intro-all").Text()
 	mangaRank := doc.Find("div.rank").Text()
+
 	genreA := detailUl.Find("li:nth-child(2) span:nth-child(1) a")
 	genres := make([]*vo.Category, 0)
 	genreA.Each(func(idx int, sel *goquery.Selection) {
 		genres = append(genres, m.categoryService.GetCategoryFromA(sel))
 	})
+	authorA := detailUl.Find("li:nth-child(2) span:nth-child(2) a")
+	authors := make([]*vo.TinyAuthor, 0)
+	authorA.Each(func(idx int, sel *goquery.Selection) {
+		authors = append(authors, m.authorService.GetAuthorFromA(sel))
+	})
 	obj := &vo.MangaPage{
-		Mid:           mid,
-		Title:         title,
-		Cover:         cover,
-		Url:           url,
-		PublishYear:   publishYear,
-		MangaZone:     mangaZone,
-		AlphabetIndex: alphabetIndex,
-		Genres:        genres,
-		AuthorName:    authorName,
-		Alias:         strings.TrimPrefix(alias, "漫画别名："),
-		Finished:      status == "已完结",
-		NewestChapter: newestChapter,
-		NewestDate:    newestDate,
-		Introduction:  strings.TrimSpace(introduction),
-		MangaRank:     mangaRank,
+		Mid:               mid,
+		Title:             title,
+		Cover:             cover,
+		Url:               url,
+		PublishYear:       publishYear,
+		MangaZone:         mangaZone,
+		AlphabetIndex:     alphabetIndex,
+		Genres:            genres,
+		Authors:           authors,
+		Alias:             strings.TrimPrefix(alias, "漫画别名："),
+		Finished:          status == "已完结",
+		NewestChapter:     newestChapter,
+		NewestDate:        newestDate,
+		BriefIntroduction: strings.TrimSpace(briefIntroduction),
+		Introduction:      strings.TrimSpace(introduction),
+		MangaRank:         mangaRank,
 	}
 
 	// get score

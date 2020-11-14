@@ -31,6 +31,7 @@ func initRoute(engine *gin.Engine) {
 		mangaListController = controller.NewMangaListController()
 		categoryController  = controller.NewCategoryController()
 		searchController    = controller.NewSearchController()
+		authorController    = controller.NewAuthorController()
 	)
 
 	mangaGroup := v1.Group("manga") // /v1/manga
@@ -59,6 +60,12 @@ func initRoute(engine *gin.Engine) {
 	searchGroup := v1.Group("search") // /v1/search
 	{
 		searchGroup.GET(":keyword", j(searchController.SearchMangas))
+	}
+
+	authorGroup := v1.Group("author") // /v1/author
+	{
+		_ = authorGroup
+		_ = authorController
 	}
 }
 
