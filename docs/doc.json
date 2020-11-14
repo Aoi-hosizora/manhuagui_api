@@ -16,9 +16,30 @@
     {
       "name": "Manga",
       "description": "manga-controller"
+    },
+    {
+      "name": "Category",
+      "description": "category-controller"
     }
   ],
   "paths": {
+    "/v1/category/age": {
+      "get": {
+        "summary": "Get ages",
+        "operationId": "-v1-category-age-get",
+        "tags": [
+          "Category"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<CategoryDto>>",
+              "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/category/genre": {
       "get": {
         "summary": "Get genres",
@@ -36,20 +57,41 @@
         }
       }
     },
-    "/v1/category/genre/{name}": {
+    "/v1/category/genre/{genre}": {
       "get": {
         "summary": "Get genre mangas",
-        "operationId": "-v1-category-genre-name-get",
+        "operationId": "-v1-category-genre-genre-get",
         "tags": [
           "Category"
         ],
         "parameters": [
           {
-            "name": "name",
+            "name": "genre",
             "in": "path",
             "required": true,
             "type": "string",
             "description": "genre name"
+          },
+          {
+            "name": "zone",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "manga zone"
+          },
+          {
+            "name": "age",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "manga age, (shaonv|shaonian|qingnian|ertong|tongyong)"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "manga status, (lianzai|wanjie)"
           },
           {
             "name": "page",
@@ -72,6 +114,23 @@
             "schema": {
               "originRef": "_Result<_Page<TinyMangaPageDto>>",
               "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/category/zone": {
+      "get": {
+        "summary": "Get zones",
+        "operationId": "-v1-category-zone-get",
+        "tags": [
+          "Category"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<CategoryDto>>",
+              "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
             }
           }
         }
@@ -151,6 +210,40 @@
             "type": "integer",
             "description": "page size",
             "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<TinyMangaPageDto>>",
+              "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/manga": {
+      "get": {
+        "summary": "Get all manga pages",
+        "operationId": "-v1-manga-get",
+        "tags": [
+          "Manga"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "order string"
           }
         ],
         "responses": {
@@ -356,8 +449,7 @@
         "url",
         "publish_year",
         "manga_zone",
-        "alphabet_index",
-        "category",
+        "genres",
         "author_name",
         "alias",
         "finished",
@@ -403,15 +495,14 @@
           "required": true,
           "description": "manga zone"
         },
-        "alphabet_index": {
-          "type": "string",
+        "genres": {
+          "type": "array",
           "required": true,
-          "description": "manga alphabet index"
-        },
-        "category": {
-          "type": "string",
-          "required": true,
-          "description": "manga category"
+          "description": "manga genres",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
         },
         "author_name": {
           "type": "string",

@@ -15,6 +15,11 @@ import (
 
 func init() {
 	goapidoc.AddRoutePaths(
+		goapidoc.NewRoutePath("GET", "/v1/manga", "Get all manga pages").
+			Tags("Manga").
+			Params(param.ADPage, param.ADOrder).
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
+
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}", "Get manga page").
 			Tags("Manga").
 			Params(
@@ -53,6 +58,7 @@ type MangaController struct {
 	config           *config.Config
 	mangaService     *service.MangaService
 	mangaListService *service.MangaListService
+	categoryService  *service.CategoryService
 }
 
 func NewMangaController() *MangaController {
@@ -60,7 +66,21 @@ func NewMangaController() *MangaController {
 		config:           xdi.GetByNameForce(sn.SConfig).(*config.Config),
 		mangaService:     xdi.GetByNameForce(sn.SMangaService).(*service.MangaService),
 		mangaListService: xdi.GetByNameForce(sn.SMangaListService).(*service.MangaListService),
+		categoryService:  xdi.GetByNameForce(sn.SCategoryService).(*service.CategoryService),
 	}
+}
+
+// GET /v1/manga
+func (m *MangaController) GetAllMangaPages(c *gin.Context) *result.Result {
+	pa := param.BindPageOrder(c, m.config)
+
+	mangas, limit, total, err := m.categoryService.GetGenreMangas("all", "all", "all", "all", pa.Page, pa.Order == "popular")
+	if err != nil {
+		return result.Error(exception.GetAllMangaPagesError).SetError(err, c)
+	}
+
+	res := dto.BuildTinyMangaPageDtos(mangas)
+	return result.Ok().SetPage(pa.Page, limit, total, res)
 }
 
 // GET /v1/manga/:mid
@@ -70,14 +90,14 @@ func (m *MangaController) GetMangaPage(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	page, err := m.mangaService.GetMangaPage(id)
+	mangas, err := m.mangaService.GetMangaPage(id)
 	if err != nil {
 		return result.Error(exception.GetMangaPageError).SetError(err, c)
-	} else if page == nil {
+	} else if mangas == nil {
 		return result.Error(exception.MangaPageNotFoundError)
 	}
 
-	res := dto.BuildMangaPageDto(page)
+	res := dto.BuildMangaPageDto(mangas)
 	return result.Ok().SetData(res)
 }
 

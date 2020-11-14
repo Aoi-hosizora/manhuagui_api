@@ -9,7 +9,7 @@ type MangaPage struct {
 	PublishYear   string               // 出品年代
 	MangaZone     string               // 漫画地区
 	AlphabetIndex string               // 字母索引
-	Category      string               // 漫画剧情
+	Genres        []*Category          // 漫画剧情
 	AuthorName    string               // 漫画作者
 	Alias         string               // 漫画别名
 	Finished      bool                 // 是否完结

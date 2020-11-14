@@ -19,10 +19,21 @@ func init() {
 			Tags("Category").
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
 
-		goapidoc.NewRoutePath("GET", "/v1/category/genre/{name}", "Get genre mangas").
+		goapidoc.NewRoutePath("GET", "/v1/category/zone", "Get zones").
+			Tags("Category").
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
+
+		goapidoc.NewRoutePath("GET", "/v1/category/age", "Get ages").
+			Tags("Category").
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
+
+		goapidoc.NewRoutePath("GET", "/v1/category/genre/{genre}", "Get genre mangas").
 			Tags("Category").
 			Params(
-				goapidoc.NewPathParam("name", "string", true, "genre name"),
+				goapidoc.NewPathParam("genre", "string", true, "genre name"),
+				goapidoc.NewQueryParam("zone", "string", false, "manga zone"),
+				goapidoc.NewQueryParam("age", "string", false, "manga age, (shaonv|shaonian|qingnian|ertong|tongyong)"),
+				goapidoc.NewQueryParam("status", "string", false, "manga status, (lianzai|wanjie)"),
 				param.ADPage, param.ADOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
@@ -52,11 +63,38 @@ func (ca *CategoryController) GetGenres(c *gin.Context) *result.Result {
 	return result.Ok().SetPage(1, int32(len(res)), int32(len(res)), res)
 }
 
-// GET /v1/category/genre/:name
+// GET /v1/category/zone
+func (ca *CategoryController) GetZones(c *gin.Context) *result.Result {
+	zones, err := ca.categoryService.GetZones()
+	if err != nil {
+		return result.Error(exception.GetZonesError).SetError(err, c)
+	}
+
+	res := dto.BuildCategoryDtos(zones)
+	return result.Ok().SetPage(1, int32(len(res)), int32(len(res)), res)
+}
+
+// GET /v1/category/age
+func (ca *CategoryController) GetAges(c *gin.Context) *result.Result {
+	zones, err := ca.categoryService.GetAges()
+	if err != nil {
+		return result.Error(exception.GetAgesError).SetError(err, c)
+	}
+
+	res := dto.BuildCategoryDtos(zones)
+	return result.Ok().SetPage(1, int32(len(res)), int32(len(res)), res)
+}
+
+// GET /v1/category/genre/:genre
 func (ca *CategoryController) GetGenreMangas(c *gin.Context) *result.Result {
 	pa := param.BindPageOrder(c, ca.config)
-	name := c.Param("name")
-	mangas, limit, total, err := ca.categoryService.GetGenreMangas(name, pa.Page, pa.Order == "popular")
+	genre := c.Param("genre")
+	zone := c.Query("zone")
+	age := c.Query("age")
+	status := c.Query("status")
+
+	// zone > genre > age > status
+	mangas, limit, total, err := ca.categoryService.GetGenreMangas(genre, zone, age, status, pa.Page, pa.Order == "popular")
 	if err != nil {
 		return result.Error(exception.GetGenreMangasError).SetError(err, c)
 	} else if mangas == nil {

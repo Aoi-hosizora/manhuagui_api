@@ -43,7 +43,7 @@ func (h *HttpService) HttpGetDocument(url string) (*goquery.Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	if bytes.Contains(bs, []byte(static.NOT_FOUND_TOKEN)) {
+	if bytes.Contains(bs, []byte(static.NOT_FOUND_TOKEN)) || bytes.Contains(bs, []byte(static.NOT_FOUND2_TOKEN)) {
 		return nil, nil
 	}
 

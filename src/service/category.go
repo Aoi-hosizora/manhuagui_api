@@ -28,32 +28,89 @@ func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
 	}
 
 	categories := make([]*vo.Category, 0)
-	genreLis := doc.Find("div.filter.genre li")
+	genreLis := doc.Find("div.filter-nav div.filter.genre li")
 	genreLis.Each(func(idx int, sel *goquery.Selection) {
 		a := sel.Find("a")
-		title := a.Text()
-		url := strings.TrimSuffix(a.AttrOr("href", ""), "/")
-		sp := strings.Split(url, "/")
-		name := sp[len(sp)-1]
-		if title != "全部" {
-			categories = append(categories, &vo.Category{
-				Name:  name,
-				Title: title,
-				Url:   static.HOMEPAGE_URL + url,
-			})
+		category := c.GetCategoryFromA(a)
+		if category.Title != "全部" {
+			categories = append(categories, category)
 		}
 	})
 
 	return categories, nil
 }
 
-func (c *CategoryService) GetGenreMangas(name string, page int32, orderByPopular bool) ([]*vo.TinyMangaPage, int32, int32, error) {
-	url := fmt.Sprintf(static.MANGA_GENRE_URL, name, "%s_p%d")
-	if orderByPopular {
-		url = fmt.Sprintf(url, "view", page)
-	} else {
-		url = fmt.Sprintf(url, "update", page)
+func (c *CategoryService) GetZones() ([]*vo.Category, error) {
+	doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	if err != nil {
+		return nil, err
 	}
+
+	categories := make([]*vo.Category, 0)
+	genreLis := doc.Find("div.filter-nav div.filter.area li")
+	genreLis.Each(func(idx int, sel *goquery.Selection) {
+		a := sel.Find("a")
+		category := c.GetCategoryFromA(a)
+		if category.Title != "全部" {
+			categories = append(categories, category)
+		}
+	})
+
+	return categories, nil
+}
+
+func (c *CategoryService) GetAges() ([]*vo.Category, error) {
+	doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	if err != nil {
+		return nil, err
+	}
+
+	categories := make([]*vo.Category, 0)
+	genreLis := doc.Find("div.filter-nav div.filter.age li")
+	genreLis.Each(func(idx int, sel *goquery.Selection) {
+		a := sel.Find("a")
+		category := c.GetCategoryFromA(a)
+		if category.Title != "全部" {
+			categories = append(categories, category)
+		}
+	})
+
+	return categories, nil
+}
+
+func (c *CategoryService) GetCategoryFromA(a *goquery.Selection) *vo.Category {
+	title := a.Text()
+	url := strings.TrimSuffix(a.AttrOr("href", ""), "/")
+	sp := strings.Split(url, "/")
+	name := sp[len(sp)-1]
+	return &vo.Category{
+		Name:  name,
+		Title: title,
+		Url:   static.HOMEPAGE_URL + url,
+	}
+}
+
+func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, orderByPopular bool) ([]*vo.TinyMangaPage, int32, int32, error) {
+	url := static.MANGA_CATEGORY_URL + "/" // https://www.manhuagui.com/list/update_p1.html
+	if zone != "" && zone != "all" {
+		url += zone + "_" // https://www.manhuagui.com/list/japan/update.html
+	}
+	if genre != "" && genre != "all" {
+		url += genre + "_" // https://www.manhuagui.com/list/japan_aiqing/update.html
+	}
+	if age != "" && age != "all" {
+		url += age + "_" // https://www.manhuagui.com/list/japan_aiqing_shaonv/update.html
+	}
+	if status != "" && status != "all" {
+		url += status + "_" // https://www.manhuagui.com/list/japan_aiqing_shaonv_lianzai/update_p1.html
+	}
+	url = strings.TrimSuffix(url, "_")
+	if orderByPopular {
+		url += fmt.Sprintf("/%s_p%d.html", "view", page)
+	} else {
+		url += fmt.Sprintf("/%s_p%d.html", "update", page)
+	}
+
 	doc, err := c.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, 0, 0, err
@@ -63,18 +120,21 @@ func (c *CategoryService) GetGenreMangas(name string, page int32, orderByPopular
 	}
 
 	limit := int32(42)
+	pages, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(2)").Text())
 	total, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(3)").Text())
 
 	mangas := make([]*vo.TinyMangaPage, 0)
-	listLis := doc.Find("ul#contList li")
-	listLis.Each(func(idx int, li *goquery.Selection) {
-		mangas = append(mangas, c.getMangaPageLinkFromLi(li))
-	})
+	if page <= pages {
+		listLis := doc.Find("ul#contList li")
+		listLis.Each(func(idx int, li *goquery.Selection) {
+			mangas = append(mangas, c.getTinyMangaPageFromLi(li))
+		})
+	}
 
 	return mangas, limit, total, nil
 }
 
-func (c *CategoryService) getMangaPageLinkFromLi(li *goquery.Selection) *vo.TinyMangaPage {
+func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.TinyMangaPage {
 	url := li.Find("a").AttrOr("href", "")
 	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
 	mid, _ := xnumber.Atou64(sp[len(sp)-1])

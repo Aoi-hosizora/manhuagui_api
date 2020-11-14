@@ -15,8 +15,7 @@ func init() {
 				goapidoc.NewProperty("url", "string", true, "manga link"),
 				goapidoc.NewProperty("publish_year", "string", true, "manga publish year"),
 				goapidoc.NewProperty("manga_zone", "string", true, "manga zone"),
-				goapidoc.NewProperty("alphabet_index", "string", true, "manga alphabet index"),
-				goapidoc.NewProperty("category", "string", true, "manga category"),
+				goapidoc.NewProperty("genres", "CategoryDto[]", true, "manga genres"),
 				goapidoc.NewProperty("author_name", "string", true, "manga author name"),
 				goapidoc.NewProperty("alias", "string", true, "manga alias name"),
 				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
@@ -94,8 +93,7 @@ type MangaPageDto struct {
 	Url           string                  `json:"url"`
 	PublishYear   string                  `json:"publish_year"`
 	MangaZone     string                  `json:"manga_zone"`
-	AlphabetIndex string                  `json:"alphabet_index"`
-	Category      string                  `json:"category"`
+	Genres        []*CategoryDto          `json:"genres"`
 	AuthorName    string                  `json:"author_name"`
 	Alias         string                  `json:"alias"`
 	Finished      bool                    `json:"finished"`
@@ -117,8 +115,7 @@ func BuildMangaPageDto(page *vo.MangaPage) *MangaPageDto {
 		Url:           page.Url,
 		PublishYear:   page.PublishYear,
 		MangaZone:     page.MangaZone,
-		AlphabetIndex: page.AlphabetIndex,
-		Category:      page.Category,
+		Genres:        BuildCategoryDtos(page.Genres),
 		AuthorName:    page.AuthorName,
 		Alias:         page.Alias,
 		Finished:      page.Finished,

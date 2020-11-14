@@ -21,6 +21,7 @@ var (
 
 // manga
 var (
+	GetAllMangaPagesError     = New(500, se(), "failed to get all manga pages")
 	GetMangaPageError         = New(500, se(), "failed to get manga page")
 	MangaPageNotFoundError    = New(404, ce(), "manga page not found")
 	GetMangaChapterError      = New(500, se(), "failed to get manga chapter")
@@ -34,6 +35,8 @@ var (
 // category
 var (
 	GetGenresError      = New(500, se(), "failed to get genres")
+	GetZonesError       = New(500, se(), "failed to get zones")
+	GetAgesError       = New(500, se(), "failed to get ages")
 	GetGenreMangasError = New(500, se(), "failed to get genre mangas")
 	GenreNotFoundError  = New(404, ce(), "genre not found")
 )

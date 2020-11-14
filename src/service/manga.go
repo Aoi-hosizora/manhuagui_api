@@ -17,12 +17,14 @@ import (
 )
 
 type MangaService struct {
-	httpService *HttpService
+	httpService     *HttpService
+	categoryService *CategoryService
 }
 
 func NewMangaService() *MangaService {
 	return &MangaService{
-		httpService: xdi.GetByNameForce(sn.SHttpService).(*HttpService),
+		httpService:     xdi.GetByNameForce(sn.SHttpService).(*HttpService),
+		categoryService: xdi.GetByNameForce(sn.SCategoryService).(*CategoryService),
 	}
 }
 
@@ -44,7 +46,6 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
 	mangaZone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
 	alphabetIndex := detailUl.Find("li:nth-child(1) span:nth-child(3) a").Text()
-	category := detailUl.Find("li:nth-child(2) span:nth-child(1) a").Text()
 	authorName := detailUl.Find("li:nth-child(2) span:nth-child(2) a").Text()
 	alias := detailUl.Find("li:nth-child(3) span:nth-child(1)").Text()
 	status := detailUl.Find("li:nth-child(4) span:nth-child(2)").Text()
@@ -52,6 +53,11 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	newestDate := detailUl.Find("li:nth-child(4) span:nth-child(3)").Text()
 	introduction := doc.Find("div#intro-all").Text()
 	mangaRank := doc.Find("div.rank").Text()
+	genreA := detailUl.Find("li:nth-child(2) span:nth-child(1) a")
+	genres := make([]*vo.Category, 0)
+	genreA.Each(func(idx int, sel *goquery.Selection) {
+		genres = append(genres, m.categoryService.GetCategoryFromA(sel))
+	})
 	obj := &vo.MangaPage{
 		Mid:           mid,
 		Title:         title,
@@ -60,7 +66,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 		PublishYear:   publishYear,
 		MangaZone:     mangaZone,
 		AlphabetIndex: alphabetIndex,
-		Category:      category,
+		Genres:        genres,
 		AuthorName:    authorName,
 		Alias:         strings.TrimPrefix(alias, "漫画别名："),
 		Finished:      status == "已完结",

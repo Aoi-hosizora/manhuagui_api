@@ -33,6 +33,7 @@ func initRoute(engine *gin.Engine) {
 
 	mangaGroup := v1.Group("manga") // /v1/manga
 	{
+		mangaGroup.GET("", j(mangaController.GetAllMangaPages))
 		mangaGroup.GET(":mid", j(mangaController.GetMangaPage))
 		mangaGroup.GET(":mid/:cid", j(mangaController.GetMangaChapter))
 	}
@@ -48,7 +49,9 @@ func initRoute(engine *gin.Engine) {
 	categoryGroup := v1.Group("category") // /v1/category
 	{
 		categoryGroup.GET("genre", j(categoryController.GetGenres))
-		categoryGroup.GET("genre/:name", j(categoryController.GetGenreMangas))
+		categoryGroup.GET("zone", j(categoryController.GetZones))
+		categoryGroup.GET("age", j(categoryController.GetAges))
+		categoryGroup.GET("genre/:genre", j(categoryController.GetGenreMangas))
 	}
 }
 

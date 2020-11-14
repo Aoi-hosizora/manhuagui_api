@@ -13,6 +13,34 @@ An unofficial backend for manhuagui written in golang/gin
 
 manga-controller
 
+## Get all manga pages [/v1/manga{?page,order}]
+
+### Get all manga pages [GET]
+
+`GET /v1/manga`
+
++ Parameters
+
+    + page (number, optional) - current page
+        (format: int32)
+    + order (string, optional) - order string
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<TinyMangaPageDto>>)
+
+    + Headers
+
+    + Body
+
 ## Get manga page [/v1/manga/{mid}]
 
 ### Get manga page [GET]
@@ -166,6 +194,8 @@ manga-controller
 
 # Group Category
 
+category-controller
+
 ## Get genres [/v1/category/genre]
 
 ### Get genres [GET]
@@ -188,15 +218,62 @@ manga-controller
 
     + Body
 
-## Get genre mangas [/v1/category/genre/{name}{?page,order}]
+## Get zones [/v1/category/zone]
+
+### Get zones [GET]
+
+`GET /v1/category/zone`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<CategoryDto>>)
+
+    + Headers
+
+    + Body
+
+## Get ages [/v1/category/age]
+
+### Get ages [GET]
+
+`GET /v1/category/age`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<CategoryDto>>)
+
+    + Headers
+
+    + Body
+
+## Get genre mangas [/v1/category/genre/{genre}{?zone,age,status,page,order}]
 
 ### Get genre mangas [GET]
 
-`GET /v1/category/genre/{name}`
+`GET /v1/category/genre/{genre}`
 
 + Parameters
 
-    + name (string, required) - genre name
+    + genre (string, required) - genre name
+    + zone (string, optional) - manga zone
+    + age (string, optional) - manga age, (shaonv|shaonian|qingnian|ertong|tongyong)
+    + status (string, optional) - manga status, (lianzai|wanjie)
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
@@ -240,8 +317,7 @@ manga-controller
 + url (string, required) - manga link
 + publish_year (string, required) - manga publish year
 + manga_zone (string, required) - manga zone
-+ alphabet_index (string, required) - manga alphabet index
-+ category (string, required) - manga category
++ genres (array[CategoryDto], required) - manga genres
 + author_name (string, required) - manga author name
 + alias (string, required) - manga alias name
 + finished (boolean, required) - manga is finished

@@ -26,7 +26,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 	topMangas := make([]*vo.TinyMangaPage, 0)
 	topMangaUl := doc.Find("div.cmt-cont ul:nth-child(" + xnumber.Itoa(tagIndex) + ")") // <<<
 	topMangaUl.Find("li").Each(func(idx int, li *goquery.Selection) {
-		topMangas = append(topMangas, m.getMangaPageLinkFromLi(li, true))
+		topMangas = append(topMangas, m.getTinyMangaPageFromLi(li, true))
 	})
 	topGroup := &vo.MangaPageGroup{
 		Title:  "",
@@ -40,7 +40,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 		groupTitle := doc.Find("div#" + tagName + "Bar li:nth-child(" + xnumber.Itoa(idx+1) + ")").Text() // <<<
 		groupMangas := make([]*vo.TinyMangaPage, 0)
 		sel.Find("li").Each(func(idx int, li *goquery.Selection) {
-			groupMangas = append(groupMangas, m.getMangaPageLinkFromLi(li, true))
+			groupMangas = append(groupMangas, m.getTinyMangaPageFromLi(li, true))
 		})
 		groups = append(groups, &vo.MangaPageGroup{
 			Title:  groupTitle,
@@ -57,7 +57,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 			groupTitle := sel.Find("h4").Text()
 			otherMangaUl := sel.Find("div.idx-sc-list ul:nth-child(" + xnumber.Itoa(tagIndex) + ")") // <<<
 			otherMangaUl.Children().Each(func(idx int, li *goquery.Selection) {
-				manga := m.getMangaPageLinkFromLi(li, false)
+				manga := m.getTinyMangaPageFromLi(li, false)
 				manga.Finished = tagIndex == 2
 				groupMangas = append(groupMangas, manga)
 			})
@@ -71,7 +71,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 	return topGroup, groups, otherGroups
 }
 
-func (m *MangaListService) getMangaPageLinkFromLi(li *goquery.Selection, hasCover bool) *vo.TinyMangaPage {
+func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCover bool) *vo.TinyMangaPage {
 	if hasCover {
 		url := li.Find("a").AttrOr("href", "")
 		sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
@@ -164,7 +164,7 @@ func (m *MangaListService) GetRecentUpdatedMangas(pa *param.PageParam) ([]*vo.Ti
 	latestLis := doc.Find("div.latest-list li")
 	allMangas := make([]*vo.TinyMangaPage, latestLis.Length())
 	latestLis.Each(func(idx int, li *goquery.Selection) {
-		allMangas[idx] = m.getMangaPageLinkFromLi(li, true)
+		allMangas[idx] = m.getTinyMangaPageFromLi(li, true)
 	})
 	totalLength := int32(len(allMangas))
 
