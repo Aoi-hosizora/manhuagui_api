@@ -94,7 +94,7 @@ func (a *AuthorController) GetAuthorMangas(c *gin.Context) *result.Result {
 	}
 	pa := param.BindPageOrder(c, a.config)
 
-	mangas, limit, total, err := a.authorService.GetAuthorAuthors(aid, pa.Page, pa.Order == "popular")
+	mangas, limit, total, err := a.authorService.GetAuthorMangas(aid, pa.Page, pa.Order == "popular")
 	if err != nil {
 		return result.Error(exception.GetAuthorMangasError).SetError(err, c)
 	} else if mangas == nil {

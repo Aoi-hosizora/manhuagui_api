@@ -136,12 +136,12 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	return out, nil
 }
 
-func (a *AuthorService) GetAuthorAuthors(aid uint64, page int32, orderByPopular bool) ([]*vo.SmallMangaPage, int32, int32, error) {
-	url := fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "%s", page)
+func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, orderByPopular bool) ([]*vo.SmallMangaPage, int32, int32, error) {
+	url := ""
 	if orderByPopular {
-		url = fmt.Sprintf(url, "view")
+		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "view", page)
 	} else {
-		url = fmt.Sprintf(url, "index")
+		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", page)
 	}
 	log.Println(url)
 
