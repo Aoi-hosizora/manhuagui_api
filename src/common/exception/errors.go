@@ -28,7 +28,14 @@ var (
 	GetHotSerialMangasError   = New(500, se(), "failed to get hot serial mangas")
 	GetFinishedMangasError    = New(500, se(), "failed to get finished mangas")
 	GetLatestMangasError      = New(500, se(), "failed to get latest mangas")
-	GetUpdatedMangasError      = New(500, se(), "failed to get updated mangas")
+	GetUpdatedMangasError     = New(500, se(), "failed to get updated mangas")
+)
+
+// category
+var (
+	GetGenresError      = New(500, se(), "failed to get genres")
+	GetGenreMangasError = New(500, se(), "failed to get genre mangas")
+	GenreNotFoundError  = New(404, ce(), "genre not found")
 )
 
 func WrapValidationError(err error) *Error {

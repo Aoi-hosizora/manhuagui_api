@@ -11,4 +11,5 @@ const (
 	SHttpService      xdi.ServiceName = "http-service"       // *service.HttpService
 	SMangaService     xdi.ServiceName = "manga-service"      // *service.MangaService
 	SMangaListService xdi.ServiceName = "manga-list-service" // *service.MangaListService
+	SCategoryService  xdi.ServiceName = "category-service"   // *service.CategoryService
 )

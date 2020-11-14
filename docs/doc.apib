@@ -164,6 +164,59 @@ manga-controller
 
     + Body
 
+# Group Category
+
+## Get genres [/v1/category/genre]
+
+### Get genres [GET]
+
+`GET /v1/category/genre`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<CategoryDto>>)
+
+    + Headers
+
+    + Body
+
+## Get genre mangas [/v1/category/genre/{name}{?page,order}]
+
+### Get genre mangas [GET]
+
+`GET /v1/category/genre/{name}`
+
++ Parameters
+
+    + name (string, required) - genre name
+    + page (number, optional) - current page
+        (format: int32)
+    + order (string, optional) - order string
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<TinyMangaPageDto>>)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -171,6 +224,12 @@ manga-controller
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
+
+## CategoryDto (object)
+
++ name (string, required) - category name
++ title (string, required) - category title
++ url (string, required) - category link
 
 ## MangaPageDto (object)
 
@@ -254,6 +313,40 @@ manga-controller
 + groups (array[MangaPageGroupDto], required) - manga page groups
 + other_groups (array[MangaPageGroupDto], required) - manga other page groups
 
+## _Result<_Page<CategoryDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<CategoryDto>, required) - response data
+
+## _Page<CategoryDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[CategoryDto], required) - page data
+
+## _Result<_Page<TinyMangaPageDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<TinyMangaPageDto>, required) - response data
+
+## _Page<TinyMangaPageDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[TinyMangaPageDto], required) - page data
+
 ## _Result<MangaPageDto> (object)
 
 + code (number, required) - status code
@@ -274,20 +367,3 @@ manga-controller
     (format: int32)
 + message (string, required) - status message
 + data (MangaPageGroupListDto, required) - response data
-
-## _Result<_Page<TinyMangaPageDto>> (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
-+ data (_Page<TinyMangaPageDto>, required) - response data
-
-## _Page<TinyMangaPageDto> (object)
-
-+ page (number, required) - current page
-    (format: int32)
-+ limit (number, required) - page size
-    (format: int32)
-+ total (number, required) - data count
-    (format: int32)
-+ data (array[TinyMangaPageDto], required) - page data

@@ -19,6 +19,64 @@
     }
   ],
   "paths": {
+    "/v1/category/genre": {
+      "get": {
+        "summary": "Get genres",
+        "operationId": "-v1-category-genre-get",
+        "tags": [
+          "Category"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<CategoryDto>>",
+              "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/category/genre/{name}": {
+      "get": {
+        "summary": "Get genre mangas",
+        "operationId": "-v1-category-genre-name-get",
+        "tags": [
+          "Category"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "genre name"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "order string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<TinyMangaPageDto>>",
+              "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/list/finish": {
       "get": {
         "summary": "Get finished mangas",
@@ -169,6 +227,32 @@
     }
   },
   "definitions": {
+    "CategoryDto": {
+      "type": "object",
+      "required": [
+        "name",
+        "title",
+        "url"
+      ],
+      "description": "Category response",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "category name"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "category title"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "category link"
+        }
+      }
+    },
     "MangaChapterDto": {
       "type": "object",
       "required": [
@@ -580,6 +664,45 @@
         }
       }
     },
+    "_Page<CategoryDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
+        }
+      }
+    },
     "_Page<TinyMangaPageDto>": {
       "type": "object",
       "required": [
@@ -700,6 +823,34 @@
           "description": "response data",
           "originRef": "MangaPageGroupListDto",
           "$ref": "#/definitions/MangaPageGroupListDto"
+        }
+      }
+    },
+    "_Result<_Page<CategoryDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cCategoryDto\u003e",
+          "$ref": "#/definitions/_Page\u003cCategoryDto\u003e"
         }
       }
     },

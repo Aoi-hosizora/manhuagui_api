@@ -30,6 +30,7 @@ func Provide(configPath string) error {
 	xdi.ProvideName(sn.SHttpService, service.NewHttpService())           // *service.HttpService
 	xdi.ProvideName(sn.SMangaService, service.NewMangaService())         // *service.MangaService
 	xdi.ProvideName(sn.SMangaListService, service.NewMangaListService()) // *service.MangaListService
+	xdi.ProvideName(sn.SCategoryService, service.NewCategoryService())   // *service.CategoryService
 
 	return nil
 }

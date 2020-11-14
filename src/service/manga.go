@@ -33,6 +33,9 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	if err != nil {
 		return nil, err
 	}
+	if doc == nil {
+		return nil, nil
+	}
 
 	// get basic information
 	title := doc.Find("div.book-title").Text()
@@ -154,6 +157,9 @@ func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error
 	doc, err := m.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, err
+	}
+	if doc == nil {
+		return nil, nil
 	}
 
 	// get script
