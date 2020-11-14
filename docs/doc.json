@@ -35,6 +35,40 @@
     }
   ],
   "paths": {
+    "/v1/author": {
+      "get": {
+        "summary": "Get all authors",
+        "operationId": "-v1-author-get",
+        "tags": [
+          "Author"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "order string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<SmallAuthorDto>>",
+              "$ref": "#/definitions/_Result<_Page<SmallAuthorDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/category/age": {
       "get": {
         "summary": "Get ages",
@@ -364,8 +398,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaPageDto>>",
-              "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+              "originRef": "_Result<_Page<SmallMangaPageDto>>",
+              "$ref": "#/definitions/_Result<_Page<SmallMangaPageDto>>"
             }
           }
         }
@@ -373,33 +407,6 @@
     }
   },
   "definitions": {
-    "AuthorDto": {
-      "type": "object",
-      "required": [
-        "aid",
-        "name",
-        "url"
-      ],
-      "description": "Author response",
-      "properties": {
-        "aid": {
-          "type": "integer",
-          "required": true,
-          "description": "author id",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string",
-          "required": true,
-          "description": "author name"
-        },
-        "url": {
-          "type": "string",
-          "required": true,
-          "description": "author url"
-        }
-      }
-    },
     "CategoryDto": {
       "type": "object",
       "required": [
@@ -535,8 +542,8 @@
         "finished",
         "newest_chapter",
         "newest_date",
-        "introduction",
         "brief_introduction",
+        "introduction",
         "manga_rank",
         "average_score",
         "score_count",
@@ -614,15 +621,15 @@
           "required": true,
           "description": "manga last update date"
         },
-        "introduction": {
-          "type": "string",
-          "required": true,
-          "description": "manga introduction"
-        },
         "brief_introduction": {
           "type": "string",
           "required": true,
           "description": "manga brief introduction"
+        },
+        "introduction": {
+          "type": "string",
+          "required": true,
+          "description": "manga introduction"
         },
         "manga_rank": {
           "type": "string",
@@ -744,6 +751,141 @@
           "type": "string",
           "required": true,
           "description": "status message"
+        }
+      }
+    },
+    "SmallAuthorDto": {
+      "type": "object",
+      "required": [
+        "aid",
+        "name",
+        "zone",
+        "url",
+        "manga_count",
+        "newest_date"
+      ],
+      "description": "Small author response",
+      "properties": {
+        "aid": {
+          "type": "integer",
+          "required": true,
+          "description": "author id",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "author name"
+        },
+        "zone": {
+          "type": "string",
+          "required": true,
+          "description": "author zone"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "author url"
+        },
+        "manga_count": {
+          "type": "integer",
+          "required": true,
+          "description": "author manga count",
+          "format": "int32"
+        },
+        "newest_date": {
+          "type": "string",
+          "required": true,
+          "description": "author update newest date"
+        }
+      }
+    },
+    "SmallMangaPageDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "title",
+        "cover",
+        "url",
+        "publish_year",
+        "manga_zone",
+        "genres",
+        "authors",
+        "finished",
+        "newest_chapter",
+        "newest_date",
+        "brief_introduction"
+      ],
+      "description": "Small mange page response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "manga name"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "manga cover"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "manga link"
+        },
+        "publish_year": {
+          "type": "string",
+          "required": true,
+          "description": "manga publish year"
+        },
+        "manga_zone": {
+          "type": "string",
+          "required": true,
+          "description": "manga zone"
+        },
+        "genres": {
+          "type": "array",
+          "required": true,
+          "description": "manga genres",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
+        },
+        "authors": {
+          "type": "array",
+          "required": true,
+          "description": "manga authors",
+          "items": {
+            "originRef": "TinyAuthorDto",
+            "$ref": "#/definitions/TinyAuthorDto"
+          }
+        },
+        "finished": {
+          "type": "boolean",
+          "required": true,
+          "description": "manga is finished"
+        },
+        "newest_chapter": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update chapter"
+        },
+        "newest_date": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update date"
+        },
+        "brief_introduction": {
+          "type": "string",
+          "required": true,
+          "description": "manga brief introduction"
         }
       }
     },
@@ -911,6 +1053,84 @@
         }
       }
     },
+    "_Page<SmallAuthorDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "SmallAuthorDto",
+            "$ref": "#/definitions/SmallAuthorDto"
+          }
+        }
+      }
+    },
+    "_Page<SmallMangaPageDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "SmallMangaPageDto",
+            "$ref": "#/definitions/SmallMangaPageDto"
+          }
+        }
+      }
+    },
     "_Page<TinyMangaPageDto>": {
       "type": "object",
       "required": [
@@ -1059,6 +1279,62 @@
           "description": "response data",
           "originRef": "_Page\u003cCategoryDto\u003e",
           "$ref": "#/definitions/_Page\u003cCategoryDto\u003e"
+        }
+      }
+    },
+    "_Result<_Page<SmallAuthorDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cSmallAuthorDto\u003e",
+          "$ref": "#/definitions/_Page\u003cSmallAuthorDto\u003e"
+        }
+      }
+    },
+    "_Result<_Page<SmallMangaPageDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cSmallMangaPageDto\u003e",
+          "$ref": "#/definitions/_Page\u003cSmallMangaPageDto\u003e"
         }
       }
     },

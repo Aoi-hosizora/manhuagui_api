@@ -15,7 +15,7 @@ type MangaPage struct {
 	Finished          bool                 // 是否完结
 	NewestChapter     string               // 最新一话
 	NewestDate        string               // 更新时间
-	BriefIntroduction string               // 简介介绍
+	BriefIntroduction string               // 简要介绍
 	Introduction      string               // 漫画介绍
 	MangaRank         string               // 漫画排名
 	AverageScore      float32              // 平均给分
@@ -42,6 +42,22 @@ type MangaChapter struct {
 		E int64  `json:"e"` // e
 		M string `json:"m"` // m
 	} `json:"sl"` // 查询加密
+}
+
+// 漫画页的部分信息 (Small)
+type SmallMangaPage struct {
+	Mid               uint64        // 漫画编号
+	Title             string        // 漫画标题
+	Cover             string        // 漫画封面
+	Url               string        // 漫画链接
+	PublishYear       string        // 出品年代
+	MangaZone         string        // 漫画地区
+	Genres            []*Category   // 漫画剧情
+	Authors           []*TinyAuthor // 漫画作者
+	Finished          bool          // 是否完结
+	NewestChapter     string        // 最新一话
+	NewestDate        string        // 更新时间
+	BriefIntroduction string        // 简要介绍
 }
 
 // 漫画页的部分信息 (Tiny)

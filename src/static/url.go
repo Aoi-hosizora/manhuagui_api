@@ -8,8 +8,10 @@ const (
 	MANGA_UPDATE_URL   = "https://www.manhuagui.com/update/d30.html"
 	MANGA_CATEGORY_URL = "https://www.manhuagui.com/list"
 	MANGA_SEARCH_URL   = "https://www.manhuagui.com/s/%s_p%d.html"
-	MANGA_SCORE_URL    = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
-	MANGA_SOURCE_URL   = "https://%s.hamreus.com"
+	MANGA_AUTHORS_URL  = "https://www.manhuagui.com/alist"
+
+	MANGA_SCORE_URL  = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
+	MANGA_SOURCE_URL = "https://%s.hamreus.com"
 )
 
 // noinspection GoSnakeCaseUsage

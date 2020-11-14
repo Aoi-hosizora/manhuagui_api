@@ -21,7 +21,7 @@ func init() {
 				goapidoc.NewPathParam("keyword", "string", true, "search keyword"),
 				param.ADPage, param.ADOrder,
 			).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaPageDto>>")),
 	)
 }
 
@@ -49,6 +49,6 @@ func (s *SearchController) SearchMangas(c *gin.Context) *result.Result {
 		return result.Error(exception.SearchNotFoundError)
 	}
 
-	res := dto.BuildTinyMangaPageDtos(mangas)
+	res := dto.BuildSmallMangaPageDtos(mangas)
 	return result.Ok().SetPage(pa.Page, limit, total, res)
 }

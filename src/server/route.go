@@ -64,8 +64,7 @@ func initRoute(engine *gin.Engine) {
 
 	authorGroup := v1.Group("author") // /v1/author
 	{
-		_ = authorGroup
-		_ = authorController
+		authorGroup.GET("", j(authorController.GetAllAuthors))
 	}
 }
 

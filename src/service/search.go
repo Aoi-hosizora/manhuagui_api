@@ -13,16 +13,20 @@ import (
 )
 
 type SearchService struct {
-	httpService *HttpService
+	httpService     *HttpService
+	categoryService *CategoryService
+	authorService   *AuthorService
 }
 
 func NewSearchService() *SearchService {
 	return &SearchService{
-		httpService: xdi.GetByNameForce(sn.SHttpService).(*HttpService),
+		httpService:     xdi.GetByNameForce(sn.SHttpService).(*HttpService),
+		categoryService: xdi.GetByNameForce(sn.SCategoryService).(*CategoryService),
+		authorService:   xdi.GetByNameForce(sn.SAuthorService).(*AuthorService),
 	}
 }
 
-func (s *SearchService) SearchMangas(keyword string, page int32, orderByPopular bool) ([]*vo.TinyMangaPage, int32, int32, error) {
+func (s *SearchService) SearchMangas(keyword string, page int32, orderByPopular bool) ([]*vo.SmallMangaPage, int32, int32, error) {
 	url := ""
 	if orderByPopular {
 		url = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o1", keyword), page)
@@ -41,30 +45,54 @@ func (s *SearchService) SearchMangas(keyword string, page int32, orderByPopular 
 	total, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(2)").Text())
 	pages := int32(math.Ceil(float64(total) / float64(limit)))
 
-	mangas := make([]*vo.TinyMangaPage, 0)
+	mangas := make([]*vo.SmallMangaPage, 0)
 	if page <= pages {
 		listLis := doc.Find("div.book-result li.cf")
 		listLis.Each(func(idx int, li *goquery.Selection) {
-			title := li.Find("dt a").AttrOr("title", "")
-			url := li.Find("dt a").AttrOr("href", "")
-			sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-			mid, _ := xnumber.Atou64(sp[len(sp)-1])
-			cover := li.Find("div.book-cover img").AttrOr("src", "")
-			statusSpan := li.Find("dd.tags.status")
-			status := statusSpan.Find("span:nth-child(2)").Text()
-			newestDate := statusSpan.Find("span:nth-child(3)").Text()
-			newestChapter := statusSpan.Find("a").Text()
-			mangas = append(mangas, &vo.TinyMangaPage{
-				Mid:           mid,
-				Title:         title,
-				Cover:         cover,
-				Url:           static.HOMEPAGE_URL + url,
-				Finished:      status == "已完结",
-				NewestChapter: newestChapter,
-				NewestDate:    strings.Split(newestDate, " ")[0],
-			})
+			mangas = append(mangas, s.getSmallMangaPageFromLi(li))
 		})
 	}
 
 	return mangas, limit, total, nil
+}
+
+func (s *SearchService) getSmallMangaPageFromLi(li *goquery.Selection) *vo.SmallMangaPage {
+	title := li.Find("dt a").AttrOr("title", "")
+	url := li.Find("dt a").AttrOr("href", "")
+	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
+	mid, _ := xnumber.Atou64(sp[len(sp)-1])
+	cover := li.Find("div.book-cover img").AttrOr("src", "")
+	statusDD := li.Find("dd.status")
+	status := statusDD.Find("span:nth-child(2)").Text()
+	newestDate := statusDD.Find("span:nth-child(3)").Text()
+	newestChapter := statusDD.Find("a").Text()
+	categoryDD := li.Find("div.book-detail dl dd.tags:nth-child(3)")
+	publishYear := categoryDD.Find("span:nth-child(1) a").Text()
+	mangaZone := categoryDD.Find("span:nth-child(2) a").AttrOr("title", "")
+	genreA := categoryDD.Find("span:nth-child(3) a")
+	genres := make([]*vo.Category, 0)
+	genreA.Each(func(idx int, sel *goquery.Selection) {
+		genres = append(genres, s.categoryService.GetCategoryFromA(sel))
+	})
+	authorA := li.Find("div.book-detail dl dd.tags:nth-child(4) a")
+	authors := make([]*vo.TinyAuthor, 0)
+	authorA.Each(func(idx int, sel *goquery.Selection) {
+		authors = append(authors, s.authorService.GetAuthorFromA(sel))
+	})
+	briefIntroduction := strings.TrimSuffix(strings.TrimPrefix(li.Find("dd.intro").Text(), "简介："), "[详情]")
+
+	return &vo.SmallMangaPage{
+		Mid:               mid,
+		Title:             title,
+		Cover:             cover,
+		Url:               static.HOMEPAGE_URL + url,
+		PublishYear:       publishYear,
+		MangaZone:         mangaZone,
+		Genres:            genres,
+		Authors:           authors,
+		Finished:          status == "已完结",
+		NewestChapter:     newestChapter,
+		NewestDate:        strings.Split(newestDate, " ")[0],
+		BriefIntroduction: briefIntroduction,
+	}
 }

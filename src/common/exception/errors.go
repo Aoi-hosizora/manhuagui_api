@@ -47,6 +47,11 @@ var (
 	SearchNotFoundError = New(404, ce(), "search result not found")
 )
 
+// author
+var (
+	GetAllAuthorsError = New(500, se(), "failed to get all authors")
+)
+
 func WrapValidationError(err error) *Error {
 	if xvalidator.ValidationRequiredError(err) {
 		return RequestParamError
