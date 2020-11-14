@@ -49,7 +49,10 @@ var (
 
 // author
 var (
-	GetAllAuthorsError = New(500, se(), "failed to get all authors")
+	GetAllAuthorsError   = New(500, se(), "failed to get all authors")
+	GetAuthorError       = New(500, se(), "failed to get author")
+	AuthorNotFound       = New(404, ce(), "author not found")
+	GetAuthorMangasError = New(500, se(), "failed to get author mangas")
 )
 
 func WrapValidationError(err error) *Error {

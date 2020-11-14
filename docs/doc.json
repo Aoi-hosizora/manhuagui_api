@@ -44,6 +44,27 @@
         ],
         "parameters": [
           {
+            "name": "genre",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "author genre"
+          },
+          {
+            "name": "zone",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "author zone"
+          },
+          {
+            "name": "age",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "author age range, (shaonv|shaonian|qingnian|ertong|tongyong)"
+          },
+          {
             "name": "page",
             "in": "query",
             "required": false,
@@ -64,6 +85,75 @@
             "schema": {
               "originRef": "_Result<_Page<SmallAuthorDto>>",
               "$ref": "#/definitions/_Result<_Page<SmallAuthorDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/author/{aid}": {
+      "get": {
+        "summary": "Get author",
+        "operationId": "-v1-author-aid-get",
+        "tags": [
+          "Author"
+        ],
+        "parameters": [
+          {
+            "name": "aid",
+            "in": "path",
+            "required": false,
+            "type": "integer",
+            "description": "author id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<AuthorDto>",
+              "$ref": "#/definitions/_Result<AuthorDto>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/author/{aid}/manga": {
+      "get": {
+        "summary": "Get author",
+        "operationId": "-v1-author-aid-manga-get",
+        "tags": [
+          "Author"
+        ],
+        "parameters": [
+          {
+            "name": "aid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "author id",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "order string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<SmallMangaPageDto>>",
+              "$ref": "#/definitions/_Result<_Page<SmallMangaPageDto>>"
             }
           }
         }
@@ -407,6 +497,84 @@
     }
   },
   "definitions": {
+    "AuthorDto": {
+      "type": "object",
+      "required": [
+        "aid",
+        "name",
+        "alias",
+        "zone",
+        "url",
+        "manga_count",
+        "newest_manga_id",
+        "newest_manga_title",
+        "newest_date",
+        "average_score",
+        "introduction"
+      ],
+      "description": "Small author response",
+      "properties": {
+        "aid": {
+          "type": "integer",
+          "required": true,
+          "description": "author id",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "author name"
+        },
+        "alias": {
+          "type": "string",
+          "required": true,
+          "description": "author alias"
+        },
+        "zone": {
+          "type": "string",
+          "required": true,
+          "description": "author zone"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "author url"
+        },
+        "manga_count": {
+          "type": "integer",
+          "required": true,
+          "description": "author manga count",
+          "format": "int32"
+        },
+        "newest_manga_id": {
+          "type": "integer",
+          "required": true,
+          "description": "author newest manga id",
+          "format": "int32"
+        },
+        "newest_manga_title": {
+          "type": "string",
+          "required": true,
+          "description": "author newest manga title"
+        },
+        "newest_date": {
+          "type": "string",
+          "required": true,
+          "description": "author update newest date"
+        },
+        "average_score": {
+          "type": "number",
+          "required": true,
+          "description": "author average score",
+          "format": "float"
+        },
+        "introduction": {
+          "type": "string",
+          "required": true,
+          "description": "author introduction"
+        }
+      }
+    },
     "CategoryDto": {
       "type": "object",
       "required": [
@@ -1167,6 +1335,34 @@
             "originRef": "TinyMangaPageDto",
             "$ref": "#/definitions/TinyMangaPageDto"
           }
+        }
+      }
+    },
+    "_Result<AuthorDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "AuthorDto",
+          "$ref": "#/definitions/AuthorDto"
         }
       }
     },

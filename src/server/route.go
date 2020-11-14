@@ -65,6 +65,8 @@ func initRoute(engine *gin.Engine) {
 	authorGroup := v1.Group("author") // /v1/author
 	{
 		authorGroup.GET("", j(authorController.GetAllAuthors))
+		authorGroup.GET(":aid", j(authorController.GetAuthor))
+		authorGroup.GET(":aid/manga", j(authorController.GetAuthorMangas))
 	}
 }
 

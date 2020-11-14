@@ -9,7 +9,6 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/PuerkitoBio/goquery"
 	"math"
-	"strings"
 )
 
 type SearchService struct {
@@ -49,50 +48,9 @@ func (s *SearchService) SearchMangas(keyword string, page int32, orderByPopular 
 	if page <= pages {
 		listLis := doc.Find("div.book-result li.cf")
 		listLis.Each(func(idx int, li *goquery.Selection) {
-			mangas = append(mangas, s.getSmallMangaPageFromLi(li))
+			mangas = append(mangas, s.authorService.GetSmallMangaPageFromLi(li))
 		})
 	}
 
 	return mangas, limit, total, nil
-}
-
-func (s *SearchService) getSmallMangaPageFromLi(li *goquery.Selection) *vo.SmallMangaPage {
-	title := li.Find("dt a").AttrOr("title", "")
-	url := li.Find("dt a").AttrOr("href", "")
-	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-	mid, _ := xnumber.Atou64(sp[len(sp)-1])
-	cover := li.Find("div.book-cover img").AttrOr("src", "")
-	statusDD := li.Find("dd.status")
-	status := statusDD.Find("span:nth-child(2)").Text()
-	newestDate := statusDD.Find("span:nth-child(3)").Text()
-	newestChapter := statusDD.Find("a").Text()
-	categoryDD := li.Find("div.book-detail dl dd.tags:nth-child(3)")
-	publishYear := categoryDD.Find("span:nth-child(1) a").Text()
-	mangaZone := categoryDD.Find("span:nth-child(2) a").AttrOr("title", "")
-	genreA := categoryDD.Find("span:nth-child(3) a")
-	genres := make([]*vo.Category, 0)
-	genreA.Each(func(idx int, sel *goquery.Selection) {
-		genres = append(genres, s.categoryService.GetCategoryFromA(sel))
-	})
-	authorA := li.Find("div.book-detail dl dd.tags:nth-child(4) a")
-	authors := make([]*vo.TinyAuthor, 0)
-	authorA.Each(func(idx int, sel *goquery.Selection) {
-		authors = append(authors, s.authorService.GetAuthorFromA(sel))
-	})
-	briefIntroduction := strings.TrimSuffix(strings.TrimPrefix(li.Find("dd.intro").Text(), "简介："), "[详情]")
-
-	return &vo.SmallMangaPage{
-		Mid:               mid,
-		Title:             title,
-		Cover:             cover,
-		Url:               static.HOMEPAGE_URL + url,
-		PublishYear:       publishYear,
-		MangaZone:         mangaZone,
-		Genres:            genres,
-		Authors:           authors,
-		Finished:          status == "已完结",
-		NewestChapter:     newestChapter,
-		NewestDate:        strings.Split(newestDate, " ")[0],
-		BriefIntroduction: briefIntroduction,
-	}
 }

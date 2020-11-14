@@ -335,7 +335,7 @@ search-controller
 
 author-controller
 
-## Get all authors [/v1/author{?page,order}]
+## Get all authors [/v1/author{?genre,zone,age,page,order}]
 
 ### Get all authors [GET]
 
@@ -343,6 +343,9 @@ author-controller
 
 + Parameters
 
+    + genre (string, optional) - author genre
+    + zone (string, optional) - author zone
+    + age (string, optional) - author age range, (shaonv|shaonian|qingnian|ertong|tongyong)
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
@@ -363,6 +366,63 @@ author-controller
 
     + Body
 
+## Get author [/v1/author/{aid}]
+
+### Get author [GET]
+
+`GET /v1/author/{aid}`
+
++ Parameters
+
+    + aid (number, optional) - author id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<AuthorDto>)
+
+    + Headers
+
+    + Body
+
+## Get author [/v1/author/{aid}/manga{?page,order}]
+
+### Get author [GET]
+
+`GET /v1/author/{aid}/manga`
+
++ Parameters
+
+    + aid (number, required) - author id
+        (format: int64)
+    + page (number, optional) - current page
+        (format: int32)
+    + order (string, optional) - order string
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<SmallMangaPageDto>>)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -370,6 +430,24 @@ author-controller
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
+
+## AuthorDto (object)
+
++ aid (number, required) - author id
+    (format: int64)
++ name (string, required) - author name
++ alias (string, required) - author alias
++ zone (string, required) - author zone
++ url (string, required) - author url
++ manga_count (number, required) - author manga count
+    (format: int32)
++ newest_manga_id (number, required) - author newest manga id
+    (format: int32)
++ newest_manga_title (string, required) - author newest manga title
++ newest_date (string, required) - author update newest date
++ average_score (number, required) - author average score
+    (format: float)
++ introduction (string, required) - author introduction
 
 ## SmallAuthorDto (object)
 
@@ -510,6 +588,30 @@ author-controller
     (format: int32)
 + data (array[SmallAuthorDto], required) - page data
 
+## _Result<AuthorDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (AuthorDto, required) - response data
+
+## _Result<_Page<SmallMangaPageDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<SmallMangaPageDto>, required) - response data
+
+## _Page<SmallMangaPageDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[SmallMangaPageDto], required) - page data
+
 ## _Result<_Page<CategoryDto>> (object)
 
 + code (number, required) - status code
@@ -564,20 +666,3 @@ author-controller
     (format: int32)
 + message (string, required) - status message
 + data (MangaPageGroupListDto, required) - response data
-
-## _Result<_Page<SmallMangaPageDto>> (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
-+ data (_Page<SmallMangaPageDto>, required) - response data
-
-## _Page<SmallMangaPageDto> (object)
-
-+ page (number, required) - current page
-    (format: int32)
-+ limit (number, required) - page size
-    (format: int32)
-+ total (number, required) - data count
-    (format: int32)
-+ data (array[SmallMangaPageDto], required) - page data

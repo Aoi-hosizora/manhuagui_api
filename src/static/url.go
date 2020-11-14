@@ -9,6 +9,7 @@ const (
 	MANGA_CATEGORY_URL = "https://www.manhuagui.com/list"
 	MANGA_SEARCH_URL   = "https://www.manhuagui.com/s/%s_p%d.html"
 	MANGA_AUTHORS_URL  = "https://www.manhuagui.com/alist"
+	MANGA_AUTHOR_URL   = "https://www.manhuagui.com/author/%d/%s_p%d.html"
 
 	MANGA_SCORE_URL  = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_SOURCE_URL = "https://%s.hamreus.com"
@@ -27,4 +28,5 @@ Demo url:
 
 https://www.manhuagui.com/comic/34707
 https://www.manhuagui.com/comic/34707/472931.html
+https://www.manhuagui.com/author/5802/
 */
