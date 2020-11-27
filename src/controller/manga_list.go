@@ -27,7 +27,7 @@ func init() {
 			Tags("MangaList").
 			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
 
-		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get latest mangas").
+		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get recent update mangas").
 			Tags("MangaList").
 			Params(param.ADPage, param.ADLimit).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
@@ -82,7 +82,7 @@ func (m *MangaListController) GetLatestMangas(c *gin.Context) *result.Result {
 // GET /v1/list/updated
 func (m *MangaListController) GetRecentUpdatedMangas(c *gin.Context) *result.Result {
 	pa := param.BindPage(c, m.config)
-	pages, tot, err := m.mangaListService.GetRecentUpdatedMangas(pa)
+	pages, tot, err := m.mangaListService.GetRecentUpdatedMangas(pa) // categoryService.GetGenreMangas
 	if err != nil {
 		return result.Error(exception.GetUpdatedMangasError).SetError(err, c)
 	}

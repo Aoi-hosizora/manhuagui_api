@@ -83,7 +83,7 @@ func init() {
 		goapidoc.NewDefinition("MangaPageGroupDto", "Mange page group response").
 			Properties(
 				goapidoc.NewProperty("title", "string", true, "group title"),
-				goapidoc.NewProperty("mangas", "TinyMangaChapterDto[]", true, "group mangas"),
+				goapidoc.NewProperty("mangas", "TinyMangaPageDto[]", true, "group mangas"),
 			),
 
 		goapidoc.NewDefinition("MangaChapterGroupDto", "Mange chapter group response").

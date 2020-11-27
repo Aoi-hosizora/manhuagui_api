@@ -39,6 +39,7 @@
       "get": {
         "summary": "Get all authors",
         "operationId": "-v1-author-get",
+        "description": "order by popular / comic / update",
         "tags": [
           "Author"
         ],
@@ -119,8 +120,9 @@
     },
     "/v1/author/{aid}/manga": {
       "get": {
-        "summary": "Get author",
+        "summary": "Get author mangas",
         "operationId": "-v1-author-aid-manga-get",
+        "description": "order by popular / new / update",
         "tags": [
           "Author"
         ],
@@ -197,6 +199,7 @@
       "get": {
         "summary": "Get genre mangas",
         "operationId": "-v1-category-genre-genre-get",
+        "description": "order by popular / new / update",
         "tags": [
           "Category"
         ],
@@ -206,28 +209,28 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "genre name"
+            "description": "genre name, (all|...)"
           },
           {
             "name": "zone",
             "in": "query",
             "required": false,
             "type": "string",
-            "description": "manga zone"
+            "description": "manga zone, (all|japan|hongkong|other|europe|china|korea)"
           },
           {
             "name": "age",
             "in": "query",
             "required": false,
             "type": "string",
-            "description": "manga age, (shaonv|shaonian|qingnian|ertong|tongyong)"
+            "description": "manga age, (all|shaonv|shaonian|qingnian|ertong|tongyong)"
           },
           {
             "name": "status",
             "in": "query",
             "required": false,
             "type": "string",
-            "description": "manga status, (lianzai|wanjie)"
+            "description": "manga status, (all|lianzai|wanjie)"
           },
           {
             "name": "page",
@@ -325,7 +328,7 @@
     },
     "/v1/list/updated": {
       "get": {
-        "summary": "Get latest mangas",
+        "summary": "Get recent update mangas",
         "operationId": "-v1-list-updated-get",
         "tags": [
           "MangaList"
@@ -362,6 +365,7 @@
       "get": {
         "summary": "Get all manga pages",
         "operationId": "-v1-manga-get",
+        "description": "order by popular / new / update",
         "tags": [
           "Manga"
         ],
@@ -458,6 +462,7 @@
       "get": {
         "summary": "Search mangas",
         "operationId": "-v1-search-keyword-get",
+        "description": "order by popular / new / update",
         "tags": [
           "Search"
         ],
@@ -854,8 +859,8 @@
           "required": true,
           "description": "group mangas",
           "items": {
-            "originRef": "TinyMangaChapterDto",
-            "$ref": "#/definitions/TinyMangaChapterDto"
+            "originRef": "TinyMangaPageDto",
+            "$ref": "#/definitions/TinyMangaPageDto"
           }
         }
       }

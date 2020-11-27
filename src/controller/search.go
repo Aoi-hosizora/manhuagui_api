@@ -16,6 +16,7 @@ import (
 func init() {
 	goapidoc.AddRoutePaths(
 		goapidoc.NewRoutePath("GET", "/v1/search/{keyword}", "Search mangas").
+			Desc("order by popular / new / update").
 			Tags("Search").
 			Params(
 				goapidoc.NewPathParam("keyword", "string", true, "search keyword"),
@@ -42,7 +43,7 @@ func (s *SearchController) SearchMangas(c *gin.Context) *result.Result {
 	pa := param.BindPageOrder(c, s.config)
 	keyword := c.Param("keyword")
 
-	mangas, limit, total, err := s.searchService.SearchMangas(keyword, pa.Page, pa.Order == "popular")
+	mangas, limit, total, err := s.searchService.SearchMangas(keyword, pa.Page, pa.Order) // popular / new / update
 	if err != nil {
 		return result.Error(exception.SearchMangasError).SetError(err, c)
 	} else if mangas == nil {

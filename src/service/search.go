@@ -25,11 +25,13 @@ func NewSearchService() *SearchService {
 	}
 }
 
-func (s *SearchService) SearchMangas(keyword string, page int32, orderByPopular bool) ([]*vo.SmallMangaPage, int32, int32, error) {
+func (s *SearchService) SearchMangas(keyword string, page int32, order string) ([]*vo.SmallMangaPage, int32, int32, error) {
 	url := ""
-	if orderByPopular {
+	if order == "popular" {
 		url = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o1", keyword), page)
-	} else {
+	} else if order == "new" {
+		url = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o2", keyword), page)
+	} else { // update
 		url = fmt.Sprintf(static.MANGA_SEARCH_URL, keyword, page)
 	}
 

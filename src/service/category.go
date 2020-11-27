@@ -90,7 +90,7 @@ func (c *CategoryService) GetCategoryFromA(a *goquery.Selection) *vo.Category {
 	}
 }
 
-func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, orderByPopular bool) ([]*vo.TinyMangaPage, int32, int32, error) {
+func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, order string) ([]*vo.TinyMangaPage, int32, int32, error) {
 	url := static.MANGA_CATEGORY_URL + "/" // https://www.manhuagui.com/list/update_p1.html
 	if zone != "" && zone != "all" {
 		url += zone + "_" // https://www.manhuagui.com/list/japan/update.html
@@ -105,9 +105,11 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 		url += status + "_" // https://www.manhuagui.com/list/japan_aiqing_shaonv_lianzai/update_p1.html
 	}
 	url = strings.TrimSuffix(url, "_")
-	if orderByPopular {
+	if order == "popular" {
 		url += fmt.Sprintf("/%s_p%d.html", "view", page)
-	} else {
+	} else if order == "new" {
+		url += fmt.Sprintf("/%s_p%d.html", "index", page)
+	} else { // update
 		url += fmt.Sprintf("/%s_p%d.html", "update", page)
 	}
 

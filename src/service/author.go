@@ -8,7 +8,6 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/PuerkitoBio/goquery"
-	"log"
 	"math"
 	"strings"
 )
@@ -37,7 +36,7 @@ func (a *AuthorService) GetAuthorFromA(sel *goquery.Selection) *vo.TinyAuthor {
 	}
 }
 
-func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, orderByPopular bool) ([]*vo.SmallAuthor, int32, int32, error) {
+func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, order string) ([]*vo.SmallAuthor, int32, int32, error) {
 	url := static.MANGA_AUTHORS_URL + "/" // https://www.manhuagui.com/alist/index_p1.html
 	if zone != "" && zone != "all" {
 		url += zone + "_" // https://www.manhuagui.com/alist/japan/update.html
@@ -49,10 +48,12 @@ func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, order
 		url += age + "_" // https://www.manhuagui.com/alist/japan_aiqing_shaonv/update.html
 	}
 	url = strings.TrimSuffix(url, "_")
-	if orderByPopular {
+	if order == "popular" {
 		url += fmt.Sprintf("/%s_p%d.html", "view", page)
-	} else {
-		url += fmt.Sprintf("/%s_p%d.html", "update", page)
+	} else if order == "comic" {
+		url += fmt.Sprintf("/%s_p%d.html", "comic", page)
+	} else { // update
+		url += fmt.Sprintf("/%s_p%d.html", "index", page)
 	}
 
 	doc, err := a.httpService.HttpGetDocument(url)
@@ -136,14 +137,15 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	return out, nil
 }
 
-func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, orderByPopular bool) ([]*vo.SmallMangaPage, int32, int32, error) {
+func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([]*vo.SmallMangaPage, int32, int32, error) {
 	url := ""
-	if orderByPopular {
+	if order == "popular" {
 		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "view", page)
-	} else {
+	} else if order == "new" {
+		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "new", page)
+	} else { // update
 		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", page)
 	}
-	log.Println(url)
 
 	doc, err := a.httpService.HttpGetDocument(url)
 	if err != nil {

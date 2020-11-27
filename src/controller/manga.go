@@ -16,6 +16,7 @@ import (
 func init() {
 	goapidoc.AddRoutePaths(
 		goapidoc.NewRoutePath("GET", "/v1/manga", "Get all manga pages").
+			Desc("order by popular / new / update").
 			Tags("Manga").
 			Params(param.ADPage, param.ADOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
@@ -55,7 +56,7 @@ func NewMangaController() *MangaController {
 func (m *MangaController) GetAllMangaPages(c *gin.Context) *result.Result {
 	pa := param.BindPageOrder(c, m.config)
 
-	mangas, limit, total, err := m.categoryService.GetGenreMangas("all", "all", "all", "all", pa.Page, pa.Order == "popular")
+	mangas, limit, total, err := m.categoryService.GetGenreMangas("all", "all", "all", "all", pa.Page, pa.Order) // popular / new / update
 	if err != nil {
 		return result.Error(exception.GetAllMangaPagesError).SetError(err, c)
 	}

@@ -18,6 +18,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func init() {
@@ -85,6 +86,13 @@ func (s *Server) Serve() {
 		closeCh <- 0
 	}()
 
+	time.Sleep(500 * time.Millisecond)
+	if e := os.Getenv("HTTP_PROXY"); e != "" {
+		log.Printf("Using env HTTP_PROXY as %s", e)
+	}
+	if e := os.Getenv("HTTPS_PROXY"); e != "" {
+		log.Printf("Using env HTTPS_PROXY as %s", e)
+	}
 	log.Printf("Listening and serving HTTP on %s", addr)
 	err := server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
