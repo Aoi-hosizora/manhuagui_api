@@ -16,8 +16,9 @@ const (
 	MANGA_AUTHOR_URL   = "https://www.manhuagui.com/author/%d/%s_p%d.html"
 	MANGA_RANK_URL     = "https://www.manhuagui.com/rank/%s"
 
-	MANGA_SCORE_URL  = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
-	MANGA_SOURCE_URL = "https://%s.hamreus.com"
+	MANGA_SCORE_URL   = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
+	MANGA_COMMENT_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
+	MANGA_SOURCE_URL  = "https://%s.hamreus.com"
 )
 
 // noinspection GoSnakeCaseUsage

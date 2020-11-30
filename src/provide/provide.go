@@ -34,6 +34,7 @@ func Provide(configPath string) error {
 	xdi.ProvideName(sn.SMangaListService, service.NewMangaListService()) // *service.MangaListService
 	xdi.ProvideName(sn.SSearchService, service.NewSearchService())       // *service.SearchService
 	xdi.ProvideName(sn.SRankService, service.NewRankService())           // *service.RankService
+	xdi.ProvideName(sn.SCommentService, service.NewCommentService())     // *service.CommentService
 
 	return nil
 }

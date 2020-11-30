@@ -5,7 +5,6 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/common/exception"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/common/result"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
@@ -37,13 +36,11 @@ func init() {
 }
 
 type RankController struct {
-	config      *config.Config
 	rankService *service.RankService
 }
 
 func NewRankController() *RankController {
 	return &RankController{
-		config:      xdi.GetByNameForce(sn.SConfig).(*config.Config),
 		rankService: xdi.GetByNameForce(sn.SRankService).(*service.RankService),
 	}
 }

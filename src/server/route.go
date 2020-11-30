@@ -33,6 +33,7 @@ func initRoute(engine *gin.Engine) {
 		searchController    = controller.NewSearchController()
 		authorController    = controller.NewAuthorController()
 		rankController      = controller.NewRankController()
+		commentController   = controller.NewCommentService()
 	)
 
 	mangaGroup := v1.Group("manga") // /v1/manga/...
@@ -76,6 +77,11 @@ func initRoute(engine *gin.Engine) {
 		rankGroup.GET("week", j(rankController.GetWeekRanking))
 		rankGroup.GET("month", j(rankController.GetMonthRanking))
 		rankGroup.GET("total", j(rankController.GetTotalRanking))
+	}
+
+	commentGroup := v1.Group("comment") // /v1/comment/...
+	{
+		commentGroup.GET("manga/:mid", j(commentController.GetComments))
 	}
 }
 

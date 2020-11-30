@@ -23,9 +23,7 @@ func init() {
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}", "Get manga page").
 			Tags("Manga").
-			Params(
-				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
-			).
+			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id")).
 			Responses(goapidoc.NewResponse(200, "_Result<MangaDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}/{cid}", "Get manga chapter").

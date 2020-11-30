@@ -57,3 +57,8 @@ var (
 	GetRankingError          = New(500, se(), "failed to get ranking list")
 	RankingTypeNotFoundError = New(404, ce(), "ranking type not found")
 )
+
+// comment
+var (
+	GetMangaCommentsError = New(500, se(), "failed to get manga comments")
+)

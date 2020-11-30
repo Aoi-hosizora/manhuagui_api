@@ -15,4 +15,5 @@ const (
 	SSearchService    xdi.ServiceName = "search-service"     // *service.SearchService
 	SAuthorService    xdi.ServiceName = "author-service"     // *service.AuthorService
 	SRankService      xdi.ServiceName = "rank-service"       // *service.RankService
+	SCommentService   xdi.ServiceName = "comment-service"    // *service.CommentService
 )

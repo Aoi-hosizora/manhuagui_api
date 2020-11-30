@@ -23,6 +23,7 @@
 + `GET /v1/rank/week`
 + `GET /v1/rank/month`
 + `GET /v1/rank/total`
++ `GET /v1/comment/manga/:mid`
 
 ### Document
 

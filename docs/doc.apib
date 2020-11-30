@@ -541,6 +541,39 @@ rank-controller
 
     + Body
 
+# Group Comment
+
+comment-controller
+
+## Get manga comments [/v1/comment/manga/{mid}{?page}]
+
+### Get manga comments [GET]
+
+`GET /v1/comment/manga/{mid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+    + page (number, optional) - current page
+        (format: int32)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<CommentDto>>)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -590,6 +623,41 @@ rank-controller
 + name (string, required) - category name
 + title (string, required) - category title
 + url (string, required) - category link
+
+## CommentDto (object)
+
++ cid (number, required) - comment id
+    (format: int64)
++ uid (number, required) - user id
+    (format: int64)
++ username (string, required) - username
++ avatar (string, required) - user avatar
++ gender (number, required) - user gender, 1: Male, 2: Female
+    (format: int32)
++ content (string, required) - comment content
++ like_count (number, required) - comment liked count
+    (format: int32)
++ reply_count (number, required) - comment reply count
+    (format: int32)
++ timeline (array[RepliedCommentDto], required) - comment reply timeline
++ comment_time (string, required) - comment create time
+
+## RepliedCommentDto (object)
+
++ cid (number, required) - comment id
+    (format: int64)
++ uid (number, required) - user id
+    (format: int64)
++ username (string, required) - username
++ avatar (string, required) - user avatar
++ gender (number, required) - user gender, 1: Male, 2: Female
+    (format: int32)
++ content (string, required) - comment content
++ like_count (number, required) - comment liked count
+    (format: int32)
++ reply_count (number, required) - comment reply count
+    (format: int32)
++ comment_time (string, required) - comment create time
 
 ## MangaDto (object)
 
@@ -781,6 +849,23 @@ rank-controller
 + total (number, required) - data count
     (format: int32)
 + data (array[TinyMangaDto], required) - page data
+
+## _Result<_Page<CommentDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<CommentDto>, required) - response data
+
+## _Page<CommentDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[CommentDto], required) - page data
 
 ## _Result<MangaDto> (object)
 

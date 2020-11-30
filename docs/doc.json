@@ -36,6 +36,10 @@
     {
       "name": "Rank",
       "description": "rank-controller"
+    },
+    {
+      "name": "Comment",
+      "description": "comment-controller"
     }
   ],
   "paths": {
@@ -274,6 +278,41 @@
             "schema": {
               "originRef": "_Result<_Page<CategoryDto>>",
               "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/comment/manga/{mid}": {
+      "get": {
+        "summary": "Get manga comments",
+        "operationId": "-v1-comment-manga-mid-get",
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<CommentDto>>",
+              "$ref": "#/definitions/_Result<_Page<CommentDto>>"
             }
           }
         }
@@ -714,6 +753,83 @@
         }
       }
     },
+    "CommentDto": {
+      "type": "object",
+      "required": [
+        "cid",
+        "uid",
+        "username",
+        "avatar",
+        "gender",
+        "content",
+        "like_count",
+        "reply_count",
+        "timeline",
+        "comment_time"
+      ],
+      "description": "Comment response",
+      "properties": {
+        "cid": {
+          "type": "integer",
+          "required": true,
+          "description": "comment id",
+          "format": "int64"
+        },
+        "uid": {
+          "type": "integer",
+          "required": true,
+          "description": "user id",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string",
+          "required": true,
+          "description": "username"
+        },
+        "avatar": {
+          "type": "string",
+          "required": true,
+          "description": "user avatar"
+        },
+        "gender": {
+          "type": "integer",
+          "required": true,
+          "description": "user gender, 1: Male, 2: Female",
+          "format": "int32"
+        },
+        "content": {
+          "type": "string",
+          "required": true,
+          "description": "comment content"
+        },
+        "like_count": {
+          "type": "integer",
+          "required": true,
+          "description": "comment liked count",
+          "format": "int32"
+        },
+        "reply_count": {
+          "type": "integer",
+          "required": true,
+          "description": "comment reply count",
+          "format": "int32"
+        },
+        "timeline": {
+          "type": "array",
+          "required": true,
+          "description": "comment reply timeline",
+          "items": {
+            "originRef": "RepliedCommentDto",
+            "$ref": "#/definitions/RepliedCommentDto"
+          }
+        },
+        "comment_time": {
+          "type": "string",
+          "required": true,
+          "description": "comment create time"
+        }
+      }
+    },
     "MangaChapterDto": {
       "type": "object",
       "required": [
@@ -1097,6 +1213,73 @@
         }
       }
     },
+    "RepliedCommentDto": {
+      "type": "object",
+      "required": [
+        "cid",
+        "uid",
+        "username",
+        "avatar",
+        "gender",
+        "content",
+        "like_count",
+        "reply_count",
+        "comment_time"
+      ],
+      "description": "Replied comment response",
+      "properties": {
+        "cid": {
+          "type": "integer",
+          "required": true,
+          "description": "comment id",
+          "format": "int64"
+        },
+        "uid": {
+          "type": "integer",
+          "required": true,
+          "description": "user id",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string",
+          "required": true,
+          "description": "username"
+        },
+        "avatar": {
+          "type": "string",
+          "required": true,
+          "description": "user avatar"
+        },
+        "gender": {
+          "type": "integer",
+          "required": true,
+          "description": "user gender, 1: Male, 2: Female",
+          "format": "int32"
+        },
+        "content": {
+          "type": "string",
+          "required": true,
+          "description": "comment content"
+        },
+        "like_count": {
+          "type": "integer",
+          "required": true,
+          "description": "comment liked count",
+          "format": "int32"
+        },
+        "reply_count": {
+          "type": "integer",
+          "required": true,
+          "description": "comment reply count",
+          "format": "int32"
+        },
+        "comment_time": {
+          "type": "string",
+          "required": true,
+          "description": "comment create time"
+        }
+      }
+    },
     "Result": {
       "type": "object",
       "required": [
@@ -1417,6 +1600,45 @@
         }
       }
     },
+    "_Page<CommentDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "CommentDto",
+            "$ref": "#/definitions/CommentDto"
+          }
+        }
+      }
+    },
     "_Page<MangaRankDto>": {
       "type": "object",
       "required": [
@@ -1710,6 +1932,34 @@
           "description": "response data",
           "originRef": "_Page\u003cCategoryDto\u003e",
           "$ref": "#/definitions/_Page\u003cCategoryDto\u003e"
+        }
+      }
+    },
+    "_Result<_Page<CommentDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cCommentDto\u003e",
+          "$ref": "#/definitions/_Page\u003cCommentDto\u003e"
         }
       }
     },
