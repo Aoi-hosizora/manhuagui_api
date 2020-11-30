@@ -13,7 +13,7 @@ type Manga struct {
 	Authors           []*TinyAuthor        // 漫画作者
 	Alias             string               // 漫画别名
 	Finished          bool                 // 是否完结
-	NewestChapter     string               // 最新一话
+	NewestChapter     string               // 最新章节
 	NewestDate        string               // 更新时间
 	BriefIntroduction string               // 简要介绍
 	Introduction      string               // 漫画介绍
@@ -56,7 +56,7 @@ type SmallManga struct {
 	Genres            []*Category   // 漫画剧情
 	Authors           []*TinyAuthor // 漫画作者
 	Finished          bool          // 是否完结
-	NewestChapter     string        // 最新一话
+	NewestChapter     string        // 最新章节
 	NewestDate        string        // 更新时间
 	BriefIntroduction string        // 简要介绍
 }
@@ -68,7 +68,7 @@ type TinyManga struct {
 	Cover         string // 漫画封面
 	Url           string // 漫画链接
 	Finished      bool   // 是否完结
-	NewestChapter string // 最新一话
+	NewestChapter string // 最新章节
 	NewestDate    string // 更新时间
 }
 
@@ -104,4 +104,15 @@ type MangaGroupList struct {
 
 // 漫画排名
 type MangaRank struct {
+	Mid           uint64        // 漫画编号
+	Title         string        // 漫画标题
+	Url           string        // 漫画链接
+	Finished      bool          // 是否完结
+	Authors       []*TinyAuthor // 漫画作者
+	NewestChapter string        // 最新章节
+	NewestDate    string        // 更新时间
+	Order         int8          // 漫画排名
+	Score         float64       // 当前评分
+	IsUp          bool          // 上升趋势
+	IsDown        bool          // 下降趋势
 }

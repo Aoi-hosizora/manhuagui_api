@@ -1,7 +1,5 @@
 package exception
 
-import "github.com/Aoi-hosizora/ahlib-web/xvalidator"
-
 var (
 	cerr = int32(40000) // client error code
 	serr = int32(50000) // server error code
@@ -43,7 +41,7 @@ var (
 
 // search
 var (
-	SearchMangasError   = New(500, se(), "failed to search mangas")
+	SearchMangasError = New(500, se(), "failed to search mangas")
 )
 
 // author
@@ -54,9 +52,8 @@ var (
 	GetAuthorMangasError = New(500, se(), "failed to get author mangas")
 )
 
-func WrapValidationError(err error) *Error {
-	if xvalidator.ValidationRequiredError(err) {
-		return RequestParamError
-	}
-	return RequestFormatError
-}
+// rank
+var (
+	GetRankingError          = New(500, se(), "failed to get ranking list")
+	RankingTypeNotFoundError = New(404, ce(), "ranking type not found")
+)

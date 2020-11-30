@@ -472,10 +472,10 @@
         "parameters": [
           {
             "name": "type",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
-            "description": "manga genre / zone / age, empty if all"
+            "description": "manga genre / zone / age, empty or all if all"
           }
         ],
         "responses": {
@@ -498,10 +498,10 @@
         "parameters": [
           {
             "name": "type",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
-            "description": "manga genre / zone / age, empty if all"
+            "description": "manga genre / zone / age, empty or all if all"
           }
         ],
         "responses": {
@@ -524,10 +524,10 @@
         "parameters": [
           {
             "name": "type",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
-            "description": "manga genre / zone / age, empty if all"
+            "description": "manga genre / zone / age, empty or all if all"
           }
         ],
         "responses": {
@@ -550,10 +550,10 @@
         "parameters": [
           {
             "name": "type",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
-            "description": "manga genre / zone / age, empty if all"
+            "description": "manga genre / zone / age, empty or all if all"
           }
         ],
         "responses": {
@@ -1022,9 +1022,80 @@
     },
     "MangaRankDto": {
       "type": "object",
-      "required": [],
+      "required": [
+        "mid",
+        "title",
+        "url",
+        "finished",
+        "authors",
+        "newest_chapter",
+        "newest_date",
+        "order",
+        "score",
+        "is_up",
+        "is_down"
+      ],
       "description": "Mange rank result response",
-      "properties": {}
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "rank manga id",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "rank manga title"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "rank manga url"
+        },
+        "finished": {
+          "type": "boolean",
+          "required": true,
+          "description": "rank manga is finished"
+        },
+        "authors": {
+          "type": "string",
+          "required": true,
+          "description": "rank manga authors"
+        },
+        "newest_chapter": {
+          "type": "string",
+          "required": true,
+          "description": "rank manga newest chapter"
+        },
+        "newest_date": {
+          "type": "string",
+          "required": true,
+          "description": "rank manga newest date"
+        },
+        "order": {
+          "type": "integer",
+          "required": true,
+          "description": "rank order",
+          "format": "int32"
+        },
+        "score": {
+          "type": "number",
+          "required": true,
+          "description": "rank manga score",
+          "format": "float"
+        },
+        "is_up": {
+          "type": "boolean",
+          "required": true,
+          "description": "rank trend up"
+        },
+        "is_down": {
+          "type": "boolean",
+          "required": true,
+          "description": "rank trend down"
+        }
+      }
     },
     "Result": {
       "type": "object",

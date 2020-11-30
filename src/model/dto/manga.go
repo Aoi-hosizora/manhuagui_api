@@ -102,7 +102,19 @@ func init() {
 			),
 
 		goapidoc.NewDefinition("MangaRankDto", "Mange rank result response").
-			Properties(),
+			Properties(
+				goapidoc.NewProperty("mid", "integer#int64", true, "rank manga id"),
+				goapidoc.NewProperty("title", "string", true, "rank manga title"),
+				goapidoc.NewProperty("url", "string", true, "rank manga url"),
+				goapidoc.NewProperty("finished", "boolean", true, "rank manga is finished"),
+				goapidoc.NewProperty("authors", "string", true, "rank manga authors"),
+				goapidoc.NewProperty("newest_chapter", "string", true, "rank manga newest chapter"),
+				goapidoc.NewProperty("newest_date", "string", true, "rank manga newest date"),
+				goapidoc.NewProperty("order", "integer#int32", true, "rank order"),
+				goapidoc.NewProperty("score", "number#float", true, "rank manga score"),
+				goapidoc.NewProperty("is_up", "boolean", true, "rank trend up"),
+				goapidoc.NewProperty("is_down", "boolean", true, "rank trend down"),
+			),
 	)
 }
 
@@ -368,10 +380,32 @@ func BuildMangaGroupListDtos(lists []*vo.MangaGroupList) []*MangaGroupListDto {
 
 // 漫画排名 vo.MangaRank
 type MangaRankDto struct {
+	Mid           uint64           `json:"mid"`            // 漫画编号
+	Title         string           `json:"title"`          // 漫画标题
+	Url           string           `json:"url"`            // 漫画链接
+	Finished      bool             `json:"finished"`       // 是否完结
+	Authors       []*TinyAuthorDto `json:"authors"`        // 漫画作者
+	NewestChapter string           `json:"newest_chapter"` // 最新章节
+	NewestDate    string           `json:"newest_date"`    // 更新时间
+	Order         int8             `json:"order"`          // 漫画排名
+	Score         float64          `json:"score"`          // 当前评分
+	IsUp          bool             `json:"is_up"`          // 上升趋势
+	IsDown        bool             `json:"is_down"`        // 下降趋势
 }
 
 func BuildMangaRankDto(rank *vo.MangaRank) *MangaRankDto {
 	return &MangaRankDto{
+		Mid:           rank.Mid,
+		Title:         rank.Title,
+		Url:           rank.Url,
+		Finished:      rank.Finished,
+		Authors:       BuildTinyAuthorDtos(rank.Authors),
+		NewestChapter: rank.NewestChapter,
+		NewestDate:    rank.NewestDate,
+		Order:         rank.Order,
+		Score:         rank.Score,
+		IsUp:          rank.IsUp,
+		IsDown:        rank.IsDown,
 	}
 }
 

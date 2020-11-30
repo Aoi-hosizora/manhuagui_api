@@ -19,6 +19,10 @@
 + `GET /v1/author`
 + `GET /v1/author/:aid`
 + `GET /v1/author/:aid/manga`
++ `GET /v1/rank/day`
++ `GET /v1/rank/week`
++ `GET /v1/rank/month`
++ `GET /v1/rank/total`
 
 ### Document
 

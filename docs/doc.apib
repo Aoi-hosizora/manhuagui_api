@@ -437,7 +437,7 @@ order by popular / new / update
 
 rank-controller
 
-## Get day ranking [/v1/rank/day]
+## Get day ranking [/v1/rank/day{?type}]
 
 ### Get day ranking [GET]
 
@@ -445,7 +445,7 @@ rank-controller
 
 + Parameters
 
-    + type (string, required) - manga genre / zone / age, empty if all
+    + type (string, optional) - manga genre / zone / age, empty or all if all
 
 + Request (application/json)
 
@@ -463,7 +463,7 @@ rank-controller
 
     + Body
 
-## Get week ranking [/v1/rank/week]
+## Get week ranking [/v1/rank/week{?type}]
 
 ### Get week ranking [GET]
 
@@ -471,7 +471,7 @@ rank-controller
 
 + Parameters
 
-    + type (string, required) - manga genre / zone / age, empty if all
+    + type (string, optional) - manga genre / zone / age, empty or all if all
 
 + Request (application/json)
 
@@ -489,7 +489,7 @@ rank-controller
 
     + Body
 
-## Get month ranking [/v1/rank/month]
+## Get month ranking [/v1/rank/month{?type}]
 
 ### Get month ranking [GET]
 
@@ -497,7 +497,7 @@ rank-controller
 
 + Parameters
 
-    + type (string, required) - manga genre / zone / age, empty if all
+    + type (string, optional) - manga genre / zone / age, empty or all if all
 
 + Request (application/json)
 
@@ -515,7 +515,7 @@ rank-controller
 
     + Body
 
-## Get total ranking [/v1/rank/total]
+## Get total ranking [/v1/rank/total{?type}]
 
 ### Get total ranking [GET]
 
@@ -523,7 +523,7 @@ rank-controller
 
 + Parameters
 
-    + type (string, required) - manga genre / zone / age, empty if all
+    + type (string, optional) - manga genre / zone / age, empty or all if all
 
 + Request (application/json)
 
@@ -689,6 +689,23 @@ rank-controller
 + top_group (MangaGroupDto, required) - manga top page group
 + groups (array[MangaGroupDto], required) - manga page groups
 + other_groups (array[MangaGroupDto], required) - manga other page groups
+
+## MangaRankDto (object)
+
++ mid (number, required) - rank manga id
+    (format: int64)
++ title (string, required) - rank manga title
++ url (string, required) - rank manga url
++ finished (boolean, required) - rank manga is finished
++ authors (string, required) - rank manga authors
++ newest_chapter (string, required) - rank manga newest chapter
++ newest_date (string, required) - rank manga newest date
++ order (number, required) - rank order
+    (format: int32)
++ score (number, required) - rank manga score
+    (format: float)
++ is_up (boolean, required) - rank trend up
++ is_down (boolean, required) - rank trend down
 
 ## _Result<_Page<SmallAuthorDto>> (object)
 
