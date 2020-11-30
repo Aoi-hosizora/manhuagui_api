@@ -69,7 +69,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	obj := &vo.MangaPage{
 		Mid:               mid,
 		Title:             title,
-		Cover:             cover,
+		Cover:             static.ParseCoverUrl(cover),
 		Url:               url,
 		PublishYear:       publishYear,
 		MangaZone:         mangaZone,
@@ -126,8 +126,22 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	}
 
 	// get chapter groups
-	groupTitleH4s := doc.Find("div.chapter h4").Children()
-	groupListDivs := doc.Find("div.chapter div.chapter-list")
+	cDoc := doc
+	if doc.Find("a#checkAdult").Length() != 0 {
+		obj.Banned = true
+		value := doc.Find("input#__VIEWSTATE").AttrOr("value", "")
+		hiddenHtml, err := util.DecompressLZStringFromBase64(value)
+		if err == nil {
+			hiddenHtml = `<div class="chapter cf mt16">` + hiddenHtml + `</div>`
+			cDoc, err = goquery.NewDocumentFromReader(strings.NewReader(hiddenHtml))
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	groupTitleH4s := cDoc.Find("div.chapter h4").Children()
+	groupListDivs := cDoc.Find("div.chapter div.chapter-list")
 	groupTitles := make([]string, groupTitleH4s.Length())
 	groups := make([]*vo.MangaChapterGroup, len(groupTitles))
 	groupTitleH4s.Each(func(idx int, sel *goquery.Selection) {

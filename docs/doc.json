@@ -721,6 +721,7 @@
         "average_score",
         "score_count",
         "per_scores",
+        "banned",
         "chapter_groups"
       ],
       "description": "Mange page response",
@@ -829,6 +830,11 @@
             "type": "number",
             "format": "float"
           }
+        },
+        "banned": {
+          "type": "boolean",
+          "required": true,
+          "description": "manga is banned"
         },
         "chapter_groups": {
           "type": "array",

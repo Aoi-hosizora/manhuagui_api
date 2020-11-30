@@ -152,7 +152,7 @@ func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.Tiny
 	return &vo.TinyMangaPage{
 		Mid:           mid,
 		Title:         title,
-		Cover:         cover,
+		Cover:         static.ParseCoverUrl(cover),
 		Url:           static.HOMEPAGE_URL + url,
 		Finished:      strings.HasSuffix(tt, "[完]"),
 		NewestChapter: newestChapter,

@@ -87,7 +87,7 @@ func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCove
 		return &vo.TinyMangaPage{
 			Mid:           mid,
 			Title:         title,
-			Cover:         cover,
+			Cover:         static.ParseCoverUrl(cover),
 			Url:           static.HOMEPAGE_URL + url,
 			Finished:      strings.HasPrefix(tt, "共"),
 			NewestChapter: newestChapter,

@@ -21,6 +21,7 @@ type MangaPage struct {
 	AverageScore      float32              // 平均给分
 	ScoreCount        int32                // 给分人数
 	PerScores         [6]float32           // 具体给分
+	Banned            bool                 // 是否屏蔽
 	ChapterGroups     []*MangaChapterGroup // 章节链接
 }
 

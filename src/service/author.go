@@ -197,7 +197,7 @@ func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.Small
 	return &vo.SmallMangaPage{
 		Mid:               mid,
 		Title:             title,
-		Cover:             cover,
+		Cover:             static.ParseCoverUrl(cover),
 		Url:               static.HOMEPAGE_URL + url,
 		PublishYear:       publishYear,
 		MangaZone:         mangaZone,

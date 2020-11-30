@@ -1,5 +1,9 @@
 package static
 
+import (
+	"strings"
+)
+
 // noinspection GoSnakeCaseUsage
 const (
 	HOMEPAGE_URL       = "https://www.manhuagui.com"
@@ -30,3 +34,12 @@ https://www.manhuagui.com/comic/34707
 https://www.manhuagui.com/comic/34707/472931.html
 https://www.manhuagui.com/author/5802/
 */
+
+func ParseCoverUrl(url string) string {
+	url = strings.ReplaceAll(url, "/b/", "/g/") // 132x176
+	url = strings.ReplaceAll(url, "/h/", "/g/") // 180x240
+	url = strings.ReplaceAll(url, "/l/", "/g/") // 78x104
+	url = strings.ReplaceAll(url, "/m/", "/g/") // 114x152
+	url = strings.ReplaceAll(url, "/s/", "/g/") // 92x122
+	return url                                  // 240x360
+}

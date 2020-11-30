@@ -27,6 +27,7 @@ func init() {
 				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
 				goapidoc.NewProperty("score_count", "integer#int32", true, "manga score count"),
 				goapidoc.NewProperty("per_scores", "number#float[]", true, "manga per scores, from 0 to 5"),
+				goapidoc.NewProperty("banned", "boolean", true, "manga is banned"),
 				goapidoc.NewProperty("chapter_groups", "MangaChapterGroupDto[]", true, "manga chapter groups"),
 			),
 
@@ -122,6 +123,7 @@ type MangaPageDto struct {
 	AverageScore      float32                 `json:"average_score"`
 	ScoreCount        int32                   `json:"score_count"`
 	PerScores         [6]float32              `json:"per_scores"`
+	Banned            bool                    `json:"banned"`
 	ChapterGroups     []*MangaChapterGroupDto `json:"chapter_groups"`
 }
 
@@ -145,6 +147,7 @@ func BuildMangaPageDto(manga *vo.MangaPage) *MangaPageDto {
 		AverageScore:      manga.AverageScore,
 		ScoreCount:        manga.ScoreCount,
 		PerScores:         manga.PerScores,
+		Banned:            manga.Banned,
 		ChapterGroups:     BuildMangaChapterGroupDtos(manga.ChapterGroups),
 	}
 }
