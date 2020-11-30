@@ -14,6 +14,7 @@ const (
 	MANGA_SEARCH_URL   = "https://www.manhuagui.com/s/%s_p%d.html"
 	MANGA_AUTHORS_URL  = "https://www.manhuagui.com/alist"
 	MANGA_AUTHOR_URL   = "https://www.manhuagui.com/author/%d/%s_p%d.html"
+	MANGA_RANK_URL     = "https://www.manhuagui.com/rank/%s"
 
 	MANGA_SCORE_URL  = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_SOURCE_URL = "https://%s.hamreus.com"

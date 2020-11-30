@@ -1,7 +1,7 @@
 package vo
 
 // 漫画页的完整信息
-type MangaPage struct {
+type Manga struct {
 	Mid               uint64               // 漫画编号
 	Title             string               // 漫画标题
 	Cover             string               // 漫画封面
@@ -46,7 +46,7 @@ type MangaChapter struct {
 }
 
 // 漫画页的部分信息 (Small)
-type SmallMangaPage struct {
+type SmallManga struct {
 	Mid               uint64        // 漫画编号
 	Title             string        // 漫画标题
 	Cover             string        // 漫画封面
@@ -62,7 +62,7 @@ type SmallMangaPage struct {
 }
 
 // 漫画页的部分信息 (Tiny)
-type TinyMangaPage struct {
+type TinyManga struct {
 	Mid           uint64 // 漫画编号
 	Title         string // 漫画标题
 	Cover         string // 漫画封面
@@ -83,9 +83,9 @@ type TinyMangaChapter struct {
 }
 
 // 漫画页分组 (Group)
-type MangaPageGroup struct {
-	Title  string           // 分组标题
-	Mangas []*TinyMangaPage // 章节集合
+type MangaGroup struct {
+	Title  string       // 分组标题
+	Mangas []*TinyManga // 章节集合
 }
 
 // 漫画章节分组 (Group)
@@ -95,9 +95,13 @@ type MangaChapterGroup struct {
 }
 
 // 主页的漫画列表
-type MangaPageGroupList struct {
-	Title       string            // 列表标题
-	TopGroup    *MangaPageGroup   // 置顶分组
-	Groups      []*MangaPageGroup // 类别分组
-	OtherGroups []*MangaPageGroup // 其他分组
+type MangaGroupList struct {
+	Title       string        // 列表标题
+	TopGroup    *MangaGroup   // 置顶分组
+	Groups      []*MangaGroup // 类别分组
+	OtherGroups []*MangaGroup // 其他分组
+}
+
+// 漫画排名
+type MangaRank struct {
 }

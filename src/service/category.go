@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
@@ -22,7 +23,7 @@ func NewCategoryService() *CategoryService {
 }
 
 func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
-	doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +42,7 @@ func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
 }
 
 func (c *CategoryService) GetZones() ([]*vo.Category, error) {
-	doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +61,7 @@ func (c *CategoryService) GetZones() ([]*vo.Category, error) {
 }
 
 func (c *CategoryService) GetAges() ([]*vo.Category, error) {
-	doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +91,7 @@ func (c *CategoryService) GetCategoryFromA(a *goquery.Selection) *vo.Category {
 	}
 }
 
-func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, order string) ([]*vo.TinyMangaPage, int32, int32, error) {
+func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, order string) ([]*vo.TinyManga, int32, int32, error) {
 	url := static.MANGA_CATEGORY_URL + "/" // https://www.manhuagui.com/list/update_p1.html
 	if zone != "" && zone != "all" {
 		url += zone + "_" // https://www.manhuagui.com/list/japan/update.html
@@ -113,19 +114,20 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 		url += fmt.Sprintf("/%s_p%d.html", "update", page)
 	}
 
-	doc, err := c.httpService.HttpGetDocument(url)
+	bs, doc, err := c.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, 0, 0, err
-	}
-	if doc == nil {
+	} else if doc == nil {
 		return nil, 0, 0, nil
+	} else if bytes.Contains(bs, []byte(static.NOT_FOUND2_TOKEN)) {
+		return []*vo.TinyManga{}, 0, 0, nil
 	}
 
 	limit := int32(42)
 	pages, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(2)").Text())
 	total, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(3)").Text())
 
-	mangas := make([]*vo.TinyMangaPage, 0)
+	mangas := make([]*vo.TinyManga, 0)
 	if page <= pages {
 		listLis := doc.Find("ul#contList li")
 		listLis.Each(func(idx int, li *goquery.Selection) {
@@ -136,7 +138,7 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 	return mangas, limit, total, nil
 }
 
-func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.TinyMangaPage {
+func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.TinyManga {
 	url := li.Find("a").AttrOr("href", "")
 	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
 	mid, _ := xnumber.Atou64(sp[len(sp)-1])
@@ -149,7 +151,7 @@ func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.Tiny
 	newestChapter := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(tt, "更新至"), "共"), "[完]")
 	score := li.Find("span.updateon em").Text()
 	newestDate := strings.TrimPrefix(strings.TrimSuffix(li.Find("span.updateon").Text(), score), "更新于：")
-	return &vo.TinyMangaPage{
+	return &vo.TinyManga{
 		Mid:           mid,
 		Title:         title,
 		Cover:         static.ParseCoverUrl(cover),

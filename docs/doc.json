@@ -32,6 +32,10 @@
     {
       "name": "Author",
       "description": "author-controller"
+    },
+    {
+      "name": "Rank",
+      "description": "rank-controller"
     }
   ],
   "paths": {
@@ -154,8 +158,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<_Page<SmallMangaPageDto>>",
-              "$ref": "#/definitions/_Result<_Page<SmallMangaPageDto>>"
+              "originRef": "_Result<_Page<SmallMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<SmallMangaDto>>"
             }
           }
         }
@@ -251,8 +255,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaPageDto>>",
-              "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+              "originRef": "_Result<_Page<TinyMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
             }
           }
         }
@@ -285,8 +289,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<MangaPageGroupListDto>",
-              "$ref": "#/definitions/_Result<MangaPageGroupListDto>"
+              "originRef": "_Result<MangaGroupListDto>",
+              "$ref": "#/definitions/_Result<MangaGroupListDto>"
             }
           }
         }
@@ -302,8 +306,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<MangaPageGroupListDto>",
-              "$ref": "#/definitions/_Result<MangaPageGroupListDto>"
+              "originRef": "_Result<MangaGroupListDto>",
+              "$ref": "#/definitions/_Result<MangaGroupListDto>"
             }
           }
         }
@@ -319,8 +323,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<MangaPageGroupListDto>",
-              "$ref": "#/definitions/_Result<MangaPageGroupListDto>"
+              "originRef": "_Result<MangaGroupListDto>",
+              "$ref": "#/definitions/_Result<MangaGroupListDto>"
             }
           }
         }
@@ -354,8 +358,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaPageDto>>",
-              "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+              "originRef": "_Result<_Page<TinyMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
             }
           }
         }
@@ -389,8 +393,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaPageDto>>",
-              "$ref": "#/definitions/_Result<_Page<TinyMangaPageDto>>"
+              "originRef": "_Result<_Page<TinyMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
             }
           }
         }
@@ -416,8 +420,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<MangaPageDto>",
-              "$ref": "#/definitions/_Result<MangaPageDto>"
+              "originRef": "_Result<MangaDto>",
+              "$ref": "#/definitions/_Result<MangaDto>"
             }
           }
         }
@@ -458,6 +462,110 @@
         }
       }
     },
+    "/v1/rank/day": {
+      "get": {
+        "summary": "Get day ranking",
+        "operationId": "-v1-rank-day-get",
+        "tags": [
+          "Rank"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "manga genre / zone / age, empty if all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<MangaRankDto>>",
+              "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/rank/month": {
+      "get": {
+        "summary": "Get month ranking",
+        "operationId": "-v1-rank-month-get",
+        "tags": [
+          "Rank"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "manga genre / zone / age, empty if all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<MangaRankDto>>",
+              "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/rank/total": {
+      "get": {
+        "summary": "Get total ranking",
+        "operationId": "-v1-rank-total-get",
+        "tags": [
+          "Rank"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "manga genre / zone / age, empty if all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<MangaRankDto>>",
+              "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/rank/week": {
+      "get": {
+        "summary": "Get week ranking",
+        "operationId": "-v1-rank-week-get",
+        "tags": [
+          "Rank"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "manga genre / zone / age, empty if all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<MangaRankDto>>",
+              "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/search/{keyword}": {
       "get": {
         "summary": "Search mangas",
@@ -493,8 +601,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<_Page<SmallMangaPageDto>>",
-              "$ref": "#/definitions/_Result<_Page<SmallMangaPageDto>>"
+              "originRef": "_Result<_Page<SmallMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<SmallMangaDto>>"
             }
           }
         }
@@ -700,7 +808,7 @@
         }
       }
     },
-    "MangaPageDto": {
+    "MangaDto": {
       "type": "object",
       "required": [
         "mid",
@@ -847,7 +955,7 @@
         }
       }
     },
-    "MangaPageGroupDto": {
+    "MangaGroupDto": {
       "type": "object",
       "required": [
         "title",
@@ -865,13 +973,13 @@
           "required": true,
           "description": "group mangas",
           "items": {
-            "originRef": "TinyMangaPageDto",
-            "$ref": "#/definitions/TinyMangaPageDto"
+            "originRef": "TinyMangaDto",
+            "$ref": "#/definitions/TinyMangaDto"
           }
         }
       }
     },
-    "MangaPageGroupListDto": {
+    "MangaGroupListDto": {
       "type": "object",
       "required": [
         "title",
@@ -889,16 +997,16 @@
         "top_group": {
           "required": true,
           "description": "manga top page group",
-          "originRef": "MangaPageGroupDto",
-          "$ref": "#/definitions/MangaPageGroupDto"
+          "originRef": "MangaGroupDto",
+          "$ref": "#/definitions/MangaGroupDto"
         },
         "groups": {
           "type": "array",
           "required": true,
           "description": "manga page groups",
           "items": {
-            "originRef": "MangaPageGroupDto",
-            "$ref": "#/definitions/MangaPageGroupDto"
+            "originRef": "MangaGroupDto",
+            "$ref": "#/definitions/MangaGroupDto"
           }
         },
         "other_groups": {
@@ -906,11 +1014,17 @@
           "required": true,
           "description": "manga other page groups",
           "items": {
-            "originRef": "MangaPageGroupDto",
-            "$ref": "#/definitions/MangaPageGroupDto"
+            "originRef": "MangaGroupDto",
+            "$ref": "#/definitions/MangaGroupDto"
           }
         }
       }
+    },
+    "MangaRankDto": {
+      "type": "object",
+      "required": [],
+      "description": "Mange rank result response",
+      "properties": {}
     },
     "Result": {
       "type": "object",
@@ -979,7 +1093,7 @@
         }
       }
     },
-    "SmallMangaPageDto": {
+    "SmallMangaDto": {
       "type": "object",
       "required": [
         "mid",
@@ -1142,7 +1256,7 @@
         }
       }
     },
-    "TinyMangaPageDto": {
+    "TinyMangaDto": {
       "type": "object",
       "required": [
         "mid",
@@ -1232,6 +1346,45 @@
         }
       }
     },
+    "_Page<MangaRankDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "MangaRankDto",
+            "$ref": "#/definitions/MangaRankDto"
+          }
+        }
+      }
+    },
     "_Page<SmallAuthorDto>": {
       "type": "object",
       "required": [
@@ -1271,7 +1424,7 @@
         }
       }
     },
-    "_Page<SmallMangaPageDto>": {
+    "_Page<SmallMangaDto>": {
       "type": "object",
       "required": [
         "page",
@@ -1304,13 +1457,13 @@
           "required": true,
           "description": "page data",
           "items": {
-            "originRef": "SmallMangaPageDto",
-            "$ref": "#/definitions/SmallMangaPageDto"
+            "originRef": "SmallMangaDto",
+            "$ref": "#/definitions/SmallMangaDto"
           }
         }
       }
     },
-    "_Page<TinyMangaPageDto>": {
+    "_Page<TinyMangaDto>": {
       "type": "object",
       "required": [
         "page",
@@ -1343,8 +1496,8 @@
           "required": true,
           "description": "page data",
           "items": {
-            "originRef": "TinyMangaPageDto",
-            "$ref": "#/definitions/TinyMangaPageDto"
+            "originRef": "TinyMangaDto",
+            "$ref": "#/definitions/TinyMangaDto"
           }
         }
       }
@@ -1405,7 +1558,7 @@
         }
       }
     },
-    "_Result<MangaPageDto>": {
+    "_Result<MangaDto>": {
       "type": "object",
       "required": [
         "code",
@@ -1428,12 +1581,12 @@
         "data": {
           "required": true,
           "description": "response data",
-          "originRef": "MangaPageDto",
-          "$ref": "#/definitions/MangaPageDto"
+          "originRef": "MangaDto",
+          "$ref": "#/definitions/MangaDto"
         }
       }
     },
-    "_Result<MangaPageGroupListDto>": {
+    "_Result<MangaGroupListDto>": {
       "type": "object",
       "required": [
         "code",
@@ -1456,8 +1609,8 @@
         "data": {
           "required": true,
           "description": "response data",
-          "originRef": "MangaPageGroupListDto",
-          "$ref": "#/definitions/MangaPageGroupListDto"
+          "originRef": "MangaGroupListDto",
+          "$ref": "#/definitions/MangaGroupListDto"
         }
       }
     },
@@ -1489,6 +1642,34 @@
         }
       }
     },
+    "_Result<_Page<MangaRankDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cMangaRankDto\u003e",
+          "$ref": "#/definitions/_Page\u003cMangaRankDto\u003e"
+        }
+      }
+    },
     "_Result<_Page<SmallAuthorDto>>": {
       "type": "object",
       "required": [
@@ -1517,7 +1698,7 @@
         }
       }
     },
-    "_Result<_Page<SmallMangaPageDto>>": {
+    "_Result<_Page<SmallMangaDto>>": {
       "type": "object",
       "required": [
         "code",
@@ -1540,12 +1721,12 @@
         "data": {
           "required": true,
           "description": "response data",
-          "originRef": "_Page\u003cSmallMangaPageDto\u003e",
-          "$ref": "#/definitions/_Page\u003cSmallMangaPageDto\u003e"
+          "originRef": "_Page\u003cSmallMangaDto\u003e",
+          "$ref": "#/definitions/_Page\u003cSmallMangaDto\u003e"
         }
       }
     },
-    "_Result<_Page<TinyMangaPageDto>>": {
+    "_Result<_Page<TinyMangaDto>>": {
       "type": "object",
       "required": [
         "code",
@@ -1568,8 +1749,8 @@
         "data": {
           "required": true,
           "description": "response data",
-          "originRef": "_Page\u003cTinyMangaPageDto\u003e",
-          "$ref": "#/definitions/_Page\u003cTinyMangaPageDto\u003e"
+          "originRef": "_Page\u003cTinyMangaDto\u003e",
+          "$ref": "#/definitions/_Page\u003cTinyMangaDto\u003e"
         }
       }
     }

@@ -38,18 +38,18 @@ func (h *HttpService) HttpGet(url string) ([]byte, error) {
 	return bs, err
 }
 
-func (h *HttpService) HttpGetDocument(url string) (*goquery.Document, error) {
+func (h *HttpService) HttpGetDocument(url string) ([]byte, *goquery.Document, error) {
 	bs, err := h.HttpGet(url)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	if bytes.Contains(bs, []byte(static.NOT_FOUND_TOKEN)) || bytes.Contains(bs, []byte(static.NOT_FOUND2_TOKEN)) || bytes.Contains(bs, []byte(static.NOT_FOUND3_TOKEN)) {
-		return nil, nil
+	if bytes.Contains(bs, []byte(static.NOT_FOUND_TOKEN)) {
+		return nil, nil, nil
 	}
 
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(bs))
 	if err != nil {
-		return nil, fmt.Errorf("document error: %v", err)
+		return nil, nil, fmt.Errorf("document error: %v", err)
 	}
-	return doc, nil
+	return bs, doc, nil
 }

@@ -37,7 +37,7 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<TinyMangaPageDto>>)
+    + Attributes (_Result<_Page<TinyMangaDto>>)
 
     + Headers
 
@@ -64,7 +64,7 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaPageDto>)
+    + Attributes (_Result<MangaDto>)
 
     + Headers
 
@@ -119,7 +119,7 @@ manga-list-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaPageGroupListDto>)
+    + Attributes (_Result<MangaGroupListDto>)
 
     + Headers
 
@@ -141,7 +141,7 @@ manga-list-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaPageGroupListDto>)
+    + Attributes (_Result<MangaGroupListDto>)
 
     + Headers
 
@@ -163,7 +163,7 @@ manga-list-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaPageGroupListDto>)
+    + Attributes (_Result<MangaGroupListDto>)
 
     + Headers
 
@@ -192,7 +192,7 @@ manga-list-controller
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<TinyMangaPageDto>>)
+    + Attributes (_Result<_Page<TinyMangaDto>>)
 
     + Headers
 
@@ -296,7 +296,7 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<TinyMangaPageDto>>)
+    + Attributes (_Result<_Page<TinyMangaDto>>)
 
     + Headers
 
@@ -331,7 +331,7 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<SmallMangaPageDto>>)
+    + Attributes (_Result<_Page<SmallMangaDto>>)
 
     + Headers
 
@@ -427,7 +427,115 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<SmallMangaPageDto>>)
+    + Attributes (_Result<_Page<SmallMangaDto>>)
+
+    + Headers
+
+    + Body
+
+# Group Rank
+
+rank-controller
+
+## Get day ranking [/v1/rank/day]
+
+### Get day ranking [GET]
+
+`GET /v1/rank/day`
+
++ Parameters
+
+    + type (string, required) - manga genre / zone / age, empty if all
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<MangaRankDto>>)
+
+    + Headers
+
+    + Body
+
+## Get week ranking [/v1/rank/week]
+
+### Get week ranking [GET]
+
+`GET /v1/rank/week`
+
++ Parameters
+
+    + type (string, required) - manga genre / zone / age, empty if all
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<MangaRankDto>>)
+
+    + Headers
+
+    + Body
+
+## Get month ranking [/v1/rank/month]
+
+### Get month ranking [GET]
+
+`GET /v1/rank/month`
+
++ Parameters
+
+    + type (string, required) - manga genre / zone / age, empty if all
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<MangaRankDto>>)
+
+    + Headers
+
+    + Body
+
+## Get total ranking [/v1/rank/total]
+
+### Get total ranking [GET]
+
+`GET /v1/rank/total`
+
++ Parameters
+
+    + type (string, required) - manga genre / zone / age, empty if all
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<MangaRankDto>>)
 
     + Headers
 
@@ -483,7 +591,7 @@ order by popular / new / update
 + title (string, required) - category title
 + url (string, required) - category link
 
-## MangaPageDto (object)
+## MangaDto (object)
 
 + mid (number, required) - manga id
     (format: int64)
@@ -526,7 +634,7 @@ order by popular / new / update
 + prev_cid (number, required) - prev chapter id
     (format: int64)
 
-## SmallMangaPageDto (object)
+## SmallMangaDto (object)
 
 + mid (number, required) - manga id
     (format: int64)
@@ -542,7 +650,7 @@ order by popular / new / update
 + newest_date (string, required) - manga last update date
 + brief_introduction (string, required) - manga brief introduction
 
-## TinyMangaPageDto (object)
+## TinyMangaDto (object)
 
 + mid (number, required) - manga id
     (format: int64)
@@ -565,22 +673,22 @@ order by popular / new / update
     (format: int32)
 + is_new (boolean, required) - chapter is uploaded newly
 
-## MangaPageGroupDto (object)
+## MangaGroupDto (object)
 
 + title (string, required) - group title
-+ mangas (array[TinyMangaPageDto], required) - group mangas
++ mangas (array[TinyMangaDto], required) - group mangas
 
 ## MangaChapterGroupDto (object)
 
 + title (string, required) - group title
 + chapters (array[TinyMangaChapterDto], required) - group chapters
 
-## MangaPageGroupListDto (object)
+## MangaGroupListDto (object)
 
 + title (string, required) - list title
-+ top_group (MangaPageGroupDto, required) - manga top page group
-+ groups (array[MangaPageGroupDto], required) - manga page groups
-+ other_groups (array[MangaPageGroupDto], required) - manga other page groups
++ top_group (MangaGroupDto, required) - manga top page group
++ groups (array[MangaGroupDto], required) - manga page groups
++ other_groups (array[MangaGroupDto], required) - manga other page groups
 
 ## _Result<_Page<SmallAuthorDto>> (object)
 
@@ -606,14 +714,14 @@ order by popular / new / update
 + message (string, required) - status message
 + data (AuthorDto, required) - response data
 
-## _Result<_Page<SmallMangaPageDto>> (object)
+## _Result<_Page<SmallMangaDto>> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<SmallMangaPageDto>, required) - response data
++ data (_Page<SmallMangaDto>, required) - response data
 
-## _Page<SmallMangaPageDto> (object)
+## _Page<SmallMangaDto> (object)
 
 + page (number, required) - current page
     (format: int32)
@@ -621,7 +729,7 @@ order by popular / new / update
     (format: int32)
 + total (number, required) - data count
     (format: int32)
-+ data (array[SmallMangaPageDto], required) - page data
++ data (array[SmallMangaDto], required) - page data
 
 ## _Result<_Page<CategoryDto>> (object)
 
@@ -640,14 +748,14 @@ order by popular / new / update
     (format: int32)
 + data (array[CategoryDto], required) - page data
 
-## _Result<_Page<TinyMangaPageDto>> (object)
+## _Result<_Page<TinyMangaDto>> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<TinyMangaPageDto>, required) - response data
++ data (_Page<TinyMangaDto>, required) - response data
 
-## _Page<TinyMangaPageDto> (object)
+## _Page<TinyMangaDto> (object)
 
 + page (number, required) - current page
     (format: int32)
@@ -655,14 +763,14 @@ order by popular / new / update
     (format: int32)
 + total (number, required) - data count
     (format: int32)
-+ data (array[TinyMangaPageDto], required) - page data
++ data (array[TinyMangaDto], required) - page data
 
-## _Result<MangaPageDto> (object)
+## _Result<MangaDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (MangaPageDto, required) - response data
++ data (MangaDto, required) - response data
 
 ## _Result<MangaChapterDto> (object)
 
@@ -671,9 +779,26 @@ order by popular / new / update
 + message (string, required) - status message
 + data (MangaChapterDto, required) - response data
 
-## _Result<MangaPageGroupListDto> (object)
+## _Result<MangaGroupListDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (MangaPageGroupListDto, required) - response data
++ data (MangaGroupListDto, required) - response data
+
+## _Result<_Page<MangaRankDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<MangaRankDto>, required) - response data
+
+## _Page<MangaRankDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[MangaRankDto], required) - page data

@@ -44,7 +44,6 @@ var (
 // search
 var (
 	SearchMangasError   = New(500, se(), "failed to search mangas")
-	SearchNotFoundError = New(404, ce(), "search result not found")
 )
 
 // author

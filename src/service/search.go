@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
@@ -25,7 +26,7 @@ func NewSearchService() *SearchService {
 	}
 }
 
-func (s *SearchService) SearchMangas(keyword string, page int32, order string) ([]*vo.SmallMangaPage, int32, int32, error) {
+func (s *SearchService) SearchMangas(keyword string, page int32, order string) ([]*vo.SmallManga, int32, int32, error) {
 	url := ""
 	if order == "popular" {
 		url = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o1", keyword), page)
@@ -35,10 +36,12 @@ func (s *SearchService) SearchMangas(keyword string, page int32, order string) (
 		url = fmt.Sprintf(static.MANGA_SEARCH_URL, keyword, page)
 	}
 
-	doc, err := s.httpService.HttpGetDocument(url)
+	bs, doc, err := s.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {
+		return nil, 0, 0, nil
+	} else if bytes.Contains(bs, []byte(static.NOT_FOUND3_TOKEN)) {
 		return nil, 0, 0, nil
 	}
 
@@ -46,7 +49,7 @@ func (s *SearchService) SearchMangas(keyword string, page int32, order string) (
 	total, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(2)").Text())
 	pages := int32(math.Ceil(float64(total) / float64(limit)))
 
-	mangas := make([]*vo.SmallMangaPage, 0)
+	mangas := make([]*vo.SmallManga, 0)
 	if page <= pages {
 		listLis := doc.Find("div.book-result li.cf")
 		listLis.Each(func(idx int, li *goquery.Selection) {

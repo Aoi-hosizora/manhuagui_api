@@ -56,7 +56,7 @@ func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, order
 		url += fmt.Sprintf("/%s_p%d.html", "index", page)
 	}
 
-	doc, err := a.httpService.HttpGetDocument(url)
+	_,doc, err := a.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, 0, 0, err
 	}
@@ -100,7 +100,7 @@ func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *vo.SmallAutho
 
 func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	url := fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", 1)
-	doc, err := a.httpService.HttpGetDocument(url)
+	_, doc, err := a.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, err
 	} else if doc == nil {
@@ -137,7 +137,7 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	return out, nil
 }
 
-func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([]*vo.SmallMangaPage, int32, int32, error) {
+func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([]*vo.SmallManga, int32, int32, error) {
 	url := ""
 	if order == "popular" {
 		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "view", page)
@@ -147,7 +147,7 @@ func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([
 		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", page)
 	}
 
-	doc, err := a.httpService.HttpGetDocument(url)
+	_, doc, err := a.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {
@@ -158,7 +158,7 @@ func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([
 	total, _ := xnumber.Atoi32(doc.Find("div.result-count strong").Text())
 	pages := int32(math.Ceil(float64(total) / float64(limit)))
 
-	mangas := make([]*vo.SmallMangaPage, 0)
+	mangas := make([]*vo.SmallManga, 0)
 	if page <= pages {
 		listLis := doc.Find("div.book-result li.cf")
 		listLis.Each(func(idx int, li *goquery.Selection) {
@@ -169,7 +169,7 @@ func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([
 	return mangas, limit, total, nil
 }
 
-func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.SmallMangaPage {
+func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.SmallManga {
 	title := li.Find("dt a").AttrOr("title", "")
 	url := li.Find("dt a").AttrOr("href", "")
 	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
@@ -194,7 +194,7 @@ func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.Small
 	})
 	briefIntroduction := strings.TrimSuffix(strings.TrimPrefix(li.Find("dd.intro").Text(), "简介："), "[详情]")
 
-	return &vo.SmallMangaPage{
+	return &vo.SmallManga{
 		Mid:               mid,
 		Title:             title,
 		Cover:             static.ParseCoverUrl(cover),

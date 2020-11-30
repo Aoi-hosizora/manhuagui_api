@@ -32,16 +32,17 @@ func initRoute(engine *gin.Engine) {
 		categoryController  = controller.NewCategoryController()
 		searchController    = controller.NewSearchController()
 		authorController    = controller.NewAuthorController()
+		rankController      = controller.NewRankController()
 	)
 
-	mangaGroup := v1.Group("manga") // /v1/manga
+	mangaGroup := v1.Group("manga") // /v1/manga/...
 	{
 		mangaGroup.GET("", j(mangaController.GetAllMangaPages))
 		mangaGroup.GET(":mid", j(mangaController.GetMangaPage))
 		mangaGroup.GET(":mid/:cid", j(mangaController.GetMangaChapter))
 	}
 
-	listGroup := v1.Group("list") // /v1/list
+	listGroup := v1.Group("list") // /v1/list/...
 	{
 		listGroup.GET("serial", j(mangaListController.GetHotSerialMangas))
 		listGroup.GET("finish", j(mangaListController.GetFinishedMangas))
@@ -49,7 +50,7 @@ func initRoute(engine *gin.Engine) {
 		listGroup.GET("updated", j(mangaListController.GetRecentUpdatedMangas))
 	}
 
-	categoryGroup := v1.Group("category") // /v1/category
+	categoryGroup := v1.Group("category") // /v1/category/...
 	{
 		categoryGroup.GET("genre", j(categoryController.GetGenres))
 		categoryGroup.GET("zone", j(categoryController.GetZones))
@@ -57,16 +58,24 @@ func initRoute(engine *gin.Engine) {
 		categoryGroup.GET("genre/:genre", j(categoryController.GetGenreMangas))
 	}
 
-	searchGroup := v1.Group("search") // /v1/search
+	searchGroup := v1.Group("search") // /v1/search/...
 	{
 		searchGroup.GET(":keyword", j(searchController.SearchMangas))
 	}
 
-	authorGroup := v1.Group("author") // /v1/author
+	authorGroup := v1.Group("author") // /v1/author/...
 	{
 		authorGroup.GET("", j(authorController.GetAllAuthors))
 		authorGroup.GET(":aid", j(authorController.GetAuthor))
 		authorGroup.GET(":aid/manga", j(authorController.GetAuthorMangas))
+	}
+
+	rankGroup := v1.Group("rank") // /v1/rank/...
+	{
+		rankGroup.GET("day", j(rankController.GetDayRanking))
+		rankGroup.GET("week", j(rankController.GetWeekRanking))
+		rankGroup.GET("month", j(rankController.GetMonthRanking))
+		rankGroup.GET("total", j(rankController.GetTotalRanking))
 	}
 }
 

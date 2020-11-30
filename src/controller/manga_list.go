@@ -17,20 +17,20 @@ func init() {
 	goapidoc.AddRoutePaths(
 		goapidoc.NewRoutePath("GET", "/v1/list/serial", "Get hot serial mangas").
 			Tags("MangaList").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
+			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/list/finish", "Get finished mangas").
 			Tags("MangaList").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
+			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/list/latest", "Get latest mangas").
 			Tags("MangaList").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageGroupListDto>")),
+			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get recent update mangas").
 			Tags("MangaList").
 			Params(param.ADPage, param.ADLimit).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 	)
 }
 
@@ -53,7 +53,7 @@ func (m *MangaListController) GetHotSerialMangas(c *gin.Context) *result.Result 
 		return result.Error(exception.GetHotSerialMangasError).SetError(err, c)
 	}
 
-	res := dto.BuildMangaPageGroupListDto(list)
+	res := dto.BuildMangaGroupListDto(list)
 	return result.Ok().SetData(res)
 }
 
@@ -64,7 +64,7 @@ func (m *MangaListController) GetFinishedMangas(c *gin.Context) *result.Result {
 		return result.Error(exception.GetFinishedMangasError).SetError(err, c)
 	}
 
-	res := dto.BuildMangaPageGroupListDto(list)
+	res := dto.BuildMangaGroupListDto(list)
 	return result.Ok().SetData(res)
 }
 
@@ -75,7 +75,7 @@ func (m *MangaListController) GetLatestMangas(c *gin.Context) *result.Result {
 		return result.Error(exception.GetLatestMangasError).SetError(err, c)
 	}
 
-	res := dto.BuildMangaPageGroupListDto(list)
+	res := dto.BuildMangaGroupListDto(list)
 	return result.Ok().SetData(res)
 }
 
@@ -87,6 +87,6 @@ func (m *MangaListController) GetRecentUpdatedMangas(c *gin.Context) *result.Res
 		return result.Error(exception.GetUpdatedMangasError).SetError(err, c)
 	}
 
-	res := dto.BuildTinyMangaPageDtos(pages)
+	res := dto.BuildTinyMangaDtos(pages)
 	return result.Ok().SetPage(pa.Page, pa.Limit, tot, res)
 }

@@ -30,10 +30,10 @@ func NewMangaService() *MangaService {
 	}
 }
 
-func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
+func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_PAGE_URL, mid)
-	doc, err := m.httpService.HttpGetDocument(url)
+	_, doc, err := m.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 	authorA.Each(func(idx int, sel *goquery.Selection) {
 		authors = append(authors, m.authorService.GetAuthorFromA(sel))
 	})
-	obj := &vo.MangaPage{
+	obj := &vo.Manga{
 		Mid:               mid,
 		Title:             title,
 		Cover:             static.ParseCoverUrl(cover),
@@ -138,6 +138,8 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 				return nil, err
 			}
 		}
+	} else if doc.Find("div.chapter-tip-18").Length() != 0 {
+		obj.Banned = true
 	}
 
 	groupTitleH4s := cDoc.Find("div.chapter h4").Children()
@@ -183,7 +185,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.MangaPage, error) {
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_CHAPTER_URL, mid, cid)
-	doc, err := m.httpService.HttpGetDocument(url)
+	_, doc, err := m.httpService.HttpGetDocument(url)
 	if err != nil {
 		return nil, err
 	}

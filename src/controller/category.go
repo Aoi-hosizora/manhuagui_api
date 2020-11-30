@@ -8,6 +8,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
 	"github.com/gin-gonic/gin"
@@ -37,7 +38,7 @@ func init() {
 				goapidoc.NewQueryParam("status", "string", false, "manga status, (all|lianzai|wanjie)"),
 				param.ADPage, param.ADOrder,
 			).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 	)
 }
 
@@ -98,10 +99,13 @@ func (ca *CategoryController) GetGenreMangas(c *gin.Context) *result.Result {
 	mangas, limit, total, err := ca.categoryService.GetGenreMangas(genre, zone, age, status, pa.Page, pa.Order) // popular / new / update
 	if err != nil {
 		return result.Error(exception.GetGenreMangasError).SetError(err, c)
-	} else if mangas == nil {
+	} else if mangas == nil { // not found
 		return result.Error(exception.GenreNotFoundError)
+	} else if len(mangas) == 0 { // empty
+		res := dto.BuildTinyMangaDtos([]*vo.TinyManga{})
+		return result.Ok().SetPage(pa.Page, limit, 0, res)
 	}
 
-	res := dto.BuildTinyMangaPageDtos(mangas)
+	res := dto.BuildTinyMangaDtos(mangas)
 	return result.Ok().SetPage(pa.Page, limit, total, res)
 }

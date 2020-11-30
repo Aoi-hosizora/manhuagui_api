@@ -8,6 +8,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,7 @@ func init() {
 				goapidoc.NewPathParam("keyword", "string", true, "search keyword"),
 				param.ADPage, param.ADOrder,
 			).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaPageDto>>")),
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 	)
 }
 
@@ -46,10 +47,11 @@ func (s *SearchController) SearchMangas(c *gin.Context) *result.Result {
 	mangas, limit, total, err := s.searchService.SearchMangas(keyword, pa.Page, pa.Order) // popular / new / update
 	if err != nil {
 		return result.Error(exception.SearchMangasError).SetError(err, c)
-	} else if mangas == nil {
-		return result.Error(exception.SearchNotFoundError)
+	} else if mangas == nil { // empty
+		res := dto.BuildSmallMangaDtos([]*vo.SmallManga{})
+		return result.Ok().SetPage(pa.Page, limit, 0, res)
 	}
 
-	res := dto.BuildSmallMangaPageDtos(mangas)
+	res := dto.BuildSmallMangaDtos(mangas)
 	return result.Ok().SetPage(pa.Page, limit, total, res)
 }

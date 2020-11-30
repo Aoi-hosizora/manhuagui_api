@@ -19,14 +19,14 @@ func init() {
 			Desc("order by popular / new / update").
 			Tags("Manga").
 			Params(param.ADPage, param.ADOrder).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaPageDto>>")),
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}", "Get manga page").
 			Tags("Manga").
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
 			).
-			Responses(goapidoc.NewResponse(200, "_Result<MangaPageDto>")),
+			Responses(goapidoc.NewResponse(200, "_Result<MangaDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}/{cid}", "Get manga chapter").
 			Tags("Manga").
@@ -61,7 +61,7 @@ func (m *MangaController) GetAllMangaPages(c *gin.Context) *result.Result {
 		return result.Error(exception.GetAllMangaPagesError).SetError(err, c)
 	}
 
-	res := dto.BuildTinyMangaPageDtos(mangas)
+	res := dto.BuildTinyMangaDtos(mangas)
 	return result.Ok().SetPage(pa.Page, limit, total, res)
 }
 
@@ -79,7 +79,7 @@ func (m *MangaController) GetMangaPage(c *gin.Context) *result.Result {
 		return result.Error(exception.MangaPageNotFoundError)
 	}
 
-	res := dto.BuildMangaPageDto(mangas)
+	res := dto.BuildMangaDto(mangas)
 	return result.Ok().SetData(res)
 }
 

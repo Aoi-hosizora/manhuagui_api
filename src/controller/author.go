@@ -38,7 +38,7 @@ func init() {
 				goapidoc.NewPathParam("aid", "integer#int64", true, "author id"),
 				param.ADPage, param.ADOrder,
 			).
-			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaPageDto>>")),
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 	)
 }
 
@@ -103,6 +103,6 @@ func (a *AuthorController) GetAuthorMangas(c *gin.Context) *result.Result {
 		return result.Error(exception.AuthorNotFound)
 	}
 
-	res := dto.BuildSmallMangaPageDtos(mangas)
+	res := dto.BuildSmallMangaDtos(mangas)
 	return result.Ok().SetPage(pa.Page, limit, total, res)
 }
