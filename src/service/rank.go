@@ -64,8 +64,12 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 		newestChapter := tr.Find("div.rank-update a").Text()
 		newestDate := tr.Find("td.rank-time").Text()
 		score, _ := xnumber.Atof64(tr.Find("td.rank-score").Text())
-		isDown := tr.Find("td.rank-trend span.trend-down").Length() > 0
-		isUp := tr.Find("td.rank-trend span.trend-up").Length() > 0
+		trend := uint8(0)
+		if tr.Find("td.rank-trend span.trend-down").Length() > 0 {
+			trend = uint8(2)
+		} else if tr.Find("td.rank-trend span.trend-up").Length() > 0 {
+			trend = uint8(1)
+		}
 		rank := &vo.MangaRank{
 			Mid:           mid,
 			Title:         title,
@@ -76,8 +80,7 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 			NewestDate:    newestDate,
 			Order:         order,
 			Score:         score,
-			IsUp:          isUp,
-			IsDown:        isDown,
+			Trend:         trend,
 		}
 		out = append(out, rank)
 	})

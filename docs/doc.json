@@ -764,7 +764,7 @@
         "content",
         "like_count",
         "reply_count",
-        "timeline",
+        "reply_timeline",
         "comment_time"
       ],
       "description": "Comment response",
@@ -814,7 +814,7 @@
           "description": "comment reply count",
           "format": "int32"
         },
-        "timeline": {
+        "reply_timeline": {
           "type": "array",
           "required": true,
           "description": "comment reply timeline",
@@ -1148,8 +1148,7 @@
         "newest_date",
         "order",
         "score",
-        "is_up",
-        "is_down"
+        "trend"
       ],
       "description": "Mange rank result response",
       "properties": {
@@ -1201,15 +1200,11 @@
           "description": "rank manga score",
           "format": "float"
         },
-        "is_up": {
-          "type": "boolean",
+        "trend": {
+          "type": "integer",
           "required": true,
-          "description": "rank trend up"
-        },
-        "is_down": {
-          "type": "boolean",
-          "required": true,
-          "description": "rank trend down"
+          "description": "rank trend, 0: None, 1: Up, 2: Down",
+          "format": "int32"
         }
       }
     },

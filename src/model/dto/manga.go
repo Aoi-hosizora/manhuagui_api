@@ -112,8 +112,7 @@ func init() {
 				goapidoc.NewProperty("newest_date", "string", true, "rank manga newest date"),
 				goapidoc.NewProperty("order", "integer#int32", true, "rank order"),
 				goapidoc.NewProperty("score", "number#float", true, "rank manga score"),
-				goapidoc.NewProperty("is_up", "boolean", true, "rank trend up"),
-				goapidoc.NewProperty("is_down", "boolean", true, "rank trend down"),
+				goapidoc.NewProperty("trend", "integer#int32", true, "rank trend, 0: None, 1: Up, 2: Down"),
 			),
 	)
 }
@@ -388,9 +387,8 @@ type MangaRankDto struct {
 	NewestChapter string           `json:"newest_chapter"` // 最新章节
 	NewestDate    string           `json:"newest_date"`    // 更新时间
 	Order         int8             `json:"order"`          // 漫画排名
-	Score         float64          `json:"score"`          // 当前评分
-	IsUp          bool             `json:"is_up"`          // 上升趋势
-	IsDown        bool             `json:"is_down"`        // 下降趋势
+	Score         float64          `json:"score"`          // 排名评分
+	Trend         uint8            `json:"trend"`          // 排名趋势
 }
 
 func BuildMangaRankDto(rank *vo.MangaRank) *MangaRankDto {
@@ -404,8 +402,7 @@ func BuildMangaRankDto(rank *vo.MangaRank) *MangaRankDto {
 		NewestDate:    rank.NewestDate,
 		Order:         rank.Order,
 		Score:         rank.Score,
-		IsUp:          rank.IsUp,
-		IsDown:        rank.IsDown,
+		Trend:         rank.Trend,
 	}
 }
 

@@ -639,7 +639,7 @@ comment-controller
     (format: int32)
 + reply_count (number, required) - comment reply count
     (format: int32)
-+ timeline (array[RepliedCommentDto], required) - comment reply timeline
++ reply_timeline (array[RepliedCommentDto], required) - comment reply timeline
 + comment_time (string, required) - comment create time
 
 ## RepliedCommentDto (object)
@@ -772,8 +772,8 @@ comment-controller
     (format: int32)
 + score (number, required) - rank manga score
     (format: float)
-+ is_up (boolean, required) - rank trend up
-+ is_down (boolean, required) - rank trend down
++ trend (number, required) - rank trend, 0: None, 1: Up, 2: Down
+    (format: int32)
 
 ## _Result<_Page<SmallAuthorDto>> (object)
 

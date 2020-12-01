@@ -112,7 +112,6 @@ type MangaRank struct {
 	NewestChapter string        // 最新章节
 	NewestDate    string        // 更新时间
 	Order         int8          // 漫画排名
-	Score         float64       // 当前评分
-	IsUp          bool          // 上升趋势
-	IsDown        bool          // 下降趋势
+	Score         float64       // 排名评分
+	Trend         uint8         // 排名趋势
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
+	"strings"
 )
 
 type CommentService struct {
@@ -31,5 +32,47 @@ func (c *CommentService) GetComments(mid uint64, page int32) ([]*vo.Comment, int
 		return nil, 0, err
 	}
 
-	return []*vo.Comment{}, 0, nil
+	objArr := commentsObj.CommentIds
+	chains := make([][]string, len(objArr))
+	for idx, idsStr := range objArr {
+		chain := strings.Split(idsStr, ",")
+		if len(chain) > 0 {
+			chains[idx] = chain
+		}
+	}
+
+	out := make([]*vo.Comment, 0, len(chains))
+	for _, chain := range chains {
+		cmt, ok := commentsObj.Comments[chain[0]]
+		if !ok {
+			continue
+		}
+		if cmt.Username == "" {
+			cmt.Username = "-"
+		}
+		if cmt.Avatar == "" {
+			cmt.Avatar = "https://cf.hamreus.com/images/default.png"
+		}
+
+		timeline := make([]*vo.RepliedComment, 0, len(chain)-1)
+		if len(chain) > 1 {
+			for idx := len(chain) - 1; idx >= 1; idx-- {
+				repliedId := chain[idx]
+				if reply, ok := commentsObj.Comments[repliedId]; ok {
+					cmt := vo.NewRepliedComment(reply)
+					if cmt.Username == "" {
+						cmt.Username = "-"
+					}
+					if cmt.Avatar == "" {
+						cmt.Avatar = "https://cf.hamreus.com/images/default.png"
+					}
+					timeline = append(timeline, cmt)
+				}
+			}
+		}
+		cmt.ReplyTimeline = timeline
+		out = append(out, cmt)
+	}
+
+	return out, commentsObj.Total, nil
 }

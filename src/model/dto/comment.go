@@ -46,7 +46,7 @@ type CommentDto struct {
 	Content       string               `json:"content"`        // 评论内同
 	LikeCount     uint8                `json:"like_count"`     // 被赞次数
 	ReplyCount    uint8                `json:"reply_count"`    // 回复次数
-	ReplyTimeline []*RepliedCommentDto `json:"reply_timeline"` // 评论回复
+	ReplyTimeline []*RepliedCommentDto `json:"reply_timeline"` // 回复列表
 	CommentTime   string               `json:"comment_time"`   // 评论时间
 }
 
@@ -66,9 +66,6 @@ func BuildCommentDto(comment *vo.Comment) *CommentDto {
 }
 
 func BuildCommentDtos(comments []*vo.Comment) []*CommentDto {
-	if comments == nil {
-		return []*CommentDto{}
-	}
 	out := make([]*CommentDto, len(comments))
 	for idx, comment := range comments {
 		out[idx] = BuildCommentDto(comment)
