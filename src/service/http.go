@@ -16,12 +16,15 @@ func NewHttpService() *HttpService {
 	return &HttpService{}
 }
 
-func (h *HttpService) HttpGet(url string) ([]byte, error) {
+func (h *HttpService) HttpGet(url string, fn func(r *http.Request)) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("User-Agent", static.USER_AGENT)
+	if fn != nil {
+		fn(req)
+	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -38,8 +41,8 @@ func (h *HttpService) HttpGet(url string) ([]byte, error) {
 	return bs, err
 }
 
-func (h *HttpService) HttpGetDocument(url string) ([]byte, *goquery.Document, error) {
-	bs, err := h.HttpGet(url)
+func (h *HttpService) HttpGetDocument(url string, fn func(*http.Request)) ([]byte, *goquery.Document, error) {
+	bs, err := h.HttpGet(url, fn)
 	if err != nil {
 		return nil, nil, err
 	}

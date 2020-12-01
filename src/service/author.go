@@ -56,7 +56,7 @@ func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, order
 		url += fmt.Sprintf("/%s_p%d.html", "index", page)
 	}
 
-	_,doc, err := a.httpService.HttpGetDocument(url)
+	_, doc, err := a.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, 0, 0, err
 	}
@@ -100,7 +100,7 @@ func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *vo.SmallAutho
 
 func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	url := fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", 1)
-	_, doc, err := a.httpService.HttpGetDocument(url)
+	_, doc, err := a.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
 	} else if doc == nil {
@@ -147,7 +147,7 @@ func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([
 		url = fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", page)
 	}
 
-	_, doc, err := a.httpService.HttpGetDocument(url)
+	_, doc, err := a.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {

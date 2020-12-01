@@ -36,7 +36,7 @@ func (s *SearchService) SearchMangas(keyword string, page int32, order string) (
 		url = fmt.Sprintf(static.MANGA_SEARCH_URL, keyword, page)
 	}
 
-	bs, doc, err := s.httpService.HttpGetDocument(url)
+	bs, doc, err := s.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {

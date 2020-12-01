@@ -40,7 +40,7 @@ func init() {
 type CommentDto struct {
 	Cid           uint64               `json:"cid"`            // 评论编号
 	Uid           uint64               `json:"uid"`            // 用户编号
-	Username      string               `json:"username"`       // 用户名称
+	Username      string               `json:"username"`       // 用户名
 	Avatar        string               `json:"avatar"`         // 用户头像
 	Gender        uint8                `json:"gender"`         // 用户性别
 	Content       string               `json:"content"`        // 评论内同
@@ -77,7 +77,7 @@ func BuildCommentDtos(comments []*vo.Comment) []*CommentDto {
 type RepliedCommentDto struct {
 	Cid         uint64 `json:"cid"`          // 评论编号
 	Uid         uint64 `json:"uid"`          // 用户编号
-	Username    string `json:"username"`     // 用户名称
+	Username    string `json:"username"`     // 用户名
 	Avatar      string `json:"avatar"`       // 用户头像
 	Gender      uint8  `json:"gender"`       // 用户性别
 	Content     string `json:"content"`      // 评论内同

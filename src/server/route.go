@@ -34,6 +34,7 @@ func initRoute(engine *gin.Engine) {
 		authorController    = controller.NewAuthorController()
 		rankController      = controller.NewRankController()
 		commentController   = controller.NewCommentService()
+		userController      = controller.NewUserController()
 	)
 
 	mangaGroup := v1.Group("manga") // /v1/manga/...
@@ -82,6 +83,12 @@ func initRoute(engine *gin.Engine) {
 	commentGroup := v1.Group("comment") // /v1/comment/...
 	{
 		commentGroup.GET("manga/:mid", j(commentController.GetComments))
+	}
+
+	userGroup := v1.Group("user") // /v1/user/...
+	{
+		_ = userController
+		_ = userGroup
 	}
 }
 

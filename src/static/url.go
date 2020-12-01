@@ -15,18 +15,24 @@ const (
 	MANGA_AUTHORS_URL  = "https://www.manhuagui.com/alist"
 	MANGA_AUTHOR_URL   = "https://www.manhuagui.com/author/%d/%s_p%d.html"
 	MANGA_RANK_URL     = "https://www.manhuagui.com/rank/%s"
+	MANGA_USER_URL     = "https://www.manhuagui.com/user/center/index"
+	MANGA_SHELF_URL    = "https://www.manhuagui.com/user/book/shelf"
 
-	MANGA_SCORE_URL   = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
-	MANGA_COMMENT_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
-	MANGA_SOURCE_URL  = "https://%s.hamreus.com"
+	MANGA_SCORE_URL       = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
+	MANGA_COMMENT_URL     = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
+	MANGA_LOGIN_URL       = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_login"
+	MANGA_CHECK_LOGIN_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_check_login"
+	MANGA_SOURCE_URL      = "https://%s.hamreus.com"
 )
 
 // noinspection GoSnakeCaseUsage
 const (
-	USER_AGENT       = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"
-	NOT_FOUND_TOKEN  = "您正访问的页面不存在"
-	NOT_FOUND2_TOKEN = "暂时没有此类别组合的漫画"
-	NOT_FOUND3_TOKEN = "很抱歉，没有查找到与"
+	USER_AGENT          = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"
+	NOT_FOUND_TOKEN     = "您正访问的页面不存在"
+	NOT_FOUND2_TOKEN    = "暂时没有此类别组合的漫画"
+	NOT_FOUND3_TOKEN    = "很抱歉，没有查找到与"
+	LOGIN_SUCCESS_TOKEN = "会员登录成功"
+	UNAUTHORIZED_TOKEN  = "输入登录密码"
 )
 
 /*

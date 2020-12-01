@@ -36,6 +36,7 @@ func init() {
 		goapidoc.NewTag("Author", "author-controller"),
 		goapidoc.NewTag("Rank", "rank-controller"),
 		goapidoc.NewTag("Comment", "comment-controller"),
+		goapidoc.NewTag("User", "user-controller"),
 	)
 }
 

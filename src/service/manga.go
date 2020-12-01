@@ -33,7 +33,7 @@ func NewMangaService() *MangaService {
 func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_PAGE_URL, mid)
-	_, doc, err := m.httpService.HttpGetDocument(url)
+	_, doc, err := m.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 
 	// get score
 	scoreUrl := fmt.Sprintf(static.MANGA_SCORE_URL, mid)
-	scoreJsonBs, err := m.httpService.HttpGet(scoreUrl)
+	scoreJsonBs, err := m.httpService.HttpGet(scoreUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_CHAPTER_URL, mid, cid)
-	_, doc, err := m.httpService.HttpGetDocument(url)
+	_, doc, err := m.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
 	}

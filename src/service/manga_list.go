@@ -111,7 +111,7 @@ func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCove
 }
 
 func (m *MangaListService) GetHotSerialMangas() (*vo.MangaGroupList, error) {
-	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL)
+	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +126,7 @@ func (m *MangaListService) GetHotSerialMangas() (*vo.MangaGroupList, error) {
 }
 
 func (m *MangaListService) GetFinishedMangas() (*vo.MangaGroupList, error) {
-	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL)
+	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (m *MangaListService) GetFinishedMangas() (*vo.MangaGroupList, error) {
 }
 
 func (m *MangaListService) GetLatestMangas() (*vo.MangaGroupList, error) {
-	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL)
+	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +156,7 @@ func (m *MangaListService) GetLatestMangas() (*vo.MangaGroupList, error) {
 }
 
 func (m *MangaListService) GetRecentUpdatedMangas(pa *param.PageParam) ([]*vo.TinyManga, int32, error) {
-	_, doc, err := m.httpService.HttpGetDocument(static.MANGA_UPDATE_URL)
+	_, doc, err := m.httpService.HttpGetDocument(static.MANGA_UPDATE_URL, nil)
 	if err != nil {
 		return nil, 0, err
 	}

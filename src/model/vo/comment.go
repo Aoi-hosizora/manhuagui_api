@@ -11,7 +11,7 @@ type Comments struct {
 type Comment struct {
 	Id            uint64            `json:"id"`            // 评论编号
 	UserId        uint64            `json:"user_id"`       // 用户编号
-	Username      string            `json:"user_name"`     // 用户名称
+	Username      string            `json:"user_name"`     // 用户名
 	Avatar        string            `json:"avatar"`        // 用户头像
 	Sex           uint8             `json:"sex"`           // 用户性别
 	Content       string            `json:"content"`       // 评论内同
@@ -25,7 +25,7 @@ type Comment struct {
 type RepliedComment struct {
 	Id           uint64 // 评论编号
 	UserId       uint64 // 用户编号
-	Username     string // 用户名称
+	Username     string // 用户名
 	Avatar       string // 用户头像
 	Sex          uint8  // 用户性别
 	Content      string // 评论内同

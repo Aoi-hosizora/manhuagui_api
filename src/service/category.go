@@ -23,7 +23,7 @@ func NewCategoryService() *CategoryService {
 }
 
 func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
-	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
 }
 
 func (c *CategoryService) GetZones() ([]*vo.Category, error) {
-	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (c *CategoryService) GetZones() ([]*vo.Category, error) {
 }
 
 func (c *CategoryService) GetAges() ([]*vo.Category, error) {
-	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL)
+	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 		url += fmt.Sprintf("/%s_p%d.html", "update", page)
 	}
 
-	bs, doc, err := c.httpService.HttpGetDocument(url)
+	bs, doc, err := c.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {

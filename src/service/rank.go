@@ -40,7 +40,7 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 		}
 	}
 	url = fmt.Sprintf(static.MANGA_RANK_URL, part)
-	_, doc, err := r.httpService.HttpGetDocument(url)
+	_, doc, err := r.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
 	} else if doc == nil {
