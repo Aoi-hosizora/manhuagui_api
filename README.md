@@ -2,6 +2,10 @@
 
 + An unofficial backend for manhuagui (https://www.manhuagui.com/) written in golang/gin
 
+### Document
+
++ See http://localhost:10018/v1/swagger/index.html or https://manhuaguibackend.docs.apiary.io/
+
 ### Endpoints
 
 + `GET /v1/manga`
@@ -24,10 +28,10 @@
 + `GET /v1/rank/month`
 + `GET /v1/rank/total`
 + `GET /v1/comment/manga/:mid`
-
-### Document
-
-+ See http://localhost:10018/v1/swagger/index.html or https://manhuaguibackend.docs.apiary.io/
++ `POST /v1/user/login`
++ `POST /v1/user/check_login`
++ `GET /v1/user/info`
++ `GET /v1/user/shelf`
 
 ### Reference
 

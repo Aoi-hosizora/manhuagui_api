@@ -19,7 +19,7 @@ func init() {
 			Tags("Comment").
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
-				param.ADPage,
+				param.ParamPage,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CommentDto>>")),
 	)
@@ -49,7 +49,7 @@ func (co *CommentController) GetComments(c *gin.Context) *result.Result {
 	if err != nil {
 		return result.Error(exception.GetMangaCommentsError).SetError(err, c)
 	} else if comments == nil {
-		return result.Error(exception.MangaPageNotFoundError) // unreachable
+		return result.Error(exception.MangaNotFoundError) // unreachable
 	}
 
 	res := dto.BuildCommentDtos(comments)

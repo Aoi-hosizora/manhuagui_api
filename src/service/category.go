@@ -140,8 +140,6 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 
 func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.TinyManga {
 	url := li.Find("a").AttrOr("href", "")
-	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-	mid, _ := xnumber.Atou64(sp[len(sp)-1])
 	title := li.Find("a").AttrOr("title", "")
 	cover := li.Find("a img").AttrOr("src", "")
 	if cover == "" {
@@ -152,7 +150,7 @@ func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.Tiny
 	score := li.Find("span.updateon em").Text()
 	newestDate := strings.TrimPrefix(strings.TrimSuffix(li.Find("span.updateon").Text(), score), "更新于：")
 	return &vo.TinyManga{
-		Mid:           mid,
+		Mid:           static.ParseMid(url),
 		Title:         title,
 		Cover:         static.ParseCoverUrl(cover),
 		Url:           static.HOMEPAGE_URL + url,

@@ -15,13 +15,13 @@ import (
 
 func init() {
 	goapidoc.AddRoutePaths(
-		goapidoc.NewRoutePath("GET", "/v1/manga", "Get all manga pages").
+		goapidoc.NewRoutePath("GET", "/v1/manga", "Get all mangas").
 			Desc("order by popular / new / update").
 			Tags("Manga").
-			Params(param.ADPage, param.ADOrder).
+			Params(param.ParamPage, param.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 
-		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}", "Get manga page").
+		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}", "Get manga").
 			Tags("Manga").
 			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id")).
 			Responses(goapidoc.NewResponse(200, "_Result<MangaDto>")),
@@ -51,12 +51,12 @@ func NewMangaController() *MangaController {
 }
 
 // GET /v1/manga
-func (m *MangaController) GetAllMangaPages(c *gin.Context) *result.Result {
+func (m *MangaController) GetAllMangas(c *gin.Context) *result.Result {
 	pa := param.BindPageOrder(c, m.config)
 
 	mangas, limit, total, err := m.categoryService.GetGenreMangas("all", "all", "all", "all", pa.Page, pa.Order) // popular / new / update
 	if err != nil {
-		return result.Error(exception.GetAllMangaPagesError).SetError(err, c)
+		return result.Error(exception.GetAllMangasError).SetError(err, c)
 	}
 
 	res := dto.BuildTinyMangaDtos(mangas)
@@ -64,7 +64,7 @@ func (m *MangaController) GetAllMangaPages(c *gin.Context) *result.Result {
 }
 
 // GET /v1/manga/:mid
-func (m *MangaController) GetMangaPage(c *gin.Context) *result.Result {
+func (m *MangaController) GetManga(c *gin.Context) *result.Result {
 	id, err := param.BindRouteId(c, "mid")
 	if err != nil {
 		return result.Error(exception.RequestParamError).SetError(err, c)
@@ -72,9 +72,9 @@ func (m *MangaController) GetMangaPage(c *gin.Context) *result.Result {
 
 	mangas, err := m.mangaService.GetMangaPage(id)
 	if err != nil {
-		return result.Error(exception.GetMangaPageError).SetError(err, c)
+		return result.Error(exception.GetMangaError).SetError(err, c)
 	} else if mangas == nil {
-		return result.Error(exception.MangaPageNotFoundError)
+		return result.Error(exception.MangaNotFoundError)
 	}
 
 	res := dto.BuildMangaDto(mangas)

@@ -74,8 +74,6 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCover bool) *vo.TinyManga {
 	if hasCover {
 		url := li.Find("a").AttrOr("href", "")
-		sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-		mid, _ := xnumber.Atou64(sp[len(sp)-1])
 		title := li.Find("a").AttrOr("title", "")
 		cover := li.Find("a img").AttrOr("src", "")
 		if cover == "" {
@@ -85,7 +83,7 @@ func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCove
 		newestChapter := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(tt, "更新至"), "共"), "[全]")
 		newestDate := li.Find("span.dt").Text()
 		return &vo.TinyManga{
-			Mid:           mid,
+			Mid:           static.ParseMid(url),
 			Title:         title,
 			Cover:         static.ParseCoverUrl(cover),
 			Url:           static.HOMEPAGE_URL + url,
@@ -96,11 +94,9 @@ func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCove
 	} else {
 		title := li.Find("h6 a").AttrOr("title", "")
 		url := li.Find("h6 a").AttrOr("href", "")
-		sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-		mid, _ := xnumber.Atou64(sp[len(sp)-1])
 		newestChapter := li.Find("h6 span a").AttrOr("title", "")
 		return &vo.TinyManga{
-			Mid:           mid,
+			Mid:           static.ParseMid(url),
 			Title:         title,
 			Cover:         "",
 			Url:           static.HOMEPAGE_URL + url,

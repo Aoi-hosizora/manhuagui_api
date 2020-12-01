@@ -29,7 +29,7 @@ func init() {
 
 		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get recent update mangas").
 			Tags("MangaList").
-			Params(param.ADPage, param.ADLimit).
+			Params(param.ParamPage, param.ParamLimit).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 	)
 }

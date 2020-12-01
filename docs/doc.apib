@@ -13,9 +13,9 @@ An unofficial backend for manhuagui written in golang/gin
 
 manga-controller
 
-## Get all manga pages [/v1/manga{?page,order}]
+## Get all mangas [/v1/manga{?page,order}]
 
-### Get all manga pages [GET]
+### Get all mangas [GET]
 
 `GET /v1/manga`
 
@@ -43,9 +43,9 @@ order by popular / new / update
 
     + Body
 
-## Get manga page [/v1/manga/{mid}]
+## Get manga [/v1/manga/{mid}]
 
-### Get manga page [GET]
+### Get manga [GET]
 
 `GET /v1/manga/{mid}`
 
@@ -574,6 +574,114 @@ comment-controller
 
     + Body
 
+# Group User
+
+user-controller
+
+## Login [/v1/user/login{?username,password}]
+
+### Login [POST]
+
+`POST /v1/user/login`
+
++ Parameters
+
+    + username (string, required) - login username
+    + password (string, required) - login password
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<TokenDto>)
+
+    + Headers
+
+    + Body
+
+## Check login [/v1/user/check_login]
+
+### Check login [POST]
+
+`POST /v1/user/check_login`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (Result)
+
+    + Headers
+
+    + Body
+
+## Get authorized user information [/v1/user/info]
+
+### Get authorized user information [GET]
+
+`GET /v1/user/info`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<UserDto>)
+
+    + Headers
+
+    + Body
+
+## Get shelf mangas [/v1/user/shelf{?page}]
+
+### Get shelf mangas [GET]
+
+`GET /v1/user/shelf`
+
++ Parameters
+
+    + page (number, optional) - current page
+        (format: int32)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<ShelfMangaDto>>)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -755,7 +863,7 @@ comment-controller
 
 + title (string, required) - list title
 + top_group (MangaGroupDto, required) - manga top page group
-+ groups (array[MangaGroupDto], required) - manga page groups
++ groups (array[MangaGroupDto], required) - manga groups
 + other_groups (array[MangaGroupDto], required) - manga other page groups
 
 ## MangaRankDto (object)
@@ -774,6 +882,34 @@ comment-controller
     (format: float)
 + trend (number, required) - rank trend, 0: None, 1: Up, 2: Down
     (format: int32)
+
+## ShelfMangaDto (object)
+
++ mid (number, required) - manga id
+    (format: int64)
++ title (string, required) - manga name
++ cover (string, required) - manga cover
++ url (string, required) - manga link
++ newest_chapter (string, required) - manga last update chapter
++ newest_duration (string, required) - manga last update duration
++ last_chapter (string, required) - manga last read chapter
++ last_duration (string, required) - manga last read duration
+
+## TokenDto (object)
+
++ token (string, required) - access token
+
+## UserDto (object)
+
++ username (string, required) - user name
++ avatar (string, required) - user avatar
++ class (string, required) - user class (会员等级)
++ score (number, required) - user score (个人成长值)
+    (format: int32)
++ login_ip (string, required) - user current login ip
++ last_login_ip (string, required) - user last login ip
++ register_time (string, required) - user register time
++ last_login_time (string, required) - user last login time
 
 ## _Result<_Page<SmallAuthorDto>> (object)
 
@@ -904,3 +1040,34 @@ comment-controller
 + total (number, required) - data count
     (format: int32)
 + data (array[MangaRankDto], required) - page data
+
+## _Result<TokenDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (TokenDto, required) - response data
+
+## _Result<UserDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (UserDto, required) - response data
+
+## _Result<_Page<ShelfMangaDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<ShelfMangaDto>, required) - response data
+
+## _Page<ShelfMangaDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[ShelfMangaDto], required) - page data

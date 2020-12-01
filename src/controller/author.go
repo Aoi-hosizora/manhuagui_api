@@ -22,7 +22,7 @@ func init() {
 				goapidoc.NewQueryParam("genre", "string", false, "author genre"),
 				goapidoc.NewQueryParam("zone", "string", false, "author zone"),
 				goapidoc.NewQueryParam("age", "string", false, "author age range, (shaonv|shaonian|qingnian|ertong|tongyong)"),
-				param.ADPage, param.ADOrder,
+				param.ParamPage, param.ParamOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallAuthorDto>>")),
 
@@ -36,7 +36,7 @@ func init() {
 			Tags("Author").
 			Params(
 				goapidoc.NewPathParam("aid", "integer#int64", true, "author id"),
-				param.ADPage, param.ADOrder,
+				param.ParamPage, param.ParamOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 	)

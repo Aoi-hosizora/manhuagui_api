@@ -8,10 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// noinspection GoNameStartsWithPackageName
 var (
-	ADPage  = goapidoc.NewQueryParam("page", "integer#int32", false, "current page")
-	ADLimit = goapidoc.NewQueryParam("limit", "integer#int32", false, "page size")
-	ADOrder = goapidoc.NewQueryParam("order", "string", false, "order string")
+	ParamPage  = goapidoc.NewQueryParam("page", "integer#int32", false, "current page")
+	ParamLimit = goapidoc.NewQueryParam("limit", "integer#int32", false, "page size")
+	ParamOrder = goapidoc.NewQueryParam("order", "string", false, "order string")
 )
 
 type PageParam struct {
@@ -24,6 +25,7 @@ type PageOrderParam struct {
 	Limit int32  `json:"limit"`
 	Order string `json:"order"`
 }
+
 // Bind ?page&limit
 func BindPage(c *gin.Context, config *config.Config) *PageParam {
 	page, err := xnumber.Atoi32(c.DefaultQuery("page", "1"))

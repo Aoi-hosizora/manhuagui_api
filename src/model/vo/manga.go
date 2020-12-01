@@ -115,3 +115,15 @@ type MangaRank struct {
 	Score         float64       // 排名评分
 	Trend         uint8         // 排名趋势
 }
+
+// 书架漫画
+type ShelfManga struct {
+	Mid            uint64 // 漫画编号
+	Title          string // 漫画标题
+	Cover          string // 漫画封面
+	Url            string // 漫画链接
+	NewestChapter  string // 最新章节
+	NewestDuration string // 更新时间
+	LastChapter    string // 最近阅读
+	LastDuration   string // 最近时间
+}

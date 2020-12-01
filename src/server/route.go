@@ -39,8 +39,8 @@ func initRoute(engine *gin.Engine) {
 
 	mangaGroup := v1.Group("manga") // /v1/manga/...
 	{
-		mangaGroup.GET("", j(mangaController.GetAllMangaPages))
-		mangaGroup.GET(":mid", j(mangaController.GetMangaPage))
+		mangaGroup.GET("", j(mangaController.GetAllMangas))
+		mangaGroup.GET(":mid", j(mangaController.GetManga))
 		mangaGroup.GET(":mid/:cid", j(mangaController.GetMangaChapter))
 	}
 
@@ -87,8 +87,10 @@ func initRoute(engine *gin.Engine) {
 
 	userGroup := v1.Group("user") // /v1/user/...
 	{
-		_ = userController
-		_ = userGroup
+		userGroup.POST("login", j(userController.Login))
+		userGroup.POST("check_login", j(userController.CheckLogin))
+		userGroup.GET("info", j(userController.GetUser))
+		userGroup.GET("shelf", j(userController.GetShelfMangas))
 	}
 }
 

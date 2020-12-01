@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
+	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"strings"
 )
@@ -99,17 +101,79 @@ func (u *UserService) _login(url, token string) (*goquery.Document, error) {
 }
 
 func (u *UserService) GetUser(token string) (*vo.User, error) {
-	_, err := u._login(static.MANGA_USER_URL, token)
+	doc, err := u._login(static.MANGA_USER_URL, token)
 	if err != nil {
 		return nil, err
+	} else if doc == nil {
+		return nil, nil
 	}
-	return nil, nil
+
+	username := doc.Find("div.head-box div.inner h3").Text()
+	username = strings.TrimSuffix(strings.TrimPrefix(username, "尊敬的会员 "), "，欢迎您！")
+	avatar := doc.Find("div.head-box div.img-box img").AttrOr("src", "")
+	class := doc.Find("div.head-box div.inner p").First().Text()
+	class = strings.TrimPrefix(class, "您的会员等级：")
+	scoreStr := doc.Find("div.head-box div.inner p").First().Next().Text()
+	score, _ := xnumber.Atoi32(strings.TrimSuffix(strings.TrimPrefix(scoreStr, "个人成长值："), "点"))
+
+	recordDiv := doc.Find("div.head-inner:last-of-type")
+	loginIP := recordDiv.Find("dl:nth-of-type(1) dd").Text()
+	lastLoginIP := recordDiv.Find("dl:nth-of-type(2) dd").Text()
+	registerTime := recordDiv.Find("dl:nth-of-type(3) dd").Text()
+	lastLoginTime := recordDiv.Find("dl:nth-of-type(4) dd").Text()
+
+	user := &vo.User{
+		Username:      username,
+		Avatar:        avatar,
+		Class:         class,
+		Score:         score,
+		LoginIP:       loginIP,
+		LastLoginIP:   lastLoginIP,
+		RegisterTime:  registerTime,
+		LastLoginTime: lastLoginTime,
+	}
+	return user, nil
 }
 
-func (u *UserService) GetShelfMangas(token string) (interface{}, error) {
-	_, err := u._login(static.MANGA_SHELF_URL, token)
+func (u *UserService) GetShelfMangas(token string, page int32) ([]*vo.ShelfManga, int32, int32, error) {
+	url := fmt.Sprintf(static.MANGA_SHELF_URL, page)
+	doc, err := u._login(url, token)
 	if err != nil {
-		return nil, err
+		return nil, 0, 0, err
+	} else if doc == nil {
+		return nil, 0, 0, nil
 	}
-	return true, nil
+
+	total, _ := xnumber.Atoi32(strings.TrimSuffix(strings.TrimPrefix(doc.Find("div.flickr span:first-child").Text(), "共"), "记录"))
+	limit := int32(20)
+	pages := int32(math.Ceil(float64(total) / float64(limit)))
+	if page > pages {
+		return []*vo.ShelfManga{}, limit, total, nil
+	}
+
+	mangas := make([]*vo.ShelfManga, 0)
+	divs := doc.Find("div.dy_content_li")
+	divs.Each(func(idx int, sel *goquery.Selection) {
+		cover := sel.Find("img").AttrOr("src", "")
+		title := sel.Find("h3").Text()
+		url := sel.Find("h3 a").AttrOr("href", "")
+		newestChapter := sel.Find("p:nth-of-type(1) em:nth-child(1)").Text()
+		newestDuration := sel.Find("p:nth-of-type(1) em:nth-child(2)").Text()
+		lastChapter := sel.Find("p:nth-of-type(2) em:nth-child(1)").Text()
+		lastDuration := sel.Find("p:nth-of-type(2) em:nth-child(2)").Text()
+
+		manga := &vo.ShelfManga{
+			Mid:            static.ParseMid(url),
+			Title:          title,
+			Cover:          static.ParseCoverUrl(cover),
+			Url:            static.HOMEPAGE_URL + url,
+			NewestChapter:  newestChapter,
+			NewestDuration: newestDuration,
+			LastChapter:    lastChapter,
+			LastDuration:   lastDuration,
+		}
+		mangas = append(mangas, manga)
+	})
+
+	return mangas, limit, total, nil
 }

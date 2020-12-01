@@ -27,10 +27,8 @@ func NewAuthorService() *AuthorService {
 func (a *AuthorService) GetAuthorFromA(sel *goquery.Selection) *vo.TinyAuthor {
 	name := sel.AttrOr("title", "")
 	url := strings.TrimSuffix(sel.AttrOr("href", ""), "/")
-	sp := strings.Split(url, "/")
-	aid, _ := xnumber.Atou64(sp[len(sp)-1])
 	return &vo.TinyAuthor{
-		Aid:  aid,
+		Aid:  static.ParseAid(url),
 		Name: name,
 		Url:  strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
 	}
@@ -82,14 +80,12 @@ func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, order
 func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *vo.SmallAuthor {
 	name := li.Find("p a").AttrOr("title", "")
 	url := li.Find("p a").AttrOr("href", "")
-	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-	aid, _ := xnumber.Atou64(sp[len(sp)-1])
 	zone := li.Find("font:nth-child(2)").Text()
 	mangaCount, _ := xnumber.Atoi32(li.Find("font:nth-child(3)").Text())
 	score := li.Find("span.updateon em").Text()
 	newestDate := strings.TrimPrefix(strings.TrimSuffix(li.Find("span.updateon").Text(), score), "更新于：")
 	return &vo.SmallAuthor{
-		Aid:        aid,
+		Aid:        static.ParseAid(url),
 		Name:       name,
 		Zone:       zone,
 		Url:        strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
@@ -113,8 +109,6 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	zone := strings.TrimPrefix(infoDiv.Find("p:nth-child(2)").Text(), "所属地区：")
 	newestP := infoDiv.Find("p:nth-child(4)")
 	newestMangaUrl := newestP.Find("a").AttrOr("href", "")
-	sp := strings.Split(strings.TrimSuffix(newestMangaUrl, "/"), "/")
-	newestMangaId, _ := xnumber.Atou64(sp[len(sp)-1])
 	newestMangaTitle := strings.TrimSuffix(strings.TrimPrefix(newestP.Find("a").AttrOr("title", ""), "【"), "】")
 	newestDate := newestP.Find("span").Text()
 	mangaCount, _ := xnumber.Atoi32(infoDiv.Find("p:nth-child(5) font").Text())
@@ -126,7 +120,7 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 		Zone:             zone,
 		Url:              url,
 		MangaCount:       mangaCount,
-		NewestMangaId:    newestMangaId,
+		NewestMangaId:    static.ParseMid(newestMangaUrl),
 		NewestMangaTitle: newestMangaTitle,
 		NewestDate:       newestDate,
 		Alias:            alias,
@@ -172,8 +166,6 @@ func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([
 func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.SmallManga {
 	title := li.Find("dt a").AttrOr("title", "")
 	url := li.Find("dt a").AttrOr("href", "")
-	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-	mid, _ := xnumber.Atou64(sp[len(sp)-1])
 	cover := li.Find("div.book-cover img").AttrOr("src", "")
 	statusDD := li.Find("dd.status")
 	status := statusDD.Find("span:nth-child(2)").Text()
@@ -195,7 +187,7 @@ func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.Small
 	briefIntroduction := strings.TrimSuffix(strings.TrimPrefix(li.Find("dd.intro").Text(), "简介："), "[详情]")
 
 	return &vo.SmallManga{
-		Mid:               mid,
+		Mid:               static.ParseMid(url),
 		Title:             title,
 		Cover:             static.ParseCoverUrl(cover),
 		Url:               static.HOMEPAGE_URL + url,

@@ -1,6 +1,7 @@
 package static
 
 import (
+	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"strings"
 )
 
@@ -16,7 +17,7 @@ const (
 	MANGA_AUTHOR_URL   = "https://www.manhuagui.com/author/%d/%s_p%d.html"
 	MANGA_RANK_URL     = "https://www.manhuagui.com/rank/%s"
 	MANGA_USER_URL     = "https://www.manhuagui.com/user/center/index"
-	MANGA_SHELF_URL    = "https://www.manhuagui.com/user/book/shelf"
+	MANGA_SHELF_URL    = "https://www.manhuagui.com/user/book/shelf/%d"
 
 	MANGA_SCORE_URL       = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_COMMENT_URL     = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
@@ -50,4 +51,16 @@ func ParseCoverUrl(url string) string {
 	url = strings.ReplaceAll(url, "/m/", "/g/") // 114x152
 	url = strings.ReplaceAll(url, "/s/", "/g/") // 92x122
 	return url                                  // 240x360
+}
+
+func ParseMid(url string) uint64 {
+	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
+	mid, _ := xnumber.Atou64(sp[len(sp)-1])
+	return mid
+}
+
+func ParseAid(url string) uint64 {
+	sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
+	aid, _ := xnumber.Atou64(sp[len(sp)-1])
+	return aid
 }

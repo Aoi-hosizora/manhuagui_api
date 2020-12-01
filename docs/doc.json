@@ -40,6 +40,10 @@
     {
       "name": "Comment",
       "description": "comment-controller"
+    },
+    {
+      "name": "User",
+      "description": "user-controller"
     }
   ],
   "paths": {
@@ -406,7 +410,7 @@
     },
     "/v1/manga": {
       "get": {
-        "summary": "Get all manga pages",
+        "summary": "Get all mangas",
         "operationId": "-v1-manga-get",
         "description": "order by popular / new / update",
         "tags": [
@@ -441,7 +445,7 @@
     },
     "/v1/manga/{mid}": {
       "get": {
-        "summary": "Get manga page",
+        "summary": "Get manga",
         "operationId": "-v1-manga-mid-get",
         "tags": [
           "Manga"
@@ -642,6 +646,125 @@
             "schema": {
               "originRef": "_Result<_Page<SmallMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<SmallMangaDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/check_login": {
+      "post": {
+        "summary": "Check login",
+        "operationId": "-v1-user-check_login-post",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "Result",
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/info": {
+      "get": {
+        "summary": "Get authorized user information",
+        "operationId": "-v1-user-info-get",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<UserDto>",
+              "$ref": "#/definitions/_Result<UserDto>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "-v1-user-login-post",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "login username"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "login password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<TokenDto>",
+              "$ref": "#/definitions/_Result<TokenDto>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/shelf": {
+      "get": {
+        "summary": "Get shelf mangas",
+        "operationId": "-v1-user-shelf-get",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<ShelfMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<ShelfMangaDto>>"
             }
           }
         }
@@ -1103,7 +1226,7 @@
         "groups",
         "other_groups"
       ],
-      "description": "Manga page group list",
+      "description": "manga group list",
       "properties": {
         "title": {
           "type": "string",
@@ -1119,7 +1242,7 @@
         "groups": {
           "type": "array",
           "required": true,
-          "description": "manga page groups",
+          "description": "manga groups",
           "items": {
             "originRef": "MangaGroupDto",
             "$ref": "#/definitions/MangaGroupDto"
@@ -1293,6 +1416,63 @@
           "type": "string",
           "required": true,
           "description": "status message"
+        }
+      }
+    },
+    "ShelfMangaDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "title",
+        "cover",
+        "url",
+        "newest_chapter",
+        "newest_duration",
+        "last_chapter",
+        "last_duration"
+      ],
+      "description": "Shelf manga response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "manga name"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "manga cover"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "manga link"
+        },
+        "newest_chapter": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update chapter"
+        },
+        "newest_duration": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update duration"
+        },
+        "last_chapter": {
+          "type": "string",
+          "required": true,
+          "description": "manga last read chapter"
+        },
+        "last_duration": {
+          "type": "string",
+          "required": true,
+          "description": "manga last read duration"
         }
       }
     },
@@ -1516,7 +1696,7 @@
         "newest_chapter",
         "newest_date"
       ],
-      "description": "Tiny manga page response",
+      "description": "Tiny manga response",
       "properties": {
         "mid": {
           "type": "integer",
@@ -1553,6 +1733,77 @@
           "type": "string",
           "required": true,
           "description": "manga last update date"
+        }
+      }
+    },
+    "TokenDto": {
+      "type": "object",
+      "required": [
+        "token"
+      ],
+      "description": "Token response",
+      "properties": {
+        "token": {
+          "type": "string",
+          "required": true,
+          "description": "access token"
+        }
+      }
+    },
+    "UserDto": {
+      "type": "object",
+      "required": [
+        "username",
+        "avatar",
+        "class",
+        "score",
+        "login_ip",
+        "last_login_ip",
+        "register_time",
+        "last_login_time"
+      ],
+      "description": "User response",
+      "properties": {
+        "username": {
+          "type": "string",
+          "required": true,
+          "description": "user name"
+        },
+        "avatar": {
+          "type": "string",
+          "required": true,
+          "description": "user avatar"
+        },
+        "class": {
+          "type": "string",
+          "required": true,
+          "description": "user class (会员等级)"
+        },
+        "score": {
+          "type": "integer",
+          "required": true,
+          "description": "user score (个人成长值)",
+          "format": "int32"
+        },
+        "login_ip": {
+          "type": "string",
+          "required": true,
+          "description": "user current login ip"
+        },
+        "last_login_ip": {
+          "type": "string",
+          "required": true,
+          "description": "user last login ip"
+        },
+        "register_time": {
+          "type": "string",
+          "required": true,
+          "description": "user register time"
+        },
+        "last_login_time": {
+          "type": "string",
+          "required": true,
+          "description": "user last login time"
         }
       }
     },
@@ -1669,6 +1920,45 @@
           "items": {
             "originRef": "MangaRankDto",
             "$ref": "#/definitions/MangaRankDto"
+          }
+        }
+      }
+    },
+    "_Page<ShelfMangaDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "ShelfMangaDto",
+            "$ref": "#/definitions/ShelfMangaDto"
           }
         }
       }
@@ -1902,6 +2192,62 @@
         }
       }
     },
+    "_Result<TokenDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "TokenDto",
+          "$ref": "#/definitions/TokenDto"
+        }
+      }
+    },
+    "_Result<UserDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "UserDto",
+          "$ref": "#/definitions/UserDto"
+        }
+      }
+    },
     "_Result<_Page<CategoryDto>>": {
       "type": "object",
       "required": [
@@ -1983,6 +2329,34 @@
           "description": "response data",
           "originRef": "_Page\u003cMangaRankDto\u003e",
           "$ref": "#/definitions/_Page\u003cMangaRankDto\u003e"
+        }
+      }
+    },
+    "_Result<_Page<ShelfMangaDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cShelfMangaDto\u003e",
+          "$ref": "#/definitions/_Page\u003cShelfMangaDto\u003e"
         }
       }
     },

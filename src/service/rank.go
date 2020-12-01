@@ -8,7 +8,6 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/PuerkitoBio/goquery"
-	"strings"
 )
 
 type RankService struct {
@@ -53,8 +52,6 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 		order, _ := xnumber.Atoi8(tr.Find("td.rank-no").Text())
 		title := tr.Find("td.rank-title a").Text()
 		url := tr.Find("td.rank-title a").AttrOr("href", "")
-		sp := strings.Split(strings.TrimSuffix(url, "/"), "/")
-		mid, _ := xnumber.Atou64(sp[len(sp)-1])
 		status := tr.Find("td.rank-title span").Text()
 		authorA := tr.Find("div.rank-author a")
 		authors := make([]*vo.TinyAuthor, 0)
@@ -71,7 +68,7 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 			trend = uint8(1)
 		}
 		rank := &vo.MangaRank{
-			Mid:           mid,
+			Mid:           static.ParseMid(url),
 			Title:         title,
 			Url:           static.HOMEPAGE_URL + url,
 			Finished:      status == "完结",

@@ -13,15 +13,14 @@ func se() int32 { serr++; return serr }
 
 var (
 	RequestParamError   = New(400, cerr, "request param error")
-	RequestFormatError  = New(400, ce(), "request format error")
 	ServerRecoveryError = New(500, serr, "server unknown error")
 )
 
 // manga
 var (
-	GetAllMangaPagesError     = New(500, se(), "failed to get all manga pages")
-	GetMangaPageError         = New(500, se(), "failed to get manga page")
-	MangaPageNotFoundError    = New(404, ce(), "manga page not found")
+	GetAllMangasError         = New(500, se(), "failed to get all mangas")
+	GetMangaError             = New(500, se(), "failed to get manga")
+	MangaNotFoundError        = New(404, ce(), "manga not found")
 	GetMangaChapterError      = New(500, se(), "failed to get manga chapter")
 	MangaChapterNotFoundError = New(404, ce(), "manga chapter not found")
 	GetHotSerialMangasError   = New(500, se(), "failed to get hot serial mangas")
@@ -61,4 +60,14 @@ var (
 // comment
 var (
 	GetMangaCommentsError = New(500, se(), "failed to get manga comments")
+)
+
+// user
+var (
+	LoginError          = New(500, se(), "failed to login")
+	PasswordError       = New(401, ce(), "username or password error")
+	CheckLoginError     = New(500, se(), "failed to check login")
+	UnauthorizedError   = New(401, ce(), "Unauthorized")
+	GetUserError        = New(500, se(), "failed to get user")
+	GetShelfMangasError = New(500, se(), "failed to get shelf mangas")
 )

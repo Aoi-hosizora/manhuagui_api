@@ -36,7 +36,7 @@ func init() {
 				goapidoc.NewQueryParam("zone", "string", false, "manga zone, (all|japan|hongkong|other|europe|china|korea)"),
 				goapidoc.NewQueryParam("age", "string", false, "manga age, (all|shaonv|shaonian|qingnian|ertong|tongyong)"),
 				goapidoc.NewQueryParam("status", "string", false, "manga status, (all|lianzai|wanjie)"),
-				param.ADPage, param.ADOrder,
+				param.ParamPage, param.ParamOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 	)

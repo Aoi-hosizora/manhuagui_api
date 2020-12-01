@@ -60,7 +60,7 @@ func init() {
 				goapidoc.NewProperty("brief_introduction", "string", true, "manga brief introduction"),
 			),
 
-		goapidoc.NewDefinition("TinyMangaDto", "Tiny manga page response").
+		goapidoc.NewDefinition("TinyMangaDto", "Tiny manga response").
 			Properties(
 				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewProperty("title", "string", true, "manga name"),
@@ -93,11 +93,11 @@ func init() {
 				goapidoc.NewProperty("chapters", "TinyMangaChapterDto[]", true, "group chapters"),
 			),
 
-		goapidoc.NewDefinition("MangaGroupListDto", "Manga page group list").
+		goapidoc.NewDefinition("MangaGroupListDto", "manga group list").
 			Properties(
 				goapidoc.NewProperty("title", "string", true, "list title"),
 				goapidoc.NewProperty("top_group", "MangaGroupDto", true, "manga top page group"),
-				goapidoc.NewProperty("groups", "MangaGroupDto[]", true, "manga page groups"),
+				goapidoc.NewProperty("groups", "MangaGroupDto[]", true, "manga groups"),
 				goapidoc.NewProperty("other_groups", "MangaGroupDto[]", true, "manga other page groups"),
 			),
 
@@ -113,6 +113,18 @@ func init() {
 				goapidoc.NewProperty("order", "integer#int32", true, "rank order"),
 				goapidoc.NewProperty("score", "number#float", true, "rank manga score"),
 				goapidoc.NewProperty("trend", "integer#int32", true, "rank trend, 0: None, 1: Up, 2: Down"),
+			),
+
+		goapidoc.NewDefinition("ShelfMangaDto", "Shelf manga response").
+			Properties(
+				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewProperty("title", "string", true, "manga name"),
+				goapidoc.NewProperty("cover", "string", true, "manga cover"),
+				goapidoc.NewProperty("url", "string", true, "manga link"),
+				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
+				goapidoc.NewProperty("newest_duration", "string", true, "manga last update duration"),
+				goapidoc.NewProperty("last_chapter", "string", true, "manga last read chapter"),
+				goapidoc.NewProperty("last_duration", "string", true, "manga last read duration"),
 			),
 	)
 }
@@ -410,6 +422,39 @@ func BuildMangaRankDtos(ranks []*vo.MangaRank) []*MangaRankDto {
 	out := make([]*MangaRankDto, len(ranks))
 	for idx, rank := range ranks {
 		out[idx] = BuildMangaRankDto(rank)
+	}
+	return out
+}
+
+// 书架漫画 vo.ShelfManga
+type ShelfMangaDto struct {
+	Mid            uint64 `json:"mid"`             // 漫画编号
+	Title          string `json:"title"`           // 漫画标题
+	Cover          string `json:"cover"`           // 漫画封面
+	Url            string `json:"url"`             // 漫画链接
+	NewestChapter  string `json:"newest_chapter"`  // 最新章节
+	NewestDuration string `json:"newest_duration"` // 更新时间
+	LastChapter    string `json:"last_chapter"`    // 最近阅读
+	LastDuration   string `json:"last_duration"`   // 最近时间
+}
+
+func BuildShelfMangaDto(manga *vo.ShelfManga) *ShelfMangaDto {
+	return &ShelfMangaDto{
+		Mid:            manga.Mid,
+		Title:          manga.Title,
+		Cover:          manga.Cover,
+		Url:            manga.Url,
+		NewestChapter:  manga.NewestChapter,
+		NewestDuration: manga.NewestDuration,
+		LastChapter:    manga.LastChapter,
+		LastDuration:   manga.LastDuration,
+	}
+}
+
+func BuildShelfMangaDtos(mangas []*vo.ShelfManga) []*ShelfMangaDto {
+	out := make([]*ShelfMangaDto, len(mangas))
+	for idx, manga := range mangas {
+		out[idx] = BuildShelfMangaDto(manga)
 	}
 	return out
 }

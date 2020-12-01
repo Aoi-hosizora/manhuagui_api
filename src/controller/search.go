@@ -21,7 +21,7 @@ func init() {
 			Tags("Search").
 			Params(
 				goapidoc.NewPathParam("keyword", "string", true, "search keyword"),
-				param.ADPage, param.ADOrder,
+				param.ParamPage, param.ParamOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 	)
