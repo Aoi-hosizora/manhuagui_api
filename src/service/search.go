@@ -27,16 +27,16 @@ func NewSearchService() *SearchService {
 }
 
 func (s *SearchService) SearchMangas(keyword string, page int32, order string) ([]*vo.SmallManga, int32, int32, error) {
-	url := ""
+	u := ""
 	if order == "popular" {
-		url = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o1", keyword), page)
+		u = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o1", keyword), page)
 	} else if order == "new" {
-		url = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o2", keyword), page)
+		u = fmt.Sprintf(static.MANGA_SEARCH_URL, fmt.Sprintf("%s_o2", keyword), page)
 	} else { // update
-		url = fmt.Sprintf(static.MANGA_SEARCH_URL, keyword, page)
+		u = fmt.Sprintf(static.MANGA_SEARCH_URL, keyword, page)
 	}
 
-	bs, doc, err := s.httpService.HttpGetDocument(url, nil)
+	bs, doc, err := s.httpService.HttpGetDocument(u, nil)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {

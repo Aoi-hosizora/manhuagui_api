@@ -11,3 +11,4 @@ logs/*
 !.gitkeep
 config.yaml
 temp/
+proxy.bat

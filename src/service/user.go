@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"math"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -27,7 +28,7 @@ func NewUserService() *UserService {
 }
 
 func (u *UserService) Login(username, password string) (string, error) {
-	form := fmt.Sprintf("txtUserName=%s&txtPassword=%s", username, password)
+	form := fmt.Sprintf("txtUserName=%s&txtPassword=%s", url.QueryEscape(username), url.QueryEscape(password))
 	req, err := http.NewRequest("POST", static.MANGA_LOGIN_URL, strings.NewReader(form))
 	if err != nil {
 		return "", err
