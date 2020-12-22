@@ -19,3 +19,8 @@ type User struct {
 	RegisterTime  string // 注册时间
 	LastLoginTime string // 上次登录时间
 }
+
+// 书柜状态
+type ShelfStatus struct {
+	In bool // 存在
+}

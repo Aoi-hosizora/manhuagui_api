@@ -137,8 +137,8 @@ func (u *UserService) GetUser(token string) (*vo.User, error) {
 }
 
 func (u *UserService) GetShelfMangas(token string, page int32) ([]*vo.ShelfManga, int32, int32, error) {
-	url := fmt.Sprintf(static.MANGA_SHELF_URL, page)
-	doc, err := u._login(url, token)
+	ur := fmt.Sprintf(static.MANGA_SHELF_URL, page)
+	doc, err := u._login(ur, token)
 	if err != nil {
 		return nil, 0, 0, err
 	} else if doc == nil {
@@ -157,17 +157,17 @@ func (u *UserService) GetShelfMangas(token string, page int32) ([]*vo.ShelfManga
 	divs.Each(func(idx int, sel *goquery.Selection) {
 		cover := sel.Find("img").AttrOr("src", "")
 		title := sel.Find("h3").Text()
-		url := sel.Find("h3 a").AttrOr("href", "")
+		ur := sel.Find("h3 a").AttrOr("href", "")
 		newestChapter := sel.Find("p:nth-of-type(1) em:nth-child(1)").Text()
 		newestDuration := sel.Find("p:nth-of-type(1) em:nth-child(2)").Text()
 		lastChapter := sel.Find("p:nth-of-type(2) em:nth-child(1)").Text()
 		lastDuration := sel.Find("p:nth-of-type(2) em:nth-child(2)").Text()
 
 		manga := &vo.ShelfManga{
-			Mid:            static.ParseMid(url),
+			Mid:            static.ParseMid(ur),
 			Title:          title,
 			Cover:          static.ParseCoverUrl(cover),
-			Url:            static.HOMEPAGE_URL + url,
+			Url:            static.HOMEPAGE_URL + ur,
 			NewestChapter:  newestChapter,
 			NewestDuration: newestDuration,
 			LastChapter:    lastChapter,
@@ -177,4 +177,16 @@ func (u *UserService) GetShelfMangas(token string, page int32) ([]*vo.ShelfManga
 	})
 
 	return mangas, limit, total, nil
+}
+
+func (u *UserService) CheckMangaInShelf(token string, mid uint64) (in bool, err error) {
+	return false, nil
+}
+
+func (u *UserService) SaveMangaToShelf(token string, mid uint64) (existed bool, err error) {
+	return false, nil
+}
+
+func (u *UserService) RemoveMangaFromShelf(token string, mid uint64) (notFound bool, err error) {
+	return false, nil
 }

@@ -18,9 +18,9 @@ type Manga struct {
 	BriefIntroduction string               // 简要介绍
 	Introduction      string               // 漫画介绍
 	MangaRank         string               // 漫画排名
-	AverageScore      float32              // 平均给分
 	ScoreCount        int32                // 给分人数
-	PerScores         [6]float32           // 具体给分
+	AverageScore      float32              // 平均给分
+	PerScores         [6]string            // 具体给分
 	Banned            bool                 // 是否屏蔽
 	ChapterGroups     []*MangaChapterGroup // 章节链接
 }

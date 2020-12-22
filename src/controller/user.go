@@ -8,6 +8,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
+	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,30 @@ func init() {
 				param.ParamPage,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<ShelfMangaDto>>")),
+
+		goapidoc.NewRoutePath("GET", "/v1/user/shelf/{mid}", "Check manga in shelf").
+			Tags("User").
+			Params(
+				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
+				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
+			).
+			Responses(goapidoc.NewResponse(200, "_Result<ShelfStatusDto>")),
+
+		goapidoc.NewRoutePath("POST", "/v1/user/shelf/{mid}", "Save manga to shelf").
+			Tags("User").
+			Params(
+				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
+				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
+			).
+			Responses(goapidoc.NewResponse(200, "Result")),
+
+		goapidoc.NewRoutePath("DELETE", "/v1/user/shelf/{mid}", "Remove manga from shelf").
+			Tags("User").
+			Params(
+				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
+				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
+			).
+			Responses(goapidoc.NewResponse(200, "Result")),
 	)
 }
 
@@ -110,4 +135,60 @@ func (u *UserController) GetShelfMangas(c *gin.Context) *result.Result {
 
 	res := dto.BuildShelfMangaDtos(mangas)
 	return result.Ok().SetPage(pa.Page, limit, total, res)
+}
+
+// GET /v1/user/shelf/:mid
+func (u *UserController) CheckMangaInShelf(c *gin.Context) *result.Result {
+	token := c.GetHeader("Authorization")
+	mid, err := param.BindRouteId(c, "mid")
+	if err != nil {
+		return result.Error(exception.RequestParamError).SetError(err, c)
+	}
+
+	in, err := u.userService.CheckMangaInShelf(token, mid)
+	if err != nil {
+		return result.Error(exception.CheckMangaShelfError).SetError(err, c)
+	}
+	sts := &vo.ShelfStatus{In: in}
+
+	res := dto.BuildShelfStatusDto(sts)
+	return result.Ok().SetData(res)
+}
+
+// POST /v1/user/shelf/:mid
+func (u *UserController) SaveMangaToShelf(c *gin.Context) *result.Result {
+	token := c.GetHeader("Authorization")
+	mid, err := param.BindRouteId(c, "mid")
+	if err != nil {
+		return result.Error(exception.RequestParamError).SetError(err, c)
+	}
+
+	existed, err := u.userService.SaveMangaToShelf(token, mid)
+	if err != nil {
+		return result.Error(exception.SaveMangaToShelfError).SetError(err, c)
+	}
+
+	if existed {
+		return result.Error(exception.RemoveMangaFromShelfError)
+	}
+	return result.Ok()
+}
+
+// DELETE /v1/user/shelf/:mid
+func (u *UserController) RemoveMangaFromShelf(c *gin.Context) *result.Result {
+	token := c.GetHeader("Authorization")
+	mid, err := param.BindRouteId(c, "mid")
+	if err != nil {
+		return result.Error(exception.RequestParamError).SetError(err, c)
+	}
+
+	notFound, err := u.userService.RemoveMangaFromShelf(token, mid)
+	if err != nil {
+		return result.Error(exception.MangaAlreadyInShelfError).SetError(err, c)
+	}
+
+	if notFound {
+		return result.Error(exception.MangaNotInShelfYetError)
+	}
+	return result.Ok()
 }

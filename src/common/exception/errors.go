@@ -64,10 +64,15 @@ var (
 
 // user
 var (
-	LoginError          = New(500, se(), "failed to login")
-	PasswordError       = New(401, ce(), "username or password error")
-	CheckLoginError     = New(500, se(), "failed to check login")
-	UnauthorizedError   = New(401, ce(), "Unauthorized")
-	GetUserError        = New(500, se(), "failed to get user")
-	GetShelfMangasError = New(500, se(), "failed to get shelf mangas")
+	LoginError                = New(500, se(), "failed to login")
+	PasswordError             = New(401, ce(), "username or password error")
+	CheckLoginError           = New(500, se(), "failed to check login")
+	UnauthorizedError         = New(401, ce(), "Unauthorized")
+	GetUserError              = New(500, se(), "failed to get user")
+	GetShelfMangasError       = New(500, se(), "failed to get shelf mangas")
+	CheckMangaShelfError      = New(500, se(), "failed to check manga in shelf")
+	SaveMangaToShelfError     = New(500, se(), "failed to save manga to shelf")
+	RemoveMangaFromShelfError = New(500, se(), "failed to remove manga from shelf")
+	MangaAlreadyInShelfError  = New(409, ce(), "manga is already in shelf")
+	MangaNotInShelfYetError   = New(404, ce(), "manga is not in shelf yet")
 )

@@ -114,15 +114,15 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		s5 := scoreJson["s5"].(float64)
 		tot := s1 + s2 + s3 + s4 + s5
 		avg := (s1*1 + s2*2 + s3*3 + s4*4 + s5*5) / (tot * 5)
-		per1 := float32(math.Round((s1/tot)*1000) / 1000) // 00.0%
-		per2 := float32(math.Round((s2/tot)*1000) / 1000)
-		per3 := float32(math.Round((s3/tot)*1000) / 1000)
-		per4 := float32(math.Round((s4/tot)*1000) / 1000)
-		per5 := float32(math.Round((s5/tot)*1000) / 1000)
+		per1 := fmt.Sprintf("%2.01f%%", s1/tot*100) // 00.0%
+		per2 := fmt.Sprintf("%2.01f%%", s2/tot*100)
+		per3 := fmt.Sprintf("%2.01f%%", s3/tot*100)
+		per4 := fmt.Sprintf("%2.01f%%", s4/tot*100)
+		per5 := fmt.Sprintf("%2.01f%%", s5/tot*100)
 
 		obj.ScoreCount = int32(tot)
 		obj.AverageScore = float32(math.Round(avg*100) / 10) // 0.0
-		obj.PerScores = [6]float32{0, per1, per2, per3, per4, per5}
+		obj.PerScores = [6]string{"", per1, per2, per3, per4, per5}
 	}
 
 	// get chapter groups

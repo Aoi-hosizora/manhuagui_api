@@ -91,6 +91,9 @@ func initRoute(engine *gin.Engine) {
 		userGroup.POST("check_login", j(userController.CheckLogin))
 		userGroup.GET("info", j(userController.GetUser))
 		userGroup.GET("shelf", j(userController.GetShelfMangas))
+		userGroup.GET("shelf/:mid", j(userController.CheckMangaInShelf))
+		userGroup.POST("shelf/:mid", j(userController.SaveMangaToShelf))
+		userGroup.DELETE("shelf/:mid", j(userController.RemoveMangaFromShelf))
 	}
 }
 

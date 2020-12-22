@@ -24,9 +24,9 @@ func init() {
 				goapidoc.NewProperty("brief_introduction", "string", true, "manga brief introduction"),
 				goapidoc.NewProperty("introduction", "string", true, "manga introduction"),
 				goapidoc.NewProperty("manga_rank", "string", true, "manga rank"),
-				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
 				goapidoc.NewProperty("score_count", "integer#int32", true, "manga score count"),
-				goapidoc.NewProperty("per_scores", "number#float[]", true, "manga per scores, from 0 to 5"),
+				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
+				goapidoc.NewProperty("per_scores", "string[]", true, "manga per scores, skip 0, from 1 to 5"),
 				goapidoc.NewProperty("banned", "boolean", true, "manga is banned"),
 				goapidoc.NewProperty("chapter_groups", "MangaChapterGroupDto[]", true, "manga chapter groups"),
 			),
@@ -146,9 +146,9 @@ type MangaDto struct {
 	BriefIntroduction string                  `json:"brief_introduction"`
 	Introduction      string                  `json:"introduction"`
 	MangaRank         string                  `json:"manga_rank"`
-	AverageScore      float32                 `json:"average_score"`
 	ScoreCount        int32                   `json:"score_count"`
-	PerScores         [6]float32              `json:"per_scores"`
+	AverageScore      float32                 `json:"average_score"`
+	PerScores         [6]string               `json:"per_scores"`
 	Banned            bool                    `json:"banned"`
 	ChapterGroups     []*MangaChapterGroupDto `json:"chapter_groups"`
 }
@@ -170,8 +170,8 @@ func BuildMangaDto(manga *vo.Manga) *MangaDto {
 		Introduction:      manga.Introduction,
 		BriefIntroduction: manga.BriefIntroduction,
 		MangaRank:         manga.MangaRank,
-		AverageScore:      manga.AverageScore,
 		ScoreCount:        manga.ScoreCount,
+		AverageScore:      manga.AverageScore,
 		PerScores:         manga.PerScores,
 		Banned:            manga.Banned,
 		ChapterGroups:     BuildMangaChapterGroupDtos(manga.ChapterGroups),

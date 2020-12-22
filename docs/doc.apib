@@ -682,6 +682,89 @@ user-controller
 
     + Body
 
+## Check manga in shelf, Save manga to shelf, Remove manga from shelf [/v1/user/shelf/{mid}]
+
+### Check manga in shelf [GET]
+
+`GET /v1/user/shelf/{mid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<ShelfStatusDto>)
+
+    + Headers
+
+    + Body
+
+### Save manga to shelf [POST]
+
+`POST /v1/user/shelf/{mid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (Result)
+
+    + Headers
+
+    + Body
+
+### Remove manga from shelf [DELETE]
+
+`DELETE /v1/user/shelf/{mid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (Result)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -785,11 +868,11 @@ user-controller
 + brief_introduction (string, required) - manga brief introduction
 + introduction (string, required) - manga introduction
 + manga_rank (string, required) - manga rank
-+ average_score (number, required) - manga average score
-    (format: float)
 + score_count (number, required) - manga score count
     (format: int32)
-+ per_scores (array[number], required) - manga per scores, from 0 to 5
++ average_score (number, required) - manga average score
+    (format: float)
++ per_scores (array[string], required) - manga per scores, skip 0, from 1 to 5
 + banned (boolean, required) - manga is banned
 + chapter_groups (array[MangaChapterGroupDto], required) - manga chapter groups
 
@@ -910,6 +993,10 @@ user-controller
 + last_login_ip (string, required) - user last login ip
 + register_time (string, required) - user register time
 + last_login_time (string, required) - user last login time
+
+## ShelfStatusDto (object)
+
++ in (boolean, required) - manga is in the shelf
 
 ## _Result<_Page<SmallAuthorDto>> (object)
 
@@ -1071,3 +1158,10 @@ user-controller
 + total (number, required) - data count
     (format: int32)
 + data (array[ShelfMangaDto], required) - page data
+
+## _Result<ShelfStatusDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (ShelfStatusDto, required) - response data

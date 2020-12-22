@@ -769,6 +769,104 @@
           }
         }
       }
+    },
+    "/v1/user/shelf/{mid}": {
+      "delete": {
+        "summary": "Remove manga from shelf",
+        "operationId": "-v1-user-shelf-mid-delete",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "Result",
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Check manga in shelf",
+        "operationId": "-v1-user-shelf-mid-get",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<ShelfStatusDto>",
+              "$ref": "#/definitions/_Result<ShelfStatusDto>"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Save manga to shelf",
+        "operationId": "-v1-user-shelf-mid-post",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "Result",
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1065,8 +1163,8 @@
         "brief_introduction",
         "introduction",
         "manga_rank",
-        "average_score",
         "score_count",
+        "average_score",
         "per_scores",
         "banned",
         "chapter_groups"
@@ -1157,25 +1255,24 @@
           "required": true,
           "description": "manga rank"
         },
-        "average_score": {
-          "type": "number",
-          "required": true,
-          "description": "manga average score",
-          "format": "float"
-        },
         "score_count": {
           "type": "integer",
           "required": true,
           "description": "manga score count",
           "format": "int32"
         },
+        "average_score": {
+          "type": "number",
+          "required": true,
+          "description": "manga average score",
+          "format": "float"
+        },
         "per_scores": {
           "type": "array",
           "required": true,
-          "description": "manga per scores, from 0 to 5",
+          "description": "manga per scores, skip 0, from 1 to 5",
           "items": {
-            "type": "number",
-            "format": "float"
+            "type": "string"
           }
         },
         "banned": {
@@ -1473,6 +1570,20 @@
           "type": "string",
           "required": true,
           "description": "manga last read duration"
+        }
+      }
+    },
+    "ShelfStatusDto": {
+      "type": "object",
+      "required": [
+        "in"
+      ],
+      "description": "Shelf status response",
+      "properties": {
+        "in": {
+          "type": "boolean",
+          "required": true,
+          "description": "manga is in the shelf"
         }
       }
     },
@@ -2189,6 +2300,34 @@
           "description": "response data",
           "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
+        }
+      }
+    },
+    "_Result<ShelfStatusDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "ShelfStatusDto",
+          "$ref": "#/definitions/ShelfStatusDto"
         }
       }
     },
