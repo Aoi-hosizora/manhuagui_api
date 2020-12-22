@@ -16,6 +16,22 @@ func NewHttpService() *HttpService {
 	return &HttpService{}
 }
 
+func (h *HttpService) DoRequest(req *http.Request) ([]byte, *http.Response, error) {
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, nil, fmt.Errorf("network error: %v", err)
+	}
+	body := resp.Body
+	defer body.Close()
+
+	bs, err := ioutil.ReadAll(body)
+	if err != nil {
+		return nil, nil, fmt.Errorf("response error: %v", err)
+	}
+	return bs, resp, err
+}
+
 func (h *HttpService) HttpGet(url string, fn func(r *http.Request)) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -26,18 +42,7 @@ func (h *HttpService) HttpGet(url string, fn func(r *http.Request)) ([]byte, err
 		fn(req)
 	}
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("network error: %v", err)
-	}
-	body := resp.Body
-	defer body.Close()
-
-	bs, err := ioutil.ReadAll(body)
-	if err != nil {
-		return nil, fmt.Errorf("response error: %v", err)
-	}
+	bs, _, err := h.DoRequest(req)
 	return bs, err
 }
 

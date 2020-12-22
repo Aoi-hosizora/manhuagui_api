@@ -145,12 +145,14 @@ func (u *UserController) CheckMangaInShelf(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	in, err := u.userService.CheckMangaInShelf(token, mid)
+	auth, in, err := u.userService.CheckMangaInShelf(token, mid)
 	if err != nil {
 		return result.Error(exception.CheckMangaShelfError).SetError(err, c)
+	} else if !auth {
+		return result.Error(exception.UnauthorizedError)
 	}
-	sts := &vo.ShelfStatus{In: in}
 
+	sts := &vo.ShelfStatus{In: in}
 	res := dto.BuildShelfStatusDto(sts)
 	return result.Ok().SetData(res)
 }
@@ -163,13 +165,15 @@ func (u *UserController) SaveMangaToShelf(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	existed, err := u.userService.SaveMangaToShelf(token, mid)
+	auth, existed, err := u.userService.SaveMangaToShelf(token, mid)
 	if err != nil {
 		return result.Error(exception.SaveMangaToShelfError).SetError(err, c)
+	} else if !auth {
+		return result.Error(exception.UnauthorizedError)
 	}
 
 	if existed {
-		return result.Error(exception.RemoveMangaFromShelfError)
+		return result.Error(exception.MangaAlreadyInShelfError)
 	}
 	return result.Ok()
 }
@@ -182,9 +186,11 @@ func (u *UserController) RemoveMangaFromShelf(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	notFound, err := u.userService.RemoveMangaFromShelf(token, mid)
+	auth, notFound, err := u.userService.RemoveMangaFromShelf(token, mid)
 	if err != nil {
-		return result.Error(exception.MangaAlreadyInShelfError).SetError(err, c)
+		return result.Error(exception.RemoveMangaFromShelfError).SetError(err, c)
+	}else if !auth {
+		return result.Error(exception.UnauthorizedError)
 	}
 
 	if notFound {

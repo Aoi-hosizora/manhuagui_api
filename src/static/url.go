@@ -19,14 +19,15 @@ const (
 	MANGA_USER_URL     = "https://www.manhuagui.com/user/center/index"
 	MANGA_SHELF_URL    = "https://www.manhuagui.com/user/book/shelf/%d"
 
-	MANGA_SOURCE_URL      = "https://%s.hamreus.com"
-	MANGA_SCORE_URL       = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
-	MANGA_COMMENT_URL     = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
-	MANGA_LOGIN_URL       = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_login"
-	MANGA_CHECK_LOGIN_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_check_login"
-	MANGA_SHELF_CHECK     = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_check&book_id=&d"
-	MANGA_SHELF_ADD       = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_bool_shelf_add"
-	MANGA_SHELF_DELETE    = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_bool_shelf_delete"
+	MANGA_SOURCE_URL       = "https://%s.hamreus.com"
+	MANGA_SCORE_URL        = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
+	MANGA_COMMENT_URL      = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
+	MANGA_LOGIN_URL        = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_login"
+	MANGA_CHECK_LOGIN_URL  = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_check_login"
+	MANGA_SHELF_CHECK_URL  = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_check&book_id=%d"
+	MANGA_SHELF_ADD_URL    = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_add"
+	MANGA_SHELF_DELETE_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_delete"
+	MANGA_COUNT_URL        = "https://www.manhuagui.com/tools/count.ashx?bookId=%d&chapterId=%d"
 )
 
 // noinspection GoSnakeCaseUsage
