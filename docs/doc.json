@@ -44,6 +44,10 @@
     {
       "name": "User",
       "description": "user-controller"
+    },
+    {
+      "name": "Shelf",
+      "description": "shelf-controller"
     }
   ],
   "paths": {
@@ -651,6 +655,138 @@
         }
       }
     },
+    "/v1/shelf": {
+      "get": {
+        "summary": "Get shelf mangas",
+        "operationId": "-v1-shelf-get",
+        "tags": [
+          "Shelf"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "current page",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<ShelfMangaDto>>",
+              "$ref": "#/definitions/_Result<_Page<ShelfMangaDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/shelf/{mid}": {
+      "delete": {
+        "summary": "Remove manga from shelf",
+        "operationId": "-v1-shelf-mid-delete",
+        "tags": [
+          "Shelf"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "Result",
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Check manga in shelf",
+        "operationId": "-v1-shelf-mid-get",
+        "tags": [
+          "Shelf"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<ShelfStatusDto>",
+              "$ref": "#/definitions/_Result<ShelfStatusDto>"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Save manga to shelf",
+        "operationId": "-v1-shelf-mid-post",
+        "tags": [
+          "Shelf"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "Result",
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
+      }
+    },
     "/v1/user/check_login": {
       "post": {
         "summary": "Check login",
@@ -736,44 +872,10 @@
         }
       }
     },
-    "/v1/user/shelf": {
+    "/v1/user/manga/{mid}/{cid}": {
       "get": {
-        "summary": "Get shelf mangas",
-        "operationId": "-v1-user-shelf-get",
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "access token"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "description": "current page",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "originRef": "_Result<_Page<ShelfMangaDto>>",
-              "$ref": "#/definitions/_Result<_Page<ShelfMangaDto>>"
-            }
-          }
-        }
-      }
-    },
-    "/v1/user/shelf/{mid}": {
-      "delete": {
-        "summary": "Remove manga from shelf",
-        "operationId": "-v1-user-shelf-mid-delete",
+        "summary": "Record manga for the authorized user",
+        "operationId": "-v1-user-manga-mid-cid-get",
         "tags": [
           "User"
         ],
@@ -792,69 +894,13 @@
             "type": "integer",
             "description": "manga id",
             "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "originRef": "Result",
-              "$ref": "#/definitions/Result"
-            }
-          }
-        }
-      },
-      "get": {
-        "summary": "Check manga in shelf",
-        "operationId": "-v1-user-shelf-mid-get",
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "access token"
           },
           {
-            "name": "mid",
+            "name": "cid",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "manga id",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "originRef": "_Result<ShelfStatusDto>",
-              "$ref": "#/definitions/_Result<ShelfStatusDto>"
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Save manga to shelf",
-        "operationId": "-v1-user-shelf-mid-post",
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "access token"
-          },
-          {
-            "name": "mid",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "description": "manga id",
+            "description": "manga chapter id",
             "format": "int64"
           }
         ],
@@ -1062,7 +1108,8 @@
         "pages",
         "page_count",
         "next_cid",
-        "prev_cid"
+        "prev_cid",
+        "copyright"
       ],
       "description": "Mange chapter response",
       "properties": {
@@ -1118,6 +1165,11 @@
           "required": true,
           "description": "prev chapter id",
           "format": "int64"
+        },
+        "copyright": {
+          "type": "boolean",
+          "required": true,
+          "description": "has copyright"
         }
       }
     },
@@ -1167,6 +1219,7 @@
         "average_score",
         "per_scores",
         "banned",
+        "copyright",
         "chapter_groups"
       ],
       "description": "Mange page response",
@@ -1279,6 +1332,11 @@
           "type": "boolean",
           "required": true,
           "description": "manga is banned"
+        },
+        "copyright": {
+          "type": "boolean",
+          "required": true,
+          "description": "has copyright"
         },
         "chapter_groups": {
           "type": "array",
@@ -1576,7 +1634,8 @@
     "ShelfStatusDto": {
       "type": "object",
       "required": [
-        "in"
+        "in",
+        "count"
       ],
       "description": "Shelf status response",
       "properties": {
@@ -1584,6 +1643,12 @@
           "type": "boolean",
           "required": true,
           "description": "manga is in the shelf"
+        },
+        "count": {
+          "type": "integer",
+          "required": true,
+          "description": "manga starred count",
+          "format": "int32"
         }
       }
     },

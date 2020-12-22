@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
@@ -33,7 +34,7 @@ func NewMangaService() *MangaService {
 func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_PAGE_URL, mid)
-	_, doc, err := m.httpService.HttpGetDocument(url, nil)
+	bs, doc, err := m.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -83,6 +84,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		BriefIntroduction: strings.TrimSpace(briefIntroduction),
 		Introduction:      strings.TrimSpace(introduction),
 		MangaRank:         mangaRank,
+		Copyright:         true,
 	}
 
 	// get score
@@ -123,6 +125,11 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		obj.ScoreCount = int32(tot)
 		obj.AverageScore = float32(math.Round(avg*100) / 10) // 0.0
 		obj.PerScores = [6]string{"", per1, per2, per3, per4, per5}
+	}
+
+	if bytes.Contains(bs, []byte("版权方的要求，现已删除屏蔽")) && bytes.Contains(bs, []byte("请喜欢这部漫画的漫迷购买")) {
+		obj.Copyright = false
+		return obj, nil
 	}
 
 	// get chapter groups
@@ -185,7 +192,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_CHAPTER_URL, mid, cid)
-	_, doc, err := m.httpService.HttpGetDocument(url, nil)
+	bs, doc, err := m.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -223,9 +230,13 @@ func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error
 	decodeJson := decodeJsonResults[0][1]
 
 	// unmarshal
-	obj := &vo.MangaChapter{}
+	obj := &vo.MangaChapter{Copyright: true}
 	err = json.Unmarshal([]byte(decodeJson), &obj)
 	if err != nil {
+		if bytes.Contains(bs, []byte("版权方的要求，现已删除屏蔽")) && bytes.Contains(bs, []byte("请喜欢这部漫画的漫迷购买")) {
+			obj.Copyright = false
+			return obj, nil
+		}
 		return nil, fmt.Errorf("chapter script error: %v", err)
 	}
 	obj.Url = url

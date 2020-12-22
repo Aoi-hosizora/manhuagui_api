@@ -35,6 +35,7 @@ func initRoute(engine *gin.Engine) {
 		rankController      = controller.NewRankController()
 		commentController   = controller.NewCommentService()
 		userController      = controller.NewUserController()
+		shelfController     = controller.NewShelfController()
 	)
 
 	mangaGroup := v1.Group("manga") // /v1/manga/...
@@ -90,10 +91,15 @@ func initRoute(engine *gin.Engine) {
 		userGroup.POST("login", j(userController.Login))
 		userGroup.POST("check_login", j(userController.CheckLogin))
 		userGroup.GET("info", j(userController.GetUser))
-		userGroup.GET("shelf", j(userController.GetShelfMangas))
-		userGroup.GET("shelf/:mid", j(userController.CheckMangaInShelf))
-		userGroup.POST("shelf/:mid", j(userController.SaveMangaToShelf))
-		userGroup.DELETE("shelf/:mid", j(userController.RemoveMangaFromShelf))
+		userGroup.GET("manga/:mid/:cid", j(userController.RecordManga))
+	}
+
+	shelfGroup := v1.Group("shelf") // /v1/shelf/...
+	{
+		shelfGroup.GET("", j(shelfController.GetShelfMangas))
+		shelfGroup.GET(":mid", j(shelfController.CheckMangaInShelf))
+		shelfGroup.POST(":mid", j(shelfController.SaveMangaToShelf))
+		shelfGroup.DELETE(":mid", j(shelfController.RemoveMangaFromShelf))
 	}
 }
 

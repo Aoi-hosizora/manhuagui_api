@@ -22,6 +22,7 @@ type Manga struct {
 	AverageScore      float32              // 平均给分
 	PerScores         [6]string            // 具体给分
 	Banned            bool                 // 是否屏蔽
+	Copyright         bool                 // 拥有版权
 	ChapterGroups     []*MangaChapterGroup // 章节链接
 }
 
@@ -39,6 +40,7 @@ type MangaChapter struct {
 	Path       string   `json:"path"`     // 链接路径
 	NextId     int32    `json:"nextId"`   // 下一章节
 	PrevId     int32    `json:"prevId"`   // 上一章节
+	Copyright  bool     `json:"-"`        // 拥有版权
 	Sl         *struct {
 		E int64  `json:"e"` // e
 		M string `json:"m"` // m

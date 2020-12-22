@@ -27,6 +27,7 @@ func init() {
 		goapidoc.NewDefinition("ShelfStatusDto", "Shelf status response").
 			Properties(
 				goapidoc.NewProperty("in", "boolean", true, "manga is in the shelf"),
+				goapidoc.NewProperty("count", "integer#int32", true, "manga starred count"),
 			),
 	)
 }
@@ -70,11 +71,13 @@ func BuildBuildUserDtos(users []*vo.User) []*UserDto {
 
 // 书柜状态 vo.ShelfStatus
 type ShelfStatusDto struct {
-	In bool `json:"in"`
+	In    bool  `json:"in"`    // 已收藏
+	Count int32 `json:"count"` // 收藏用户数
 }
 
 func BuildShelfStatusDto(status *vo.ShelfStatus) *ShelfStatusDto {
 	return &ShelfStatusDto{
-		In: status.In,
+		In:    status.Status == 1,
+		Count: status.Total,
 	}
 }

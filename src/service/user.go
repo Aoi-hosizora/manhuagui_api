@@ -10,7 +10,6 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
 	"github.com/PuerkitoBio/goquery"
-	"math"
 	"net/http"
 	"net/url"
 	"strings"
@@ -71,7 +70,7 @@ func (u *UserService) CheckLogin(token string) (bool, error) {
 	return ok, nil
 }
 
-func (u *UserService) _login(url, token string) ([]byte, *goquery.Document, error) {
+func (u *UserService) _httpGetWithToken(url, token string) ([]byte, *goquery.Document, error) {
 	bs, doc, err := u.httpService.HttpGetDocument(url, func(req *http.Request) {
 		req.Header.Set("Cookie", "my="+token)
 	})
@@ -85,7 +84,7 @@ func (u *UserService) _login(url, token string) ([]byte, *goquery.Document, erro
 }
 
 func (u *UserService) GetUser(token string) (*vo.User, error) {
-	_, doc, err := u._login(static.MANGA_USER_URL, token)
+	_, doc, err := u._httpGetWithToken(static.MANGA_USER_URL, token)
 	if err != nil {
 		return nil, err
 	} else if doc == nil {
@@ -119,141 +118,8 @@ func (u *UserService) GetUser(token string) (*vo.User, error) {
 	return user, nil
 }
 
-func (u *UserService) GetShelfMangas(token string, page int32) ([]*vo.ShelfManga, int32, int32, error) {
-	ur := fmt.Sprintf(static.MANGA_SHELF_URL, page)
-	_, doc, err := u._login(ur, token)
-	if err != nil {
-		return nil, 0, 0, err
-	} else if doc == nil {
-		return nil, 0, 0, nil
-	}
-
-	total, _ := xnumber.Atoi32(strings.TrimSuffix(strings.TrimPrefix(doc.Find("div.flickr span:first-child").Text(), "共"), "记录"))
-	limit := int32(20)
-	pages := int32(math.Ceil(float64(total) / float64(limit)))
-	if page > pages {
-		return []*vo.ShelfManga{}, limit, total, nil
-	}
-
-	mangas := make([]*vo.ShelfManga, 0)
-	divs := doc.Find("div.dy_content_li")
-	divs.Each(func(idx int, sel *goquery.Selection) {
-		cover := sel.Find("img").AttrOr("src", "")
-		title := sel.Find("h3").Text()
-		ur := sel.Find("h3 a").AttrOr("href", "")
-		newestChapter := sel.Find("p:nth-of-type(1) em:nth-child(1)").Text()
-		newestDuration := sel.Find("p:nth-of-type(1) em:nth-child(2)").Text()
-		lastChapter := sel.Find("p:nth-of-type(2) em:nth-child(1)").Text()
-		lastDuration := sel.Find("p:nth-of-type(2) em:nth-child(2)").Text()
-
-		manga := &vo.ShelfManga{
-			Mid:            static.ParseMid(ur),
-			Title:          title,
-			Cover:          static.ParseCoverUrl(cover),
-			Url:            static.HOMEPAGE_URL + ur,
-			NewestChapter:  newestChapter,
-			NewestDuration: newestDuration,
-			LastChapter:    lastChapter,
-			LastDuration:   lastDuration,
-		}
-		mangas = append(mangas, manga)
-	})
-
-	return mangas, limit, total, nil
-}
-
-func (u *UserService) CheckMangaInShelf(token string, mid uint64) (auth bool, in bool, err error) {
-	ur := fmt.Sprintf(static.MANGA_SHELF_CHECK_URL, mid)
-	bs, doc, err := u._login(ur, token)
-	if err != nil {
-		return false, false, err
-	} else if doc == nil {
-		return false, false, nil
-	}
-
-	m := make(map[string]interface{})
-	err = json.Unmarshal(bs, &m)
-	if err != nil {
-		return true, false, err
-	}
-	status, ok := m["status"]
-	if !ok {
-		return true, false, fmt.Errorf("failed to check shelf")
-	}
-
-	// {"status":0, "total":3274}
-	in = status == 1.0
-	return true, in, nil
-}
-
-func (u *UserService) SaveMangaToShelf(token string, mid uint64) (auth bool, existed bool, err error) {
-	form := url.Values{}
-	form.Set("book_id", xnumber.U64toa(mid))
-	req, err := http.NewRequest("POST", static.MANGA_SHELF_ADD_URL, strings.NewReader(form.Encode()))
-	if err != nil {
-		return false, false, err
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Cookie", "my="+token)
-	bs, _, err := u.httpService.DoRequest(req)
-	if err != nil {
-		return false, false, err
-	}
-
-	m := make(map[string]interface{})
-	err = json.Unmarshal(bs, &m)
-	if err != nil {
-		return true, false, err
-	}
-	msg, ok1 := m["msg"]
-	status, ok2 := m["status"]
-	if !ok1 || !ok2 {
-		return true, false, fmt.Errorf("failed to add to shelf")
-	}
-
-	// {"status": 1, "msg": "恭喜您，收藏到书架成功！"}
-	// {"status":0, "msg":"对不起，用户尚未登录或已超时！"}
-	// {"status":0, "msg":"您书架里已经有这部漫画了！"}
-	if status == 0.0 {
-		auth = msg != "对不起，用户尚未登录或已超时！"
-		existed = msg == "您书架里已经有这部漫画了！"
-		return auth, existed, nil
-	}
-	return true, false, nil
-}
-
-func (u *UserService) RemoveMangaFromShelf(token string, mid uint64) (auth bool, notFound bool, err error) {
-	form := url.Values{}
-	form.Set("book_id", xnumber.U64toa(mid))
-	req, err := http.NewRequest("POST", static.MANGA_SHELF_DELETE_URL, strings.NewReader(form.Encode()))
-	if err != nil {
-		return false, false, err
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Cookie", "my="+token)
-	bs, _, err := u.httpService.DoRequest(req)
-	if err != nil {
-		return false, false, err
-	}
-
-	m := make(map[string]interface{})
-	err = json.Unmarshal(bs, &m)
-	if err != nil {
-		return true, false, err
-	}
-	msg, ok1 := m["msg"]
-	status, ok2 := m["status"]
-	if !ok1 || !ok2 {
-		return true, false, fmt.Errorf("failed to delete from shelf")
-	}
-
-	// {"status":0, "msg":"恭喜您，从书架移除成功！"}
-	// {"status":0, "msg":"对不起，用户尚未登录或已超时！"}
-	// {"status":1, "msg":"恭喜您，从书架移除成功！"}
-	if status == 0.0 {
-		auth = msg != "对不起，用户尚未登录或已超时！"
-		notFound = msg == "恭喜您，从书架移除成功！"
-		return auth, notFound, nil
-	}
-	return true, false, nil
+func (u *UserService) RecordManga(token string, mid, cid uint64) error {
+	ur := fmt.Sprintf(static.MANGA_COUNT_URL, mid, cid)
+	_, _, err := u._httpGetWithToken(ur, token)
+	return err
 }

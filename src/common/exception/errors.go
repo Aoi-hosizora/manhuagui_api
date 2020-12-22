@@ -75,4 +75,5 @@ var (
 	RemoveMangaFromShelfError = New(500, se(), "failed to remove manga from shelf")
 	MangaAlreadyInShelfError  = New(409, ce(), "manga is already in shelf")
 	MangaNotInShelfYetError   = New(404, ce(), "manga is not in shelf yet")
+	CountMangaError           = New(500, se(), "failed to count manga")
 )

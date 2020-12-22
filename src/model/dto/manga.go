@@ -28,6 +28,7 @@ func init() {
 				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
 				goapidoc.NewProperty("per_scores", "string[]", true, "manga per scores, skip 0, from 1 to 5"),
 				goapidoc.NewProperty("banned", "boolean", true, "manga is banned"),
+				goapidoc.NewProperty("copyright", "boolean", true, "has copyright"),
 				goapidoc.NewProperty("chapter_groups", "MangaChapterGroupDto[]", true, "manga chapter groups"),
 			),
 
@@ -42,6 +43,7 @@ func init() {
 				goapidoc.NewProperty("page_count", "integer#int32", true, "chapter pages count"),
 				goapidoc.NewProperty("next_cid", "integer#int64", true, "next chapter id"),
 				goapidoc.NewProperty("prev_cid", "integer#int64", true, "prev chapter id"),
+				goapidoc.NewProperty("copyright", "boolean", true, "has copyright"),
 			),
 
 		goapidoc.NewDefinition("SmallMangaDto", "Small mange page response").
@@ -150,6 +152,7 @@ type MangaDto struct {
 	AverageScore      float32                 `json:"average_score"`
 	PerScores         [6]string               `json:"per_scores"`
 	Banned            bool                    `json:"banned"`
+	Copyright         bool                    `json:"copyright"`
 	ChapterGroups     []*MangaChapterGroupDto `json:"chapter_groups"`
 }
 
@@ -174,6 +177,7 @@ func BuildMangaDto(manga *vo.Manga) *MangaDto {
 		AverageScore:      manga.AverageScore,
 		PerScores:         manga.PerScores,
 		Banned:            manga.Banned,
+		Copyright:         manga.Copyright,
 		ChapterGroups:     BuildMangaChapterGroupDtos(manga.ChapterGroups),
 	}
 }
@@ -197,6 +201,7 @@ type MangaChapterDto struct {
 	PageCount  int32    `json:"page_count"`
 	NextCid    int32    `json:"next_cid"`
 	PrevCid    int32    `json:"prev_cid"`
+	Copyright  bool     `json:"copyright"`
 }
 
 func BuildMangaChapterDto(chapter *vo.MangaChapter) *MangaChapterDto {
@@ -210,6 +215,7 @@ func BuildMangaChapterDto(chapter *vo.MangaChapter) *MangaChapterDto {
 		PageCount:  chapter.PageCount,
 		NextCid:    chapter.NextId,
 		PrevCid:    chapter.PrevId,
+		Copyright:  chapter.Copyright,
 	}
 }
 

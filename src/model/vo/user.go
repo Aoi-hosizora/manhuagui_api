@@ -22,5 +22,6 @@ type User struct {
 
 // 书柜状态
 type ShelfStatus struct {
-	In bool // 存在
+	Status int32 `json:"status"` // 已收藏
+	Total  int32 `json:"total"`  // 收藏用户数
 }
