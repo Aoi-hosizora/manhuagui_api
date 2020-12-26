@@ -67,9 +67,11 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 		} else if tr.Find("td.rank-trend span.trend-up").Length() > 0 {
 			trend = uint8(1)
 		}
+		id := static.ParseMid(url)
 		rank := &vo.MangaRank{
-			Mid:           static.ParseMid(url),
+			Mid:           id,
 			Title:         title,
+			Cover:         fmt.Sprintf(static.MANGA_COVER_URL, id),
 			Url:           static.HOMEPAGE_URL + url,
 			Finished:      status == "完结",
 			Authors:       authors,

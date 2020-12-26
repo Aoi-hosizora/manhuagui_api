@@ -83,10 +83,20 @@ func init() {
 				goapidoc.NewProperty("is_new", "boolean", true, "chapter is uploaded newly"),
 			),
 
+		goapidoc.NewDefinition("TinyBlockMangaDto", "Tiny block manga response").
+			Properties(
+				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewProperty("title", "string", true, "manga name"),
+				goapidoc.NewProperty("cover", "string", true, "manga cover"),
+				goapidoc.NewProperty("url", "string", true, "manga link"),
+				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
+				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
+			),
+
 		goapidoc.NewDefinition("MangaGroupDto", "Mange page group response").
 			Properties(
 				goapidoc.NewProperty("title", "string", true, "group title"),
-				goapidoc.NewProperty("mangas", "TinyMangaDto[]", true, "group mangas"),
+				goapidoc.NewProperty("mangas", "TinyBlockMangaDto[]", true, "group mangas"),
 			),
 
 		goapidoc.NewDefinition("MangaChapterGroupDto", "Mange chapter group response").
@@ -101,6 +111,13 @@ func init() {
 				goapidoc.NewProperty("top_group", "MangaGroupDto", true, "manga top page group"),
 				goapidoc.NewProperty("groups", "MangaGroupDto[]", true, "manga groups"),
 				goapidoc.NewProperty("other_groups", "MangaGroupDto[]", true, "manga other page groups"),
+			),
+
+		goapidoc.NewDefinition("HomepageMangaGroupListDto", "manga group list").
+			Properties(
+				goapidoc.NewProperty("serial", "MangaGroupListDto", true, "homepage serial manga group list"),
+				goapidoc.NewProperty("finish", "MangaGroupListDto", true, "homepage finish group list"),
+				goapidoc.NewProperty("latest", "MangaGroupListDto", true, "homepage latest manga group list"),
 			),
 
 		goapidoc.NewDefinition("MangaRankDto", "Mange rank result response").
@@ -328,16 +345,45 @@ func BuildTinyMangaChapterDtos(chapters []*vo.TinyMangaChapter) []*TinyMangaChap
 	return out
 }
 
+// 漫画页的部分信息 vo.TinyBlockManga
+type TinyBlockMangaDto struct {
+	Mid           uint64 `json:"mid"`
+	Title         string `json:"title"`
+	Cover         string `json:"cover"`
+	Url           string `json:"url"`
+	Finished      bool   `json:"finished"`
+	NewestChapter string `json:"newest_chapter"`
+}
+
+func BuildTinyBlockMangaDto(manga *vo.TinyBlockManga) *TinyBlockMangaDto {
+	return &TinyBlockMangaDto{
+		Mid:           manga.Mid,
+		Title:         manga.Title,
+		Cover:         manga.Cover,
+		Url:           manga.Url,
+		Finished:      manga.Finished,
+		NewestChapter: manga.NewestChapter,
+	}
+}
+
+func BuildTinyBlockMangaDtos(mangas []*vo.TinyBlockManga) []*TinyBlockMangaDto {
+	out := make([]*TinyBlockMangaDto, len(mangas))
+	for idx, manga := range mangas {
+		out[idx] = BuildTinyBlockMangaDto(manga)
+	}
+	return out
+}
+
 // 漫画页分组 vo.MangaGroup
 type MangaGroupDto struct {
-	Title  string          `json:"title"`
-	Mangas []*TinyMangaDto `json:"mangas"`
+	Title  string               `json:"title"`
+	Mangas []*TinyBlockMangaDto `json:"mangas"`
 }
 
 func BuildMangaGroupDto(group *vo.MangaGroup) *MangaGroupDto {
 	return &MangaGroupDto{
 		Title:  group.Title,
-		Mangas: BuildTinyMangaDtos(group.Mangas),
+		Mangas: BuildTinyBlockMangaDtos(group.Mangas),
 	}
 }
 
@@ -395,24 +441,49 @@ func BuildMangaGroupListDtos(lists []*vo.MangaGroupList) []*MangaGroupListDto {
 	return out
 }
 
+// 主页的三个漫画列表 vo.HomepageMangaGroupList
+type HomepageMangaGroupListDto struct {
+	Serial *MangaGroupListDto `json:"serial"`
+	Finish *MangaGroupListDto `json:"finish"`
+	Latest *MangaGroupListDto `json:"latest"`
+}
+
+func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMangaGroupListDto {
+	return &HomepageMangaGroupListDto{
+		Serial: BuildMangaGroupListDto(list.Serial),
+		Finish: BuildMangaGroupListDto(list.Finish),
+		Latest: BuildMangaGroupListDto(list.Latest),
+	}
+}
+
+func BuildHomepageMangaGroupListDtos(lists []*vo.HomepageMangaGroupList) []*HomepageMangaGroupListDto {
+	out := make([]*HomepageMangaGroupListDto, len(lists))
+	for idx, list := range lists {
+		out[idx] = BuildHomepageMangaGroupListDto(list)
+	}
+	return out
+}
+
 // 漫画排名 vo.MangaRank
 type MangaRankDto struct {
-	Mid           uint64           `json:"mid"`            // 漫画编号
-	Title         string           `json:"title"`          // 漫画标题
-	Url           string           `json:"url"`            // 漫画链接
-	Finished      bool             `json:"finished"`       // 是否完结
-	Authors       []*TinyAuthorDto `json:"authors"`        // 漫画作者
-	NewestChapter string           `json:"newest_chapter"` // 最新章节
-	NewestDate    string           `json:"newest_date"`    // 更新时间
-	Order         int8             `json:"order"`          // 漫画排名
-	Score         float64          `json:"score"`          // 排名评分
-	Trend         uint8            `json:"trend"`          // 排名趋势
+	Mid           uint64           `json:"mid"`
+	Title         string           `json:"title"`
+	Cover         string           `json:"cover"`
+	Url           string           `json:"url"`
+	Finished      bool             `json:"finished"`
+	Authors       []*TinyAuthorDto `json:"authors"`
+	NewestChapter string           `json:"newest_chapter"`
+	NewestDate    string           `json:"newest_date"`
+	Order         int8             `json:"order"`
+	Score         float64          `json:"score"`
+	Trend         uint8            `json:"trend"`
 }
 
 func BuildMangaRankDto(rank *vo.MangaRank) *MangaRankDto {
 	return &MangaRankDto{
 		Mid:           rank.Mid,
 		Title:         rank.Title,
+		Cover:         rank.Cover,
 		Url:           rank.Url,
 		Finished:      rank.Finished,
 		Authors:       BuildTinyAuthorDtos(rank.Authors),
@@ -434,14 +505,14 @@ func BuildMangaRankDtos(ranks []*vo.MangaRank) []*MangaRankDto {
 
 // 书架漫画 vo.ShelfManga
 type ShelfMangaDto struct {
-	Mid            uint64 `json:"mid"`             // 漫画编号
-	Title          string `json:"title"`           // 漫画标题
-	Cover          string `json:"cover"`           // 漫画封面
-	Url            string `json:"url"`             // 漫画链接
-	NewestChapter  string `json:"newest_chapter"`  // 最新章节
-	NewestDuration string `json:"newest_duration"` // 更新时间
-	LastChapter    string `json:"last_chapter"`    // 最近阅读
-	LastDuration   string `json:"last_duration"`   // 最近时间
+	Mid            uint64 `json:"mid"`
+	Title          string `json:"title"`
+	Cover          string `json:"cover"`
+	Url            string `json:"url"`
+	NewestChapter  string `json:"newest_chapter"`
+	NewestDuration string `json:"newest_duration"`
+	LastChapter    string `json:"last_chapter"`
+	LastDuration   string `json:"last_duration"`
 }
 
 func BuildShelfMangaDto(manga *vo.ShelfManga) *ShelfMangaDto {

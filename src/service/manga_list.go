@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
@@ -30,7 +31,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 	})
 	topGroup := &vo.MangaGroup{
 		Title:  "",
-		Mangas: topMangas,
+		Mangas: m.tinyMangasToTinyBlockMangas(topMangas),
 	}
 
 	// get group mangas
@@ -44,7 +45,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 		})
 		groups = append(groups, &vo.MangaGroup{
 			Title:  groupTitle,
-			Mangas: groupMangas,
+			Mangas: m.tinyMangasToTinyBlockMangas(groupMangas),
 		})
 	})
 
@@ -63,7 +64,7 @@ func (m *MangaListService) getMangas(doc *goquery.Document, tagIndex int, tagNam
 			})
 			otherGroups = append(otherGroups, &vo.MangaGroup{
 				Title:  groupTitle,
-				Mangas: groupMangas,
+				Mangas: m.tinyMangasToTinyBlockMangas(groupMangas),
 			})
 		})
 	}
@@ -95,15 +96,32 @@ func (m *MangaListService) getTinyMangaPageFromLi(li *goquery.Selection, hasCove
 		title := li.Find("h6 a").AttrOr("title", "")
 		url := li.Find("h6 a").AttrOr("href", "")
 		newestChapter := li.Find("h6 span a").AttrOr("title", "")
+		id := static.ParseMid(url)
 		return &vo.TinyManga{
-			Mid:           static.ParseMid(url),
+			Mid:           id,
 			Title:         title,
-			Cover:         "",
+			Cover:         fmt.Sprintf(static.MANGA_COVER_URL, id),
 			Url:           static.HOMEPAGE_URL + url,
 			Finished:      true, // true
 			NewestChapter: newestChapter,
+			NewestDate:    "",
 		}
 	}
+}
+
+func (m *MangaListService) tinyMangasToTinyBlockMangas(mangas []*vo.TinyManga) []*vo.TinyBlockManga {
+	out := make([]*vo.TinyBlockManga, len(mangas))
+	for idx, manga := range mangas {
+		out[idx] = &vo.TinyBlockManga{
+			Mid:           manga.Mid,
+			Title:         manga.Title,
+			Cover:         manga.Cover,
+			Url:           manga.Url,
+			Finished:      manga.Finished,
+			NewestChapter: manga.NewestChapter,
+		}
+	}
+	return out
 }
 
 func (m *MangaListService) GetHotSerialMangas() (*vo.MangaGroupList, error) {
@@ -147,7 +165,23 @@ func (m *MangaListService) GetLatestMangas() (*vo.MangaGroupList, error) {
 		Title:       "最新上架",
 		TopGroup:    topGroup,
 		Groups:      groups,
-		OtherGroups: otherGroups,
+		OtherGroups: otherGroups, // X
+	}, nil
+}
+
+func (m *MangaListService) GetHomepageMangas() (*vo.HomepageMangaGroupList, error) {
+	_, doc, err := m.httpService.HttpGetDocument(static.HOMEPAGE_URL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sTopGroup, sGroups, sOtherGroups := m.getMangas(doc, 1, "serial")
+	fTopGroup, fGroups, fOtherGroups := m.getMangas(doc, 2, "finish")
+	lTopGroup, lGroups, lOtherGroups := m.getMangas(doc, 3, "latest")
+	return &vo.HomepageMangaGroupList{
+		Serial: &vo.MangaGroupList{Title: "热门连载", TopGroup: sTopGroup, Groups: sGroups, OtherGroups: sOtherGroups},
+		Finish: &vo.MangaGroupList{Title: "经典完结", TopGroup: fTopGroup, Groups: fGroups, OtherGroups: fOtherGroups},
+		Latest: &vo.MangaGroupList{Title: "最新上架", TopGroup: lTopGroup, Groups: lGroups, OtherGroups: lOtherGroups},
 	}, nil
 }
 

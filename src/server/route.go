@@ -50,6 +50,7 @@ func initRoute(engine *gin.Engine) {
 		listGroup.GET("serial", j(mangaListController.GetHotSerialMangas))
 		listGroup.GET("finish", j(mangaListController.GetFinishedMangas))
 		listGroup.GET("latest", j(mangaListController.GetLatestMangas))
+		listGroup.GET("homepage", j(mangaListController.GetHomepageMangas))
 		listGroup.GET("updated", j(mangaListController.GetRecentUpdatedMangas))
 	}
 

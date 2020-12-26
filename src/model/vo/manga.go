@@ -84,10 +84,20 @@ type TinyMangaChapter struct {
 	IsNew     bool   // 最近发布
 }
 
+// 漫画页的部分信息 (TinyBlock)
+type TinyBlockManga struct {
+	Mid           uint64 // 漫画编号
+	Title         string // 漫画标题
+	Cover         string // 漫画封面
+	Url           string // 漫画链接
+	Finished      bool   // 是否完结
+	NewestChapter string // 最新章节
+}
+
 // 漫画页分组 (Group)
 type MangaGroup struct {
-	Title  string       // 分组标题
-	Mangas []*TinyManga // 章节集合
+	Title  string            // 分组标题
+	Mangas []*TinyBlockManga // 漫画集合
 }
 
 // 漫画章节分组 (Group)
@@ -104,10 +114,18 @@ type MangaGroupList struct {
 	OtherGroups []*MangaGroup // 其他分组
 }
 
+// 主页的三个漫画列表
+type HomepageMangaGroupList struct {
+	Serial *MangaGroupList // 热门连载
+	Finish *MangaGroupList // 经典完结
+	Latest *MangaGroupList // 最新上架
+}
+
 // 漫画排名
 type MangaRank struct {
 	Mid           uint64        // 漫画编号
 	Title         string        // 漫画标题
+	Cover         string        // 漫画封面
 	Url           string        // 漫画链接
 	Finished      bool          // 是否完结
 	Authors       []*TinyAuthor // 漫画作者

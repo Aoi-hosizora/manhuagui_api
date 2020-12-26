@@ -88,6 +88,7 @@ func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *vo.SmallAutho
 		Aid:        static.ParseAid(url),
 		Name:       name,
 		Zone:       zone,
+		Cover:      "https://cf.hamreus.com/zpic/none.jpg", // <<<
 		Url:        strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
 		MangaCount: mangaCount,
 		NewestDate: newestDate,
@@ -107,6 +108,7 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	infoDiv := doc.Find("div.info")
 	alias := strings.TrimPrefix(infoDiv.Find("p:nth-child(1)").Text(), "作者别名：")
 	zone := strings.TrimPrefix(infoDiv.Find("p:nth-child(2)").Text(), "所属地区：")
+	cover := doc.Find("div.info_cover img").AttrOr("src", "")
 	newestP := infoDiv.Find("p:nth-child(4)")
 	newestMangaUrl := newestP.Find("a").AttrOr("href", "")
 	newestMangaTitle := strings.TrimSuffix(strings.TrimPrefix(newestP.Find("a").AttrOr("title", ""), "【"), "】")
@@ -118,6 +120,7 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 		Aid:              aid,
 		Name:             name,
 		Zone:             zone,
+		Cover:            cover,
 		Url:              url,
 		MangaCount:       mangaCount,
 		NewestMangaId:    static.ParseMid(newestMangaUrl),

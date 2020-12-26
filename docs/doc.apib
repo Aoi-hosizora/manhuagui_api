@@ -169,6 +169,28 @@ manga-list-controller
 
     + Body
 
+## Get homepage mangas [/v1/list/homepage]
+
+### Get homepage mangas [GET]
+
+`GET /v1/list/homepage`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<HomepageMangaGroupListDto>)
+
+    + Headers
+
+    + Body
+
 ## Get recent update mangas [/v1/list/updated{?page,limit}]
 
 ### Get recent update mangas [GET]
@@ -815,6 +837,7 @@ shelf-controller
 + name (string, required) - author name
 + alias (string, required) - author alias
 + zone (string, required) - author zone
++ cover (string, required) - author cover
 + url (string, required) - author url
 + manga_count (number, required) - author manga count
     (format: int32)
@@ -832,6 +855,7 @@ shelf-controller
     (format: int64)
 + name (string, required) - author name
 + zone (string, required) - author zone
++ cover (string, required) - author cover
 + url (string, required) - author url
 + manga_count (number, required) - author manga count
     (format: int32)
@@ -969,10 +993,20 @@ shelf-controller
     (format: int32)
 + is_new (boolean, required) - chapter is uploaded newly
 
+## TinyBlockMangaDto (object)
+
++ mid (number, required) - manga id
+    (format: int64)
++ title (string, required) - manga name
++ cover (string, required) - manga cover
++ url (string, required) - manga link
++ finished (boolean, required) - manga is finished
++ newest_chapter (string, required) - manga last update chapter
+
 ## MangaGroupDto (object)
 
 + title (string, required) - group title
-+ mangas (array[TinyMangaDto], required) - group mangas
++ mangas (array[TinyBlockMangaDto], required) - group mangas
 
 ## MangaChapterGroupDto (object)
 
@@ -985,6 +1019,12 @@ shelf-controller
 + top_group (MangaGroupDto, required) - manga top page group
 + groups (array[MangaGroupDto], required) - manga groups
 + other_groups (array[MangaGroupDto], required) - manga other page groups
+
+## HomepageMangaGroupListDto (object)
+
++ serial (MangaGroupListDto, required) - homepage serial manga group list
++ finish (MangaGroupListDto, required) - homepage finish group list
++ latest (MangaGroupListDto, required) - homepage latest manga group list
 
 ## MangaRankDto (object)
 
@@ -1149,6 +1189,13 @@ shelf-controller
     (format: int32)
 + message (string, required) - status message
 + data (MangaGroupListDto, required) - response data
+
+## _Result<HomepageMangaGroupListDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (HomepageMangaGroupListDto, required) - response data
 
 ## _Result<_Page<MangaRankDto>> (object)
 

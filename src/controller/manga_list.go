@@ -27,6 +27,10 @@ func init() {
 			Tags("MangaList").
 			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
+		goapidoc.NewRoutePath("GET", "/v1/list/homepage", "Get homepage mangas").
+			Tags("MangaList").
+			Responses(goapidoc.NewResponse(200, "_Result<HomepageMangaGroupListDto>")),
+
 		goapidoc.NewRoutePath("GET", "/v1/list/updated", "Get recent update mangas").
 			Tags("MangaList").
 			Params(param.ParamPage, param.ParamLimit).
@@ -76,6 +80,17 @@ func (m *MangaListController) GetLatestMangas(c *gin.Context) *result.Result {
 	}
 
 	res := dto.BuildMangaGroupListDto(list)
+	return result.Ok().SetData(res)
+}
+
+// GET /v1/list/homepage
+func (m *MangaListController) GetHomepageMangas(c *gin.Context) *result.Result {
+	list, err := m.mangaListService.GetHomepageMangas()
+	if err != nil {
+		return result.Error(exception.GetHomepageMangasError).SetError(err, c)
+	}
+
+	res := dto.BuildHomepageMangaGroupListDto(list)
 	return result.Ok().SetData(res)
 }
 

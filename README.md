@@ -14,6 +14,7 @@
 + `GET /v1/list/serial`
 + `GET /v1/list/finish`
 + `GET /v1/list/latest`
++ `GET /v1/list/homepage`
 + `GET /v1/list/updated`
 + `GET /v1/category/genre`
 + `GET /v1/category/zone`
@@ -31,7 +32,11 @@
 + `POST /v1/user/login`
 + `POST /v1/user/check_login`
 + `GET /v1/user/info`
-+ `GET /v1/user/shelf`
++ `GET /v1/user/manga/:mid/:cid`
++ `GET /v1/shelf`
++ `GET /v1/shelf/:mid`
++ `POST /v1/shelf/:mid`
++ `DELETE /v1/shelf/:mid`
 
 ### Reference
 

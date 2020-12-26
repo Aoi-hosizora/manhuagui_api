@@ -343,6 +343,23 @@
         }
       }
     },
+    "/v1/list/homepage": {
+      "get": {
+        "summary": "Get homepage mangas",
+        "operationId": "-v1-list-homepage-get",
+        "tags": [
+          "MangaList"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<HomepageMangaGroupListDto>",
+              "$ref": "#/definitions/_Result<HomepageMangaGroupListDto>"
+            }
+          }
+        }
+      }
+    },
     "/v1/list/latest": {
       "get": {
         "summary": "Get latest mangas",
@@ -923,6 +940,7 @@
         "name",
         "alias",
         "zone",
+        "cover",
         "url",
         "manga_count",
         "newest_manga_id",
@@ -953,6 +971,11 @@
           "type": "string",
           "required": true,
           "description": "author zone"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "author cover"
         },
         "url": {
           "type": "string",
@@ -1094,6 +1117,35 @@
           "type": "string",
           "required": true,
           "description": "comment create time"
+        }
+      }
+    },
+    "HomepageMangaGroupListDto": {
+      "type": "object",
+      "required": [
+        "serial",
+        "finish",
+        "latest"
+      ],
+      "description": "manga group list",
+      "properties": {
+        "serial": {
+          "required": true,
+          "description": "homepage serial manga group list",
+          "originRef": "MangaGroupListDto",
+          "$ref": "#/definitions/MangaGroupListDto"
+        },
+        "finish": {
+          "required": true,
+          "description": "homepage finish group list",
+          "originRef": "MangaGroupListDto",
+          "$ref": "#/definitions/MangaGroupListDto"
+        },
+        "latest": {
+          "required": true,
+          "description": "homepage latest manga group list",
+          "originRef": "MangaGroupListDto",
+          "$ref": "#/definitions/MangaGroupListDto"
         }
       }
     },
@@ -1367,8 +1419,8 @@
           "required": true,
           "description": "group mangas",
           "items": {
-            "originRef": "TinyMangaDto",
-            "$ref": "#/definitions/TinyMangaDto"
+            "originRef": "TinyBlockMangaDto",
+            "$ref": "#/definitions/TinyBlockMangaDto"
           }
         }
       }
@@ -1658,6 +1710,7 @@
         "aid",
         "name",
         "zone",
+        "cover",
         "url",
         "manga_count",
         "newest_date"
@@ -1679,6 +1732,11 @@
           "type": "string",
           "required": true,
           "description": "author zone"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "author cover"
         },
         "url": {
           "type": "string",
@@ -1811,6 +1869,51 @@
           "type": "string",
           "required": true,
           "description": "author url"
+        }
+      }
+    },
+    "TinyBlockMangaDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "title",
+        "cover",
+        "url",
+        "finished",
+        "newest_chapter"
+      ],
+      "description": "Tiny block manga response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "manga name"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "manga cover"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "manga link"
+        },
+        "finished": {
+          "type": "boolean",
+          "required": true,
+          "description": "manga is finished"
+        },
+        "newest_chapter": {
+          "type": "string",
+          "required": true,
+          "description": "manga last update chapter"
         }
       }
     },
@@ -2281,6 +2384,34 @@
           "description": "response data",
           "originRef": "AuthorDto",
           "$ref": "#/definitions/AuthorDto"
+        }
+      }
+    },
+    "_Result<HomepageMangaGroupListDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "HomepageMangaGroupListDto",
+          "$ref": "#/definitions/HomepageMangaGroupListDto"
         }
       }
     },

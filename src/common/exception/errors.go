@@ -26,6 +26,7 @@ var (
 	GetHotSerialMangasError   = New(500, se(), "无法获取热门连载漫画")
 	GetFinishedMangasError    = New(500, se(), "无法获取经典完结漫画")
 	GetLatestMangasError      = New(500, se(), "无法获取最新上架漫画")
+	GetHomepageMangasError    = New(500, se(), "无法获取主页漫画列表")
 	GetUpdatedMangasError     = New(500, se(), "无法获取最近更新漫画")
 )
 

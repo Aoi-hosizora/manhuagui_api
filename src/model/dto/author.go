@@ -13,6 +13,7 @@ func init() {
 				goapidoc.NewProperty("name", "string", true, "author name"),
 				goapidoc.NewProperty("alias", "string", true, "author alias"),
 				goapidoc.NewProperty("zone", "string", true, "author zone"),
+				goapidoc.NewProperty("cover", "string", true, "author cover"),
 				goapidoc.NewProperty("url", "string", true, "author url"),
 				goapidoc.NewProperty("manga_count", "integer#int32", true, "author manga count"),
 				goapidoc.NewProperty("newest_manga_id", "integer#int32", true, "author newest manga id"),
@@ -27,6 +28,7 @@ func init() {
 				goapidoc.NewProperty("aid", "integer#int64", true, "author id"),
 				goapidoc.NewProperty("name", "string", true, "author name"),
 				goapidoc.NewProperty("zone", "string", true, "author zone"),
+				goapidoc.NewProperty("cover", "string", true, "author cover"),
 				goapidoc.NewProperty("url", "string", true, "author url"),
 				goapidoc.NewProperty("manga_count", "integer#int32", true, "author manga count"),
 				goapidoc.NewProperty("newest_date", "string", true, "author update newest date"),
@@ -46,6 +48,7 @@ type AuthorDto struct {
 	Name             string  `json:"name"`
 	Alias            string  `json:"alias"`
 	Zone             string  `json:"zone"`
+	Cover            string  `json:"cover"`
 	Url              string  `json:"url"`
 	MangaCount       int32   `json:"manga_count"`
 	NewestMangaId    uint64  `json:"newest_manga_id"`
@@ -60,6 +63,7 @@ func BuildAuthorDto(author *vo.Author) *AuthorDto {
 		Aid:              author.Aid,
 		Name:             author.Name,
 		Zone:             author.Zone,
+		Cover:            author.Cover,
 		Url:              author.Url,
 		MangaCount:       author.MangaCount,
 		NewestMangaId:    author.NewestMangaId,
@@ -83,6 +87,7 @@ type SmallAuthorDto struct {
 	Aid        uint64 `json:"aid"`
 	Name       string `json:"name"`
 	Zone       string `json:"zone"`
+	Cover      string `json:"cover"`
 	Url        string `json:"url"`
 	MangaCount int32  `json:"manga_count"`
 	NewestDate string `json:"newest_date"`
@@ -93,6 +98,7 @@ func BuildSmallAuthorDto(author *vo.SmallAuthor) *SmallAuthorDto {
 		Aid:        author.Aid,
 		Name:       author.Name,
 		Zone:       author.Zone,
+		Cover:      author.Cover,
 		Url:        author.Url,
 		MangaCount: author.MangaCount,
 		NewestDate: author.NewestDate,
