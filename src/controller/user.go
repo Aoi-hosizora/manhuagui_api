@@ -73,6 +73,9 @@ func (u *UserController) Login(c *gin.Context) *result.Result {
 // POST /v1/user/check_login
 func (u *UserController) CheckLogin(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	ok, err := u.userService.CheckLogin(token)
 	if err != nil {
 		return result.Error(exception.CheckLoginError).SetError(err, c)
@@ -86,6 +89,9 @@ func (u *UserController) CheckLogin(c *gin.Context) *result.Result {
 // GET /v1/user/info
 func (u *UserController) GetUser(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	user, err := u.userService.GetUser(token)
 	if err != nil {
 		return result.Error(exception.GetUserError).SetError(err, c)
@@ -100,6 +106,9 @@ func (u *UserController) GetUser(c *gin.Context) *result.Result {
 // GET /v1/user/manga/:mid/:cid
 func (u *UserController) RecordManga(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	mid, err := param.BindRouteId(c, "mid")
 	if err != nil {
 		return result.Error(exception.RequestParamError).SetError(err, c)

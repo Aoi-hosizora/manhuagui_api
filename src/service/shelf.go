@@ -62,13 +62,6 @@ func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*vo.ShelfMang
 		return nil, 0, 0, nil
 	}
 
-	total, _ := xnumber.Atoi32(strings.TrimSuffix(strings.TrimPrefix(doc.Find("div.flickr span:first-child").Text(), "共"), "记录"))
-	limit := int32(20)
-	pages := int32(math.Ceil(float64(total) / float64(limit)))
-	if page > pages {
-		return []*vo.ShelfManga{}, limit, total, nil
-	}
-
 	mangas := make([]*vo.ShelfManga, 0)
 	divs := doc.Find("div.dy_content_li")
 	divs.Each(func(idx int, sel *goquery.Selection) {
@@ -92,6 +85,21 @@ func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*vo.ShelfMang
 		}
 		mangas = append(mangas, manga)
 	})
+
+	totalSpan := doc.Find("div.flickr span:first-child")
+	total, _ := xnumber.Atoi32(strings.TrimSuffix(strings.TrimPrefix(totalSpan.Text(), "共"), "记录"))
+	limit := int32(20)
+	if totalSpan.Length() > 0 {
+		pages := int32(math.Ceil(float64(total) / float64(limit)))
+		if page > pages {
+			return []*vo.ShelfManga{}, limit, total, nil
+		}
+	} else {
+		total = int32(len(mangas))
+		if page > 1 {
+			return []*vo.ShelfManga{}, limit, total, nil
+		}
+	}
 
 	return mangas, limit, total, nil
 }

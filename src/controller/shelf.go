@@ -66,6 +66,9 @@ func NewShelfController() *ShelfController {
 // GET /v1/shelf
 func (s *ShelfController) GetShelfMangas(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	pa := param.BindPage(c, s.config)
 
 	mangas, limit, total, err := s.shelfService.GetShelfMangas(token, pa.Page)
@@ -82,6 +85,9 @@ func (s *ShelfController) GetShelfMangas(c *gin.Context) *result.Result {
 // GET /v1/shelf/:mid
 func (s *ShelfController) CheckMangaInShelf(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	mid, err := param.BindRouteId(c, "mid")
 	if err != nil {
 		return result.Error(exception.RequestParamError).SetError(err, c)
@@ -106,6 +112,9 @@ func (s *ShelfController) CheckMangaInShelf(c *gin.Context) *result.Result {
 // POST /v1/shelf/:mid
 func (s *ShelfController) SaveMangaToShelf(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	mid, err := param.BindRouteId(c, "mid")
 	if err != nil {
 		return result.Error(exception.RequestParamError).SetError(err, c)
@@ -127,6 +136,9 @@ func (s *ShelfController) SaveMangaToShelf(c *gin.Context) *result.Result {
 // DELETE /v1/shelf/:mid
 func (s *ShelfController) RemoveMangaFromShelf(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
 	mid, err := param.BindRouteId(c, "mid")
 	if err != nil {
 		return result.Error(exception.RequestParamError).SetError(err, c)

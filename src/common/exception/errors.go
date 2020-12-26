@@ -18,62 +18,62 @@ var (
 
 // manga
 var (
-	GetAllMangasError         = New(500, se(), "failed to get all mangas")
-	GetMangaError             = New(500, se(), "failed to get manga")
-	MangaNotFoundError        = New(404, ce(), "manga not found")
-	GetMangaChapterError      = New(500, se(), "failed to get manga chapter")
-	MangaChapterNotFoundError = New(404, ce(), "manga chapter not found")
-	GetHotSerialMangasError   = New(500, se(), "failed to get hot serial mangas")
-	GetFinishedMangasError    = New(500, se(), "failed to get finished mangas")
-	GetLatestMangasError      = New(500, se(), "failed to get latest mangas")
-	GetUpdatedMangasError     = New(500, se(), "failed to get updated mangas")
+	GetAllMangasError         = New(500, se(), "无法获取漫画列表")
+	GetMangaError             = New(500, se(), "无法获取漫画信息")
+	MangaNotFoundError        = New(404, ce(), "漫画未找到")
+	GetMangaChapterError      = New(500, se(), "无法获取漫画章节")
+	MangaChapterNotFoundError = New(404, ce(), "漫画章节未找到")
+	GetHotSerialMangasError   = New(500, se(), "无法获取热门连载漫画")
+	GetFinishedMangasError    = New(500, se(), "无法获取经典完结漫画")
+	GetLatestMangasError      = New(500, se(), "无法获取最新上架漫画")
+	GetUpdatedMangasError     = New(500, se(), "无法获取最近更新漫画")
 )
 
 // category
 var (
-	GetGenresError      = New(500, se(), "failed to get genres")
-	GetZonesError       = New(500, se(), "failed to get zones")
-	GetAgesError        = New(500, se(), "failed to get ages")
-	GetGenreMangasError = New(500, se(), "failed to get genre mangas")
-	GenreNotFoundError  = New(404, ce(), "genre not found")
+	GetGenresError      = New(500, se(), "无法获取类别信息")
+	GetZonesError       = New(500, se(), "无法获取地区信息")
+	GetAgesError        = New(500, se(), "无法获取受众信息")
+	GetGenreMangasError = New(500, se(), "无法获取漫画分类结果")
+	GenreNotFoundError  = New(404, ce(), "类别未找到")
 )
 
 // search
 var (
-	SearchMangasError = New(500, se(), "failed to search mangas")
+	SearchMangasError = New(500, se(), "无法获取漫画搜索结果")
 )
 
 // author
 var (
-	GetAllAuthorsError   = New(500, se(), "failed to get all authors")
-	GetAuthorError       = New(500, se(), "failed to get author")
-	AuthorNotFound       = New(404, ce(), "author not found")
-	GetAuthorMangasError = New(500, se(), "failed to get author mangas")
+	GetAllAuthorsError   = New(500, se(), "无法获取漫画家列表")
+	GetAuthorError       = New(500, se(), "无法获取漫画家信息")
+	AuthorNotFound       = New(404, ce(), "漫画家未找到")
+	GetAuthorMangasError = New(500, se(), "无法获取漫画家的漫画列表")
 )
 
 // rank
 var (
-	GetRankingError          = New(500, se(), "failed to get ranking list")
-	RankingTypeNotFoundError = New(404, ce(), "ranking type not found")
+	GetRankingError          = New(500, se(), "无法获取排行榜")
+	RankingTypeNotFoundError = New(404, ce(), "排行榜类别未找到")
 )
 
 // comment
 var (
-	GetMangaCommentsError = New(500, se(), "failed to get manga comments")
+	GetMangaCommentsError = New(500, se(), "无法获取漫画评论")
 )
 
 // user
 var (
-	LoginError                = New(500, se(), "failed to login")
-	PasswordError             = New(401, ce(), "username or password error")
-	CheckLoginError           = New(500, se(), "failed to check login")
-	UnauthorizedError         = New(401, ce(), "Unauthorized")
-	GetUserError              = New(500, se(), "failed to get user")
-	GetShelfMangasError       = New(500, se(), "failed to get shelf mangas")
-	CheckMangaShelfError      = New(500, se(), "failed to check manga in shelf")
-	SaveMangaToShelfError     = New(500, se(), "failed to save manga to shelf")
-	RemoveMangaFromShelfError = New(500, se(), "failed to remove manga from shelf")
-	MangaAlreadyInShelfError  = New(409, ce(), "manga is already in shelf")
-	MangaNotInShelfYetError   = New(404, ce(), "manga is not in shelf yet")
-	CountMangaError           = New(500, se(), "failed to count manga")
+	LoginError                = New(500, se(), "无法登录")
+	PasswordError             = New(401, ce(), "用户名或密码错误")
+	CheckLoginError           = New(500, se(), "无法检查登录状态")
+	UnauthorizedError         = New(401, ce(), "用户未登录")
+	GetUserError              = New(500, se(), "无法获取用户信息")
+	GetShelfMangasError       = New(500, se(), "无法获取书架列表")
+	CheckMangaShelfError      = New(500, se(), "无法检查书架漫画状态")
+	SaveMangaToShelfError     = New(500, se(), "无法添加订阅")
+	RemoveMangaFromShelfError = New(500, se(), "无法删除订阅")
+	MangaAlreadyInShelfError  = New(409, ce(), "漫画已经被订阅")
+	MangaNotInShelfYetError   = New(404, ce(), "漫画还没有被订阅")
+	CountMangaError           = New(500, se(), "无法记录漫画阅读历史")
 )
