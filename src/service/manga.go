@@ -43,7 +43,8 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	}
 
 	// get basic information
-	title := doc.Find("div.book-title").Text()
+	title := doc.Find("div.book-title h1").Text()
+	aliasTitle := doc.Find("div.book-title h2").Text()
 	cover := doc.Find("p.hcover img").AttrOr("src", "")
 	detailUl := doc.Find("ul.detail-list")
 	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
@@ -78,6 +79,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		Genres:            genres,
 		Authors:           authors,
 		Alias:             strings.TrimPrefix(alias, "漫画别名："),
+		AliasTitle:        aliasTitle,
 		Finished:          status == "已完结",
 		NewestChapter:     newestChapter,
 		NewestDate:        newestDate,

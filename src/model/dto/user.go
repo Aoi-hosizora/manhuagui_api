@@ -24,6 +24,11 @@ func init() {
 				goapidoc.NewProperty("last_login_time", "string", true, "user last login time"),
 			),
 
+		goapidoc.NewDefinition("UsernameDto", "Username response").
+			Properties(
+				goapidoc.NewProperty("username", "string", true, "username"),
+			),
+
 		goapidoc.NewDefinition("ShelfStatusDto", "Shelf status response").
 			Properties(
 				goapidoc.NewProperty("in", "boolean", true, "manga is in the shelf"),
@@ -67,6 +72,10 @@ func BuildBuildUserDtos(users []*vo.User) []*UserDto {
 		out[idx] = BuildUserDto(user)
 	}
 	return out
+}
+
+type UsernameDto struct {
+	Username string `json:"username"`
 }
 
 // 书柜状态 vo.ShelfStatus

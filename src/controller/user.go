@@ -26,7 +26,7 @@ func init() {
 		goapidoc.NewRoutePath("POST", "/v1/user/check_login", "Check login").
 			Tags("User").
 			Params(goapidoc.NewHeaderParam("Authorization", "string", true, "access token")).
-			Responses(goapidoc.NewResponse(200, "Result")),
+			Responses(goapidoc.NewResponse(200, "_Result<UsernameDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/user/info", "Get authorized user information").
 			Tags("User").
@@ -76,14 +76,14 @@ func (u *UserController) CheckLogin(c *gin.Context) *result.Result {
 	if token == "" {
 		token = c.Query("token")
 	}
-	ok, err := u.userService.CheckLogin(token)
+	ok, username, err := u.userService.CheckLogin(token)
 	if err != nil {
 		return result.Error(exception.CheckLoginError).SetError(err, c)
 	} else if !ok {
 		return result.Error(exception.UnauthorizedError)
 	}
 
-	return result.Ok()
+	return result.Ok().SetData(&dto.UsernameDto{Username: username})
 }
 
 // GET /v1/user/info
@@ -118,7 +118,7 @@ func (u *UserController) RecordManga(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	ok, err := u.userService.CheckLogin(token)
+	ok, _, err := u.userService.CheckLogin(token)
 	if err != nil {
 		return result.Error(exception.CheckLoginError).SetError(err, c)
 	} else if !ok {

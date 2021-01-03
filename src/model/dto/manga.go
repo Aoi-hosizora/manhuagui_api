@@ -18,6 +18,7 @@ func init() {
 				goapidoc.NewProperty("genres", "CategoryDto[]", true, "manga genres"),
 				goapidoc.NewProperty("authors", "TinyAuthorDto[]", true, "manga authors"),
 				goapidoc.NewProperty("alias", "string", true, "manga alias name"),
+				goapidoc.NewProperty("alias_title", "string", true, "manga alias title name"),
 				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
 				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
 				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
@@ -159,6 +160,7 @@ type MangaDto struct {
 	Genres            []*CategoryDto          `json:"genres"`
 	Authors           []*TinyAuthorDto        `json:"authors"`
 	Alias             string                  `json:"alias"`
+	AliasTitle        string                  `json:"alias_title"`
 	Finished          bool                    `json:"finished"`
 	NewestChapter     string                  `json:"newest_chapter"`
 	NewestDate        string                  `json:"newest_date"`
@@ -184,6 +186,7 @@ func BuildMangaDto(manga *vo.Manga) *MangaDto {
 		Genres:            BuildCategoryDtos(manga.Genres),
 		Authors:           BuildTinyAuthorDtos(manga.Authors),
 		Alias:             manga.Alias,
+		AliasTitle:        manga.AliasTitle,
 		Finished:          manga.Finished,
 		NewestChapter:     manga.NewestChapter,
 		NewestDate:        manga.NewestDate,

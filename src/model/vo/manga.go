@@ -12,6 +12,7 @@ type Manga struct {
 	Genres            []*Category          // 漫画剧情
 	Authors           []*TinyAuthor        // 漫画作者
 	Alias             string               // 漫画别名
+	AliasTitle        string               // 标题别名
 	Finished          bool                 // 是否完结
 	NewestChapter     string               // 最新章节
 	NewestDate        string               // 更新时间

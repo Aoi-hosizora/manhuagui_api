@@ -823,8 +823,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "Result",
-              "$ref": "#/definitions/Result"
+              "originRef": "_Result<UsernameDto>",
+              "$ref": "#/definitions/_Result<UsernameDto>"
             }
           }
         }
@@ -2086,6 +2086,20 @@
         }
       }
     },
+    "UsernameDto": {
+      "type": "object",
+      "required": [
+        "username"
+      ],
+      "description": "Username response",
+      "properties": {
+        "username": {
+          "type": "string",
+          "required": true,
+          "description": "username"
+        }
+      }
+    },
     "_Page<CategoryDto>": {
       "type": "object",
       "required": [
@@ -2580,6 +2594,34 @@
           "description": "response data",
           "originRef": "UserDto",
           "$ref": "#/definitions/UserDto"
+        }
+      }
+    },
+    "_Result<UsernameDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "UsernameDto",
+          "$ref": "#/definitions/UsernameDto"
         }
       }
     },

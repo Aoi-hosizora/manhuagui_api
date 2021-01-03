@@ -93,7 +93,7 @@ func (s *ShelfController) CheckMangaInShelf(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	ok, err := s.userService.CheckLogin(token)
+	ok, _, err := s.userService.CheckLogin(token)
 	if err != nil {
 		return result.Error(exception.CheckLoginError).SetError(err, c)
 	} else if !ok {

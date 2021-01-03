@@ -49,25 +49,28 @@ func (u *UserService) Login(username, password string) (string, error) {
 	return my, nil
 }
 
-func (u *UserService) CheckLogin(token string) (bool, error) {
+func (u *UserService) CheckLogin(token string) (bool, string, error) {
 	req, err := http.NewRequest("POST", static.MANGA_CHECK_LOGIN_URL, nil)
 	if err != nil {
-		return false, err
+		return false, "", err
 	}
 	req.Header.Set("Cookie", "my="+token)
 	bs, _, err := u.httpService.DoRequest(req)
 	if err != nil {
-		return false, err
+		return false, "", err
 	}
 
 	status := &vo.UserStatus{}
 	err = json.Unmarshal(bs, status)
 	if err != nil {
-		return false, err
+		return false, "", err
 	}
-	ok := status.Status == 1 && status.Username != "匿名用户"
 
-	return ok, nil
+	ok := status.Status == 1 && status.Username != "匿名用户"
+	if !ok {
+		return false, "", nil
+	}
+	return ok, status.Username, nil
 }
 
 func (u *UserService) _httpGetWithToken(url, token string) ([]byte, *goquery.Document, error) {
