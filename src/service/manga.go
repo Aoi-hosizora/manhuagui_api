@@ -50,7 +50,10 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
 	mangaZone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
 	alphabetIndex := detailUl.Find("li:nth-child(1) span:nth-child(3) a").Text()
-	alias := detailUl.Find("li:nth-child(3) span:nth-child(1)").Text()
+	aliases := make([]string, 0)
+	detailUl.Find("li:nth-child(3) span:nth-child(1) a").Each(func(i int, sel *goquery.Selection) {
+		aliases = append(aliases, sel.Text())
+	})
 	status := detailUl.Find("li:nth-child(4) span:nth-child(2)").Text()
 	newestChapter := detailUl.Find("li:nth-child(4) a").Text()
 	newestDate := detailUl.Find("li:nth-child(4) span:nth-child(3)").Text()
@@ -78,7 +81,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		AlphabetIndex:     alphabetIndex,
 		Genres:            genres,
 		Authors:           authors,
-		Alias:             strings.TrimPrefix(alias, "漫画别名："),
+		Alias:             strings.Join(aliases, ", "),
 		AliasTitle:        aliasTitle,
 		Finished:          status == "已完结",
 		NewestChapter:     newestChapter,
@@ -129,30 +132,25 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		obj.PerScores = [6]string{"", per1, per2, per3, per4, per5}
 	}
 
-	if bytes.Contains(bs, []byte("版权方的要求，现已删除屏蔽")) && bytes.Contains(bs, []byte("请喜欢这部漫画的漫迷购买")) {
-		obj.Copyright = false
-		return obj, nil
-	}
+	obj.Copyright = !bytes.Contains(bs, []byte("版权方的要求"))
+	obj.Banned = doc.Find("a#checkAdult").Length() != 0
 
 	// get chapter groups
-	cDoc := doc
-	if doc.Find("a#checkAdult").Length() != 0 {
-		obj.Banned = true
-		value := doc.Find("input#__VIEWSTATE").AttrOr("value", "")
+	newDoc := doc
+	if vs := doc.Find("input#__VIEWSTATE"); vs.Length() != 0 {
+		value := vs.AttrOr("value", "")
 		hiddenHtml, err := util.DecompressLZStringFromBase64(value)
 		if err == nil {
 			hiddenHtml = `<div class="chapter cf mt16">` + hiddenHtml + `</div>`
-			cDoc, err = goquery.NewDocumentFromReader(strings.NewReader(hiddenHtml))
+			newDoc, err = goquery.NewDocumentFromReader(strings.NewReader(hiddenHtml))
 			if err != nil {
 				return nil, err
 			}
 		}
-	} else if doc.Find("div.chapter-tip-18").Length() != 0 {
-		obj.Banned = true
 	}
 
-	groupTitleH4s := cDoc.Find("div.chapter h4").Children()
-	groupListDivs := cDoc.Find("div.chapter div.chapter-list")
+	groupTitleH4s := newDoc.Find("div.chapter h4").Children()
+	groupListDivs := newDoc.Find("div.chapter div.chapter-list")
 	groupTitles := make([]string, groupTitleH4s.Length())
 	groups := make([]*vo.MangaChapterGroup, len(groupTitles))
 	groupTitleH4s.Each(func(idx int, sel *goquery.Selection) {

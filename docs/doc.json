@@ -1261,6 +1261,7 @@
         "genres",
         "authors",
         "alias",
+        "alias_title",
         "finished",
         "newest_chapter",
         "newest_date",
@@ -1329,6 +1330,11 @@
           "type": "string",
           "required": true,
           "description": "manga alias name"
+        },
+        "alias_title": {
+          "type": "string",
+          "required": true,
+          "description": "manga alias title name"
         },
         "finished": {
           "type": "boolean",
