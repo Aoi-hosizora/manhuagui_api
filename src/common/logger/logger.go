@@ -3,8 +3,8 @@ package logger
 import (
 	"github.com/Aoi-hosizora/ahlib-more/xlogrus"
 	"github.com/Aoi-hosizora/ahlib/xdi"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/src/config"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide/sn"
 	"github.com/sirupsen/logrus"
 	"time"
 )

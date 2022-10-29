@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
+	"github.com/Aoi-hosizora/manhuagui-api/src/config"
 	"github.com/gin-gonic/gin"
 )
 

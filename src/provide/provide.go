@@ -2,10 +2,10 @@ package provide
 
 import (
 	"github.com/Aoi-hosizora/ahlib/xdi"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/common/logger"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
+	"github.com/Aoi-hosizora/manhuagui-api/src/common/logger"
+	"github.com/Aoi-hosizora/manhuagui-api/src/config"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/src/service"
 	"log"
 )
 

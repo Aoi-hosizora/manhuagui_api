@@ -3,7 +3,7 @@ package service
 import (
 	"bytes"
 	"fmt"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
+	"github.com/Aoi-hosizora/manhuagui-api/src/static"
 	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
 	"net/http"

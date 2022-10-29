@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
+	"github.com/Aoi-hosizora/manhuagui-api/src/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/src/static"
 	"github.com/PuerkitoBio/goquery"
 )
 

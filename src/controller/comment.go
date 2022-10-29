@@ -3,13 +3,13 @@ package controller
 import (
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/common/exception"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/common/result"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/config"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/model/dto"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/model/param"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/service"
+	"github.com/Aoi-hosizora/manhuagui-api/src/common/exception"
+	"github.com/Aoi-hosizora/manhuagui-api/src/common/result"
+	"github.com/Aoi-hosizora/manhuagui-api/src/config"
+	"github.com/Aoi-hosizora/manhuagui-api/src/model/dto"
+	"github.com/Aoi-hosizora/manhuagui-api/src/model/param"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/src/service"
 	"github.com/gin-gonic/gin"
 )
 

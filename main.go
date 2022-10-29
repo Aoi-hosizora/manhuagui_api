@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/server"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide"
+	"github.com/Aoi-hosizora/manhuagui-api/src/server"
 	"log"
 )
 

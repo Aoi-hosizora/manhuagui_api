@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/static"
+	"github.com/Aoi-hosizora/manhuagui-api/src/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/src/static"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"net/url"
@@ -94,6 +94,7 @@ func (u *UserService) GetUser(token string) (*vo.User, error) {
 		return nil, nil
 	}
 
+	// 会员中心
 	username := doc.Find("div.head-box div.inner h3").Text()
 	username = strings.TrimSuffix(strings.TrimPrefix(username, "尊敬的会员 "), "，欢迎您！")
 	avatar := doc.Find("div.head-box div.img-box img").AttrOr("src", "")
@@ -102,21 +103,33 @@ func (u *UserService) GetUser(token string) (*vo.User, error) {
 	scoreStr := doc.Find("div.head-box div.inner p").First().Next().Text()
 	score, _ := xnumber.Atoi32(strings.TrimSuffix(strings.TrimPrefix(scoreStr, "个人成长值："), "点"))
 
-	recordDiv := doc.Find("div.head-inner:last-of-type")
-	loginIP := recordDiv.Find("dl:nth-of-type(1) dd").Text()
-	lastLoginIP := recordDiv.Find("dl:nth-of-type(2) dd").Text()
-	registerTime := recordDiv.Find("dl:nth-of-type(3) dd").Text()
-	lastLoginTime := recordDiv.Find("dl:nth-of-type(4) dd").Text()
+	// 账户统计
+	accountDiv := doc.Find("div.head-inner").First()
+	accountPoint, _ := xnumber.Atoi32(accountDiv.Find("dl:nth-of-type(1) dd b").Text())
+	unreadMessageCount, _ := xnumber.Atoi32(accountDiv.Find("dl:nth-of-type(2) dd b").Text())
+
+	// 登录统计
+	loginDiv := doc.Find("div.head-inner:last-of-type")
+	loginIP := loginDiv.Find("dl:nth-of-type(1) dd").Text()
+	lastLoginIP := loginDiv.Find("dl:nth-of-type(2) dd").Text()
+	registerTime := loginDiv.Find("dl:nth-of-type(3) dd").Text()
+	lastLoginTime := loginDiv.Find("dl:nth-of-type(4) dd").Text()
+	cumulativeDayCount, _ := xnumber.Atoi32(loginDiv.Find("dl:nth-of-type(5) dd").Text())
+	totalCommentCount, _ := xnumber.Atoi32(loginDiv.Find("dl:nth-of-type(6) dd").Text())
 
 	user := &vo.User{
-		Username:      username,
-		Avatar:        avatar,
-		Class:         class,
-		Score:         score,
-		LoginIP:       loginIP,
-		LastLoginIP:   lastLoginIP,
-		RegisterTime:  registerTime,
-		LastLoginTime: lastLoginTime,
+		Username:           username,
+		Avatar:             avatar,
+		Class:              class,
+		Score:              score,
+		AccountPoint:       accountPoint,
+		UnreadMessageCount: unreadMessageCount,
+		LoginIP:            loginIP,
+		LastLoginIP:        lastLoginIP,
+		RegisterTime:       registerTime,
+		LastLoginTime:      lastLoginTime,
+		CumulativeDayCount: cumulativeDayCount,
+		TotalCommentCount:  totalCommentCount,
 	}
 	return user, nil
 }

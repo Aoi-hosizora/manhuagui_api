@@ -2042,10 +2042,14 @@
         "avatar",
         "class",
         "score",
+        "account_point",
+        "unread_message_count",
         "login_ip",
         "last_login_ip",
         "register_time",
-        "last_login_time"
+        "last_login_time",
+        "cumulative_day_count",
+        "total_comment_count"
       ],
       "description": "User response",
       "properties": {
@@ -2070,6 +2074,18 @@
           "description": "user score (个人成长值)",
           "format": "int32"
         },
+        "account_point": {
+          "type": "integer",
+          "required": true,
+          "description": "user account point (账户积分)",
+          "format": "int32"
+        },
+        "unread_message_count": {
+          "type": "integer",
+          "required": true,
+          "description": "unread message count)",
+          "format": "int32"
+        },
         "login_ip": {
           "type": "string",
           "required": true,
@@ -2089,6 +2105,16 @@
           "type": "string",
           "required": true,
           "description": "user last login time"
+        },
+        "cumulative_day_count": {
+          "type": "string",
+          "required": true,
+          "description": "user cumulative logined day count"
+        },
+        "total_comment_count": {
+          "type": "string",
+          "required": true,
+          "description": "user total comment count"
         }
       }
     },

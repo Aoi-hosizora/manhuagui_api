@@ -2,8 +2,8 @@ package server
 
 import (
 	"fmt"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/common/result"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/controller"
+	"github.com/Aoi-hosizora/manhuagui-api/src/common/result"
+	"github.com/Aoi-hosizora/manhuagui-api/src/controller"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

@@ -1,4 +1,4 @@
-module github.com/Aoi-hosizora/manhuagui-backend
+module github.com/Aoi-hosizora/manhuagui-api
 
 go 1.15
 

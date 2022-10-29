@@ -10,14 +10,18 @@ type UserStatus struct {
 
 // 用户信息
 type User struct {
-	Username      string // 用户名
-	Avatar        string // 用户头像
-	Class         string // 会员等级
-	Score         int32  // 个人成长值
-	LoginIP       string // 本地登录IP
-	LastLoginIP   string // 上次登录IP
-	RegisterTime  string // 注册时间
-	LastLoginTime string // 上次登录时间
+	Username           string // 用户名
+	Avatar             string // 用户头像
+	Class              string // 会员等级
+	Score              int32  // 个人成长值
+	AccountPoint       int32  // 账户积分
+	UnreadMessageCount int32  // 未读消息条数
+	LoginIP            string // 本地登录IP
+	LastLoginIP        string // 上次登录IP
+	RegisterTime       string // 注册时间
+	LastLoginTime      string // 上次登录时间
+	CumulativeDayCount int32  // 累计登录天数
+	TotalCommentCount  int32  // 累计评论总数
 }
 
 // 书柜状态

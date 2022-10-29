@@ -1,8 +1,9 @@
 package static
 
 import (
-	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"strings"
+
+	"github.com/Aoi-hosizora/ahlib/xnumber"
 )
 
 // noinspection GoSnakeCaseUsage
@@ -50,6 +51,10 @@ https://www.manhuagui.com/author/5802/
 */
 
 func ParseCoverUrl(url string) string {
+	url = strings.TrimPrefix(url, "//")
+	if !strings.HasPrefix(url, "http") {
+		url = "https://" + url
+	}
 	url = strings.ReplaceAll(url, "/b/", "/g/") // 132x176
 	url = strings.ReplaceAll(url, "/h/", "/g/") // 180x240
 	url = strings.ReplaceAll(url, "/l/", "/g/") // 78x104

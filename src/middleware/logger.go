@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/Aoi-hosizora/ahlib-web/xgin"
 	"github.com/Aoi-hosizora/ahlib/xdi"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/provide/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/src/provide/sn"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"time"

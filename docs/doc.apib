@@ -1067,10 +1067,16 @@ shelf-controller
 + class (string, required) - user class (会员等级)
 + score (number, required) - user score (个人成长值)
     (format: int32)
++ account_point (number, required) - user account point (账户积分)
+    (format: int32)
++ unread_message_count (number, required) - unread message count)
+    (format: int32)
 + login_ip (string, required) - user current login ip
 + last_login_ip (string, required) - user last login ip
 + register_time (string, required) - user register time
 + last_login_time (string, required) - user last login time
++ cumulative_day_count (string, required) - user cumulative logined day count
++ total_comment_count (string, required) - user total comment count
 
 ## UsernameDto (object)
 

@@ -4,7 +4,7 @@ import (
 	"github.com/Aoi-hosizora/ahlib-web/xdto"
 	"github.com/Aoi-hosizora/ahlib-web/xgin"
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/common/exception"
+	"github.com/Aoi-hosizora/manhuagui-api/src/common/exception"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"

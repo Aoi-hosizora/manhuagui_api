@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-backend/src/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/src/model/vo"
 )
 
 func init() {
