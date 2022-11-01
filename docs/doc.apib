@@ -86,7 +86,7 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaDto>)
+    + Attributes (_Result<MangaIdDto>)
 
     + Headers
 
@@ -1057,6 +1057,11 @@ shelf-controller
 + finished (boolean, required) - manga is finished
 + newest_chapter (string, required) - manga last update chapter
 
+## MangaIdDto (object)
+
++ mid (number, required) - manga id
+    (format: int64)
+
 ## MangaGroupDto (object)
 
 + title (string, required) - group title
@@ -1239,6 +1244,13 @@ shelf-controller
     (format: int32)
 + message (string, required) - status message
 + data (MangaDto, required) - response data
+
+## _Result<MangaIdDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (MangaIdDto, required) - response data
 
 ## _Result<MangaChapterDto> (object)
 

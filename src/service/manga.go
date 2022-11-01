@@ -190,7 +190,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	return obj, nil
 }
 
-func (m *MangaService) GetRandomMangaPage() (*vo.Manga, error) {
+func (m *MangaService) GetRandomMangaInfo() (*vo.RandomMangaInfo, error) {
 	resp, err := m.httpService.HttpHeadNoRedirect(static.MANGA_RANDOM_URL, nil) // 302 Found
 	if err != nil {
 		return nil, err
@@ -205,7 +205,12 @@ func (m *MangaService) GetRandomMangaPage() (*vo.Manga, error) {
 	if err != nil {
 		return nil, errors.New("failed to get random manga")
 	}
-	return m.GetMangaPage(mid)
+
+	info := &vo.RandomMangaInfo{
+		Mid: mid,
+		Url: fmt.Sprintf(static.MANGA_PAGE_URL, mid),
+	}
+	return info, nil
 }
 
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {

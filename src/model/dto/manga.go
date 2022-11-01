@@ -94,6 +94,12 @@ func init() {
 				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
 			),
 
+		goapidoc.NewDefinition("RandomMangaInfoDto", "Random manga info response").
+			Properties(
+				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewProperty("url", "integer#int64", true, "manga link"),
+			),
+
 		goapidoc.NewDefinition("MangaGroupDto", "Mange page group response").
 			Properties(
 				goapidoc.NewProperty("title", "string", true, "group title"),
@@ -373,6 +379,27 @@ func BuildTinyBlockMangaDtos(mangas []*vo.TinyBlockManga) []*TinyBlockMangaDto {
 	out := make([]*TinyBlockMangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildTinyBlockMangaDto(manga)
+	}
+	return out
+}
+
+// 随机漫画信息 vo.RandomMangaInfo
+type RandomMangaInfoDto struct {
+	Mid uint64 `json:"mid"`
+	Url string `json:"url"`
+}
+
+func BuildRandomMangaInfoDto(info *vo.RandomMangaInfo) *RandomMangaInfoDto {
+	return &RandomMangaInfoDto{
+		Mid: info.Mid,
+		Url: info.Url,
+	}
+}
+
+func BuildRandomMangaInfoDtos(infos []*vo.RandomMangaInfo) []*RandomMangaInfoDto {
+	out := make([]*RandomMangaInfoDto, len(infos))
+	for idx, info := range infos {
+		out[idx] = BuildRandomMangaInfoDto(info)
 	}
 	return out
 }

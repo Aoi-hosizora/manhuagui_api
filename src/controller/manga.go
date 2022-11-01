@@ -28,7 +28,7 @@ func init() {
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/random", "Get random manga").
 			Tags("Manga").
-			Responses(goapidoc.NewResponse(200, "_Result<MangaDto>")),
+			Responses(goapidoc.NewResponse(200, "_Result<RandomMangaInfoDto>")),
 
 		goapidoc.NewRoutePath("GET", "/v1/manga/{mid}/{cid}", "Get manga chapter").
 			Tags("Manga").
@@ -82,25 +82,25 @@ func (m *MangaController) getManga(c *gin.Context) *result.Result {
 		return result.Error(exception.RequestParamError).SetError(err, c)
 	}
 
-	mangas, err := m.mangaService.GetMangaPage(id)
+	manga, err := m.mangaService.GetMangaPage(id)
 	if err != nil {
 		return result.Error(exception.GetMangaError).SetError(err, c)
-	} else if mangas == nil {
+	} else if manga == nil {
 		return result.Error(exception.MangaNotFoundError)
 	}
 
-	res := dto.BuildMangaDto(mangas)
+	res := dto.BuildMangaDto(manga)
 	return result.Ok().SetData(res)
 }
 
 // GET /v1/manga/random
 func (m *MangaController) getRandomManga(c *gin.Context) *result.Result {
-	mangas, err := m.mangaService.GetRandomMangaPage()
-	if err != nil || mangas == nil {
+	info, err := m.mangaService.GetRandomMangaInfo()
+	if err != nil || info == nil {
 		return result.Error(exception.GetRandomMangaError).SetError(err, c)
 	}
 
-	res := dto.BuildMangaDto(mangas)
+	res := dto.BuildRandomMangaInfoDto(info)
 	return result.Ok().SetData(res)
 }
 

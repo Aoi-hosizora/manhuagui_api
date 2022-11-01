@@ -474,8 +474,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<MangaDto>",
-              "$ref": "#/definitions/_Result<MangaDto>"
+              "originRef": "_Result<MangaIdDto>",
+              "$ref": "#/definitions/_Result<MangaIdDto>"
             }
           }
         }
@@ -1527,6 +1527,21 @@
             "originRef": "MangaGroupDto",
             "$ref": "#/definitions/MangaGroupDto"
           }
+        }
+      }
+    },
+    "MangaIdDto": {
+      "type": "object",
+      "required": [
+        "mid"
+      ],
+      "description": "Manga id response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
         }
       }
     },
@@ -2600,6 +2615,34 @@
           "description": "response data",
           "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
+        }
+      }
+    },
+    "_Result<MangaIdDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "MangaIdDto",
+          "$ref": "#/definitions/MangaIdDto"
         }
       }
     },

@@ -95,6 +95,12 @@ type TinyBlockManga struct {
 	NewestChapter string // 最新章节
 }
 
+// 随机漫画信息
+type RandomMangaInfo struct {
+	Mid uint64 `json:"mid"`
+	Url string `json:"url"`
+}
+
 // 漫画页分组 (Group)
 type MangaGroup struct {
 	Title  string            // 分组标题
