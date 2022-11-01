@@ -22,7 +22,7 @@ func NewCommentService() *CommentService {
 
 func (c *CommentService) GetComments(mid uint64, page int32) ([]*vo.Comment, int32, error) {
 	url := fmt.Sprintf(static.MANGA_COMMENT_URL, mid, page)
-	bs, err := c.httpService.HttpGet(url, nil)
+	bs, _, err := c.httpService.HttpGet(url, nil)
 	if err != nil {
 		return nil, 0, err
 	}

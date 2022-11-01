@@ -35,6 +35,16 @@ func init() {
 
 		goapidoc.NewRoutePath("GET", "/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
 			Tags("User").
+			Deprecated(true).
+			Params(
+				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
+				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewPathParam("cid", "integer#int64", true, "manga chapter id"),
+			).
+			Responses(goapidoc.NewResponse(200, "Result")),
+
+		goapidoc.NewRoutePath("POST", "/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
+			Tags("User").
 			Params(
 				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
@@ -103,7 +113,7 @@ func (u *UserController) GetUser(c *gin.Context) *result.Result {
 	return result.Ok().SetData(res)
 }
 
-// GET /v1/user/manga/:mid/:cid
+// POST/GET /v1/user/manga/:mid/:cid
 func (u *UserController) RecordManga(c *gin.Context) *result.Result {
 	token := c.GetHeader("Authorization")
 	if token == "" {

@@ -464,6 +464,23 @@
         }
       }
     },
+    "/v1/manga/random": {
+      "get": {
+        "summary": "Get random manga",
+        "operationId": "-v1-manga-random-get",
+        "tags": [
+          "Manga"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<MangaDto>",
+              "$ref": "#/definitions/_Result<MangaDto>"
+            }
+          }
+        }
+      }
+    },
     "/v1/manga/{mid}": {
       "get": {
         "summary": "Get manga",
@@ -893,6 +910,47 @@
       "get": {
         "summary": "Record manga for the authorized user",
         "operationId": "-v1-user-manga-mid-cid-get",
+        "tags": [
+          "User"
+        ],
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "access token"
+          },
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga id",
+            "format": "int64"
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "manga chapter id",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "Result",
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Record manga for the authorized user",
+        "operationId": "-v1-user-manga-mid-cid-post",
         "tags": [
           "User"
         ],

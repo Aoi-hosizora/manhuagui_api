@@ -3,6 +3,7 @@ package service
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xdi"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
@@ -94,7 +95,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 
 	// get score
 	scoreUrl := fmt.Sprintf(static.MANGA_SCORE_URL, mid)
-	scoreJsonBs, err := m.httpService.HttpGet(scoreUrl, nil)
+	scoreJsonBs, _, err := m.httpService.HttpGet(scoreUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -187,6 +188,24 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 
 	// return
 	return obj, nil
+}
+
+func (m *MangaService) GetRandomMangaPage() (*vo.Manga, error) {
+	resp, err := m.httpService.HttpHeadNoRedirect(static.MANGA_RANDOM_URL, nil) // 302 Found
+	if err != nil {
+		return nil, err
+	}
+
+	location := resp.Header.Get("Location")
+	sp := strings.Split(strings.Trim(location, "/"), "/") // /comic/25882/
+	if len(sp) == 0 {
+		return nil, errors.New("failed to get random manga")
+	}
+	mid, err := xnumber.Atou64(sp[len(sp)-1])
+	if err != nil {
+		return nil, errors.New("failed to get random manga")
+	}
+	return m.GetMangaPage(mid)
 }
 
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {

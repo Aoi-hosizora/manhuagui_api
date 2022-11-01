@@ -20,6 +20,7 @@ var (
 var (
 	GetAllMangasError         = New(500, se(), "无法获取漫画列表")
 	GetMangaError             = New(500, se(), "无法获取漫画信息")
+	GetRandomMangaError       = New(500, se(), "无法获取随机漫画")
 	MangaNotFoundError        = New(404, ce(), "漫画未找到")
 	GetMangaChapterError      = New(500, se(), "无法获取漫画章节")
 	MangaChapterNotFoundError = New(404, ce(), "漫画章节未找到")

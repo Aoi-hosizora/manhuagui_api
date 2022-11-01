@@ -92,7 +92,8 @@ func initRoute(engine *gin.Engine) {
 		userGroup.POST("login", j(userController.Login))
 		userGroup.POST("check_login", j(userController.CheckLogin))
 		userGroup.GET("info", j(userController.GetUser))
-		userGroup.GET("manga/:mid/:cid", j(userController.RecordManga))
+		userGroup.GET("manga/:mid/:cid", j(userController.RecordManga)) // deprecated
+		userGroup.POST("manga/:mid/:cid", j(userController.RecordManga))
 	}
 
 	shelfGroup := v1.Group("shelf") // /v1/shelf/...

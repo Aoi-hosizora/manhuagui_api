@@ -70,6 +70,28 @@ order by popular / new / update
 
     + Body
 
+## Get random manga [/v1/manga/random]
+
+### Get random manga [GET]
+
+`GET /v1/manga/random`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<MangaDto>)
+
+    + Headers
+
+    + Body
+
 ## Get manga chapter [/v1/manga/{mid}/{cid}]
 
 ### Get manga chapter [GET]
@@ -675,11 +697,42 @@ user-controller
 
     + Body
 
-## Record manga for the authorized user [/v1/user/manga/{mid}/{cid}]
+## Record manga for the authorized user, Record manga for the authorized user [/v1/user/manga/{mid}/{cid}]
 
 ### Record manga for the authorized user [GET]
 
 `GET /v1/user/manga/{mid}/{cid}`
+
+Attention: This api is deprecated.
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+    + cid (number, required) - manga chapter id
+        (format: int64)
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+            Authorization: access token (string, required)
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (Result)
+
+    + Headers
+
+    + Body
+
+### Record manga for the authorized user [POST]
+
+`POST /v1/user/manga/{mid}/{cid}`
 
 + Parameters
 
