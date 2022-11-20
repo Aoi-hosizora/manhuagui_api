@@ -14,8 +14,13 @@ type MetaConfig struct {
 	MaxLimit int32  `yaml:"max-limit"`
 }
 
+type MessageConfig struct {
+	GitHubToken string `yaml:"github-token"`
+}
+
 type Config struct {
-	Meta *MetaConfig `yaml:"meta"`
+	Meta    *MetaConfig    `yaml:"meta"`
+	Message *MessageConfig `yaml:"message"`
 }
 
 func Load(path string) (*Config, error) {

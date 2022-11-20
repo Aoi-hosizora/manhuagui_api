@@ -48,6 +48,10 @@
     {
       "name": "Shelf",
       "description": "shelf-controller"
+    },
+    {
+      "name": "Message",
+      "description": "message-controller"
     }
   ],
   "paths": {
@@ -474,8 +478,8 @@
         "responses": {
           "200": {
             "schema": {
-              "originRef": "_Result<MangaIdDto>",
-              "$ref": "#/definitions/_Result<MangaIdDto>"
+              "originRef": "_Result<RandomMangaInfoDto>",
+              "$ref": "#/definitions/_Result<RandomMangaInfoDto>"
             }
           }
         }
@@ -538,6 +542,40 @@
             "schema": {
               "originRef": "_Result<MangaChapterDto>",
               "$ref": "#/definitions/_Result<MangaChapterDto>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/message": {
+      "get": {
+        "summary": "Get all messages",
+        "operationId": "-v1-message-get",
+        "tags": [
+          "Message"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<_Page<MessageDto>>",
+              "$ref": "#/definitions/_Result<_Page<MessageDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/message/latest": {
+      "get": {
+        "summary": "Get latest message",
+        "operationId": "-v1-message-latest-get",
+        "tags": [
+          "Message"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<LatestMessageDto>",
+              "$ref": "#/definitions/_Result<LatestMessageDto>"
             }
           }
         }
@@ -1207,6 +1245,42 @@
         }
       }
     },
+    "LatestMessageDto": {
+      "type": "object",
+      "required": [
+        "notification",
+        "new_version",
+        "not_dismissible_notification",
+        "must_upgrade_new_version"
+      ],
+      "description": "Latest message response",
+      "properties": {
+        "notification": {
+          "required": true,
+          "description": "latest notification message",
+          "originRef": "MessageDto",
+          "$ref": "#/definitions/MessageDto"
+        },
+        "new_version": {
+          "required": true,
+          "description": "latest new version message",
+          "originRef": "MessageDto",
+          "$ref": "#/definitions/MessageDto"
+        },
+        "not_dismissible_notification": {
+          "required": true,
+          "description": "latest notification message (not dismissible)",
+          "originRef": "MessageDto",
+          "$ref": "#/definitions/MessageDto"
+        },
+        "must_upgrade_new_version": {
+          "required": true,
+          "description": "latest new version message (must upgrade)",
+          "originRef": "MessageDto",
+          "$ref": "#/definitions/MessageDto"
+        }
+      }
+    },
     "MangaChapterDto": {
       "type": "object",
       "required": [
@@ -1530,21 +1604,6 @@
         }
       }
     },
-    "MangaIdDto": {
-      "type": "object",
-      "required": [
-        "mid"
-      ],
-      "description": "Manga id response",
-      "properties": {
-        "mid": {
-          "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
-        }
-      }
-    },
     "MangaRankDto": {
       "type": "object",
       "required": [
@@ -1614,6 +1673,137 @@
           "required": true,
           "description": "rank trend, 0: None, 1: Up, 2: Down",
           "format": "int32"
+        }
+      }
+    },
+    "MessageDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "title",
+        "notification",
+        "new_version",
+        "created_at",
+        "updated_at"
+      ],
+      "description": "Message response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "message id",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "description": "message title"
+        },
+        "notification": {
+          "required": true,
+          "description": "notification content",
+          "allowEmptyValue": true,
+          "originRef": "NotificationContentDto",
+          "$ref": "#/definitions/NotificationContentDto"
+        },
+        "new_version": {
+          "required": true,
+          "description": "new version content",
+          "allowEmptyValue": true,
+          "originRef": "NewVersionContentDto",
+          "$ref": "#/definitions/NewVersionContentDto"
+        },
+        "created_at": {
+          "type": "string",
+          "required": true,
+          "description": "created time",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "required": true,
+          "description": "updated time",
+          "format": "date-time"
+        }
+      }
+    },
+    "NewVersionContentDto": {
+      "type": "object",
+      "required": [
+        "version",
+        "must_upgrade",
+        "change_logs",
+        "release_page"
+      ],
+      "description": "New version content response",
+      "properties": {
+        "version": {
+          "type": "string",
+          "required": true,
+          "description": "version string"
+        },
+        "must_upgrade": {
+          "type": "boolean",
+          "required": true,
+          "description": "flag if must be upgrade"
+        },
+        "change_logs": {
+          "type": "string",
+          "required": true,
+          "description": "version change logs"
+        },
+        "release_page": {
+          "type": "string",
+          "required": true,
+          "description": "version release page"
+        }
+      }
+    },
+    "NotificationContentDto": {
+      "type": "object",
+      "required": [
+        "content",
+        "dismissible",
+        "link"
+      ],
+      "description": "Notification content response",
+      "properties": {
+        "content": {
+          "type": "string",
+          "required": true,
+          "description": "notification content"
+        },
+        "dismissible": {
+          "type": "boolean",
+          "required": true,
+          "description": "flag if the message is dismissible"
+        },
+        "link": {
+          "type": "boolean",
+          "required": true,
+          "description": "link associated to the message"
+        }
+      }
+    },
+    "RandomMangaInfoDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "url"
+      ],
+      "description": "Random manga info response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "required": true,
+          "description": "manga id",
+          "format": "int64"
+        },
+        "url": {
+          "type": "integer",
+          "required": true,
+          "description": "manga link",
+          "format": "int64"
         }
       }
     },
@@ -2322,6 +2512,45 @@
         }
       }
     },
+    "_Page<MessageDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "current page",
+          "format": "int32"
+        },
+        "limit": {
+          "type": "integer",
+          "required": true,
+          "description": "page size",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "description": "data count",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "required": true,
+          "description": "page data",
+          "items": {
+            "originRef": "MessageDto",
+            "$ref": "#/definitions/MessageDto"
+          }
+        }
+      }
+    },
     "_Page<ShelfMangaDto>": {
       "type": "object",
       "required": [
@@ -2534,6 +2763,34 @@
         }
       }
     },
+    "_Result<LatestMessageDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "LatestMessageDto",
+          "$ref": "#/definitions/LatestMessageDto"
+        }
+      }
+    },
     "_Result<MangaChapterDto>": {
       "type": "object",
       "required": [
@@ -2618,7 +2875,7 @@
         }
       }
     },
-    "_Result<MangaIdDto>": {
+    "_Result<RandomMangaInfoDto>": {
       "type": "object",
       "required": [
         "code",
@@ -2641,8 +2898,8 @@
         "data": {
           "required": true,
           "description": "response data",
-          "originRef": "MangaIdDto",
-          "$ref": "#/definitions/MangaIdDto"
+          "originRef": "RandomMangaInfoDto",
+          "$ref": "#/definitions/RandomMangaInfoDto"
         }
       }
     },
@@ -2839,6 +3096,34 @@
           "description": "response data",
           "originRef": "_Page\u003cMangaRankDto\u003e",
           "$ref": "#/definitions/_Page\u003cMangaRankDto\u003e"
+        }
+      }
+    },
+    "_Result<_Page<MessageDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "_Page\u003cMessageDto\u003e",
+          "$ref": "#/definitions/_Page\u003cMessageDto\u003e"
         }
       }
     },

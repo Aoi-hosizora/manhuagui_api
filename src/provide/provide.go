@@ -37,6 +37,7 @@ func Provide(configPath string) error {
 	xdi.ProvideName(sn.SCommentService, service.NewCommentService())     // *service.CommentService
 	xdi.ProvideName(sn.SUserService, service.NewUserService())           // *service.UserService
 	xdi.ProvideName(sn.SShelfService, service.NewShelfService())         // *service.ShelfService
+	xdi.ProvideName(sn.SMessageService, service.NewMessageService())     // *service.MessageService
 
 	return nil
 }

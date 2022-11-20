@@ -86,7 +86,7 @@ order by popular / new / update
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaIdDto>)
+    + Attributes (_Result<RandomMangaInfoDto>)
 
     + Headers
 
@@ -875,6 +875,54 @@ shelf-controller
 
     + Body
 
+# Group Message
+
+message-controller
+
+## Get all messages [/v1/message]
+
+### Get all messages [GET]
+
+`GET /v1/message`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<_Page<MessageDto>>)
+
+    + Headers
+
+    + Body
+
+## Get latest message [/v1/message/latest]
+
+### Get latest message [GET]
+
+`GET /v1/message/latest`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<LatestMessageDto>)
+
+    + Headers
+
+    + Body
+
 # Data Structures
 
 ## Result (object)
@@ -1057,9 +1105,11 @@ shelf-controller
 + finished (boolean, required) - manga is finished
 + newest_chapter (string, required) - manga last update chapter
 
-## MangaIdDto (object)
+## RandomMangaInfoDto (object)
 
 + mid (number, required) - manga id
+    (format: int64)
++ url (number, required) - manga link
     (format: int64)
 
 ## MangaGroupDto (object)
@@ -1113,6 +1163,40 @@ shelf-controller
 + newest_duration (string, required) - manga last update duration
 + last_chapter (string, required) - manga last read chapter
 + last_duration (string, required) - manga last read duration
+
+## MessageDto (object)
+
++ mid (number, required) - message id
+    (format: int64)
++ title (string, required) - message title
++ notification (NotificationContentDto, required) - notification content
+    (allow empty)
++ new_version (NewVersionContentDto, required) - new version content
+    (allow empty)
++ created_at (string, required) - created time
+    (format: date-time)
++ updated_at (string, required) - updated time
+    (format: date-time)
+
+## NotificationContentDto (object)
+
++ content (string, required) - notification content
++ dismissible (boolean, required) - flag if the message is dismissible
++ link (boolean, required) - link associated to the message
+
+## NewVersionContentDto (object)
+
++ version (string, required) - version string
++ must_upgrade (boolean, required) - flag if must be upgrade
++ change_logs (string, required) - version change logs
++ release_page (string, required) - version release page
+
+## LatestMessageDto (object)
+
++ notification (MessageDto, required) - latest notification message
++ new_version (MessageDto, required) - latest new version message
++ not_dismissible_notification (MessageDto, required) - latest notification message (not dismissible)
++ must_upgrade_new_version (MessageDto, required) - latest new version message (must upgrade)
 
 ## TokenDto (object)
 
@@ -1245,12 +1329,12 @@ shelf-controller
 + message (string, required) - status message
 + data (MangaDto, required) - response data
 
-## _Result<MangaIdDto> (object)
+## _Result<RandomMangaInfoDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (MangaIdDto, required) - response data
++ data (RandomMangaInfoDto, required) - response data
 
 ## _Result<MangaChapterDto> (object)
 
@@ -1272,6 +1356,30 @@ shelf-controller
     (format: int32)
 + message (string, required) - status message
 + data (HomepageMangaGroupListDto, required) - response data
+
+## _Result<_Page<MessageDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<MessageDto>, required) - response data
+
+## _Page<MessageDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[MessageDto], required) - page data
+
+## _Result<LatestMessageDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (LatestMessageDto, required) - response data
 
 ## _Result<_Page<MangaRankDto>> (object)
 

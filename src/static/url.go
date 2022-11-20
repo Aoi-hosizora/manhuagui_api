@@ -31,11 +31,17 @@ const (
 	MANGA_SHELF_ADD_URL    = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_add"
 	MANGA_SHELF_DELETE_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_delete"
 	MANGA_COUNT_URL        = "https://www.manhuagui.com/tools/count.ashx?bookId=%d&chapterId=%d"
+
+	MESSAGE_ISSUE_API        = "https://api.github.com/repos/Aoi-hosizora/manhuagui_flutter/issues/21"
+	MESSAGE_COMMENTS_PERPAGE = 100
+	MESSAGE_COMMENTS_API     = "https://api.github.com/repos/Aoi-hosizora/manhuagui_flutter/issues/21/comments?page=%d&per_page=%d"
 )
 
 // noinspection GoSnakeCaseUsage
 const (
-	USER_AGENT          = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"
+	USER_AGENT    = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"
+	GITHUB_ACCEPT = "application/vnd.github+json"
+
 	NOT_FOUND_TOKEN     = "您正访问的页面不存在"
 	NOT_FOUND2_TOKEN    = "暂时没有此类别组合的漫画"
 	NOT_FOUND3_TOKEN    = "很抱歉，没有查找到与"

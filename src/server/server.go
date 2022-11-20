@@ -38,6 +38,7 @@ func init() {
 		goapidoc.NewTag("Comment", "comment-controller"),
 		goapidoc.NewTag("User", "user-controller"),
 		goapidoc.NewTag("Shelf", "shelf-controller"),
+		goapidoc.NewTag("Message", "message-controller"),
 	)
 }
 

@@ -79,3 +79,8 @@ var (
 	MangaNotInShelfYetError   = New(404, ce(), "漫画还没有被订阅")
 	CountMangaError           = New(500, se(), "无法记录漫画阅读历史")
 )
+
+// message
+var (
+	GetMessageError = New(500, se(), "无法获取消息")
+)
