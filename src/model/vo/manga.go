@@ -121,11 +121,13 @@ type MangaGroupList struct {
 	OtherGroups []*MangaGroup // 其他分组
 }
 
-// 主页的三个漫画列表
+// 主页的三个漫画列表等数据
 type HomepageMangaGroupList struct {
 	Serial *MangaGroupList // 热门连载
 	Finish *MangaGroupList // 经典完结
 	Latest *MangaGroupList // 最新上架
+	Daily  []*MangaRank    // 日排行榜
+	Genres []*Category     // 漫画类别
 }
 
 // 漫画排名

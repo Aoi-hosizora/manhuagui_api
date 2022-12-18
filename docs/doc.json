@@ -1221,7 +1221,10 @@
       "required": [
         "serial",
         "finish",
-        "latest"
+        "latest",
+        "daily",
+        "weekly",
+        "genres"
       ],
       "description": "manga group list",
       "properties": {
@@ -1242,6 +1245,33 @@
           "description": "homepage latest manga group list",
           "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
+        },
+        "daily": {
+          "type": "array",
+          "required": true,
+          "description": "manga daily ranking for homepage",
+          "items": {
+            "originRef": "MangaRankDto",
+            "$ref": "#/definitions/MangaRankDto"
+          }
+        },
+        "weekly": {
+          "type": "array",
+          "required": true,
+          "description": "manga weekly ranking for homepage",
+          "items": {
+            "originRef": "MangaRankDto",
+            "$ref": "#/definitions/MangaRankDto"
+          }
+        },
+        "genres": {
+          "type": "array",
+          "required": true,
+          "description": "manga all genres for homepage",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
         }
       }
     },

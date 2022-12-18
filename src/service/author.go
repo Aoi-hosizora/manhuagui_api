@@ -180,7 +180,7 @@ func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *vo.Small
 	genreA := categoryDD.Find("span:nth-child(3) a")
 	genres := make([]*vo.Category, 0)
 	genreA.Each(func(idx int, sel *goquery.Selection) {
-		genres = append(genres, a.categoryService.GetCategoryFromA(sel))
+		genres = append(genres, a.categoryService.getCategoryFromA(sel))
 	})
 	authorA := li.Find("div.book-detail dl dd.tags:nth-child(4) a")
 	authors := make([]*vo.TinyAuthor, 0)

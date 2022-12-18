@@ -23,22 +23,24 @@ func NewCategoryService() *CategoryService {
 }
 
 func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
-	_, doc, err := c.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL, nil)
+	_, doc, err := c.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_RANK_URL, ""), nil)
 	if err != nil {
 		return nil, err
 	}
+	return c.getGenresFromRankingPage(doc), nil
+}
 
+func (c *CategoryService) getGenresFromRankingPage(doc *goquery.Document) []*vo.Category {
 	categories := make([]*vo.Category, 0)
-	genreLis := doc.Find("div.filter-nav div.filter.genre li")
-	genreLis.Each(func(idx int, sel *goquery.Selection) {
+	lis := doc.Find("div.category-list ul:last-of-type li")
+	lis.Each(func(i int, sel *goquery.Selection) {
 		a := sel.Find("a")
-		category := c.GetCategoryFromA(a)
+		category := c.getCategoryFromA(a)
 		if category.Title != "全部" {
 			categories = append(categories, category)
 		}
 	})
-
-	return categories, nil
+	return categories
 }
 
 func (c *CategoryService) GetZones() ([]*vo.Category, error) {
@@ -51,7 +53,7 @@ func (c *CategoryService) GetZones() ([]*vo.Category, error) {
 	genreLis := doc.Find("div.filter-nav div.filter.area li")
 	genreLis.Each(func(idx int, sel *goquery.Selection) {
 		a := sel.Find("a")
-		category := c.GetCategoryFromA(a)
+		category := c.getCategoryFromA(a)
 		if category.Title != "全部" {
 			categories = append(categories, category)
 		}
@@ -70,7 +72,7 @@ func (c *CategoryService) GetAges() ([]*vo.Category, error) {
 	genreLis := doc.Find("div.filter-nav div.filter.age li")
 	genreLis.Each(func(idx int, sel *goquery.Selection) {
 		a := sel.Find("a")
-		category := c.GetCategoryFromA(a)
+		category := c.getCategoryFromA(a)
 		if category.Title != "全部" {
 			categories = append(categories, category)
 		}
@@ -79,9 +81,9 @@ func (c *CategoryService) GetAges() ([]*vo.Category, error) {
 	return categories, nil
 }
 
-func (c *CategoryService) GetCategoryFromA(a *goquery.Selection) *vo.Category {
+func (c *CategoryService) getCategoryFromA(a *goquery.Selection) *vo.Category {
 	title := a.Text()
-	url := strings.TrimSuffix(a.AttrOr("href", ""), "/")
+	url := strings.TrimSuffix(strings.TrimSuffix(a.AttrOr("href", ""), ".html"), "/")
 	sp := strings.Split(url, "/")
 	name := sp[len(sp)-1]
 	return &vo.Category{

@@ -125,6 +125,8 @@ func init() {
 				goapidoc.NewProperty("serial", "MangaGroupListDto", true, "homepage serial manga group list"),
 				goapidoc.NewProperty("finish", "MangaGroupListDto", true, "homepage finish group list"),
 				goapidoc.NewProperty("latest", "MangaGroupListDto", true, "homepage latest manga group list"),
+				goapidoc.NewProperty("daily", "MangaRankDto[]", true, "manga daily ranking for homepage"),
+				goapidoc.NewProperty("genres", "CategoryDto[]", true, "manga all genres for homepage"),
 			),
 
 		goapidoc.NewDefinition("MangaRankDto", "Mange rank result response").
@@ -471,11 +473,13 @@ func BuildMangaGroupListDtos(lists []*vo.MangaGroupList) []*MangaGroupListDto {
 	return out
 }
 
-// 主页的三个漫画列表 vo.HomepageMangaGroupList
+// 主页的三个漫画列表等数据 vo.HomepageMangaGroupList
 type HomepageMangaGroupListDto struct {
 	Serial *MangaGroupListDto `json:"serial"`
 	Finish *MangaGroupListDto `json:"finish"`
 	Latest *MangaGroupListDto `json:"latest"`
+	Daily  []*MangaRankDto    `json:"daily"`
+	Genres []*CategoryDto     `json:"genres"`
 }
 
 func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMangaGroupListDto {
@@ -483,6 +487,8 @@ func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMa
 		Serial: BuildMangaGroupListDto(list.Serial),
 		Finish: BuildMangaGroupListDto(list.Finish),
 		Latest: BuildMangaGroupListDto(list.Latest),
+		Daily:  BuildMangaRankDtos(list.Daily),
+		Genres: BuildCategoryDtos(list.Genres),
 	}
 }
 

@@ -65,7 +65,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	genreA := detailUl.Find("li:nth-child(2) span:nth-child(1) a")
 	genres := make([]*vo.Category, 0)
 	genreA.Each(func(idx int, sel *goquery.Selection) {
-		genres = append(genres, m.categoryService.GetCategoryFromA(sel))
+		genres = append(genres, m.categoryService.getCategoryFromA(sel))
 	})
 	authorA := detailUl.Find("li:nth-child(2) span:nth-child(2) a")
 	authors := make([]*vo.TinyAuthor, 0)

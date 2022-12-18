@@ -85,7 +85,7 @@ func (m *MangaListController) GetLatestMangas(c *gin.Context) *result.Result {
 
 // GET /v1/list/homepage
 func (m *MangaListController) GetHomepageMangas(c *gin.Context) *result.Result {
-	list, err := m.mangaListService.GetHomepageMangas()
+	list, err := m.mangaListService.GetHomepageMangaGroupList()
 	if err != nil {
 		return result.Error(exception.GetHomepageMangasError).SetError(err, c)
 	}

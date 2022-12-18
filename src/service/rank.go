@@ -45,7 +45,10 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 	} else if doc == nil {
 		return nil, nil
 	}
+	return r.getRankingListFromDoc(doc), nil
+}
 
+func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*vo.MangaRank {
 	out := make([]*vo.MangaRank, 0)
 	trs := doc.Find("div.top-cont tr:not(.rank-split-first):not(.rank-split):not(:first-child)")
 	trs.Each(func(idx int, tr *goquery.Selection) {
@@ -84,7 +87,7 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 		out = append(out, rank)
 	})
 
-	return out, nil
+	return out
 }
 
 func (r *RankService) GetDayRanking(typ string) ([]*vo.MangaRank, error) {
