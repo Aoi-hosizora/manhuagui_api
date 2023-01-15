@@ -51,10 +51,19 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	publishYear := detailUl.Find("li:nth-child(1) span:nth-child(1) a").Text()
 	mangaZone := detailUl.Find("li:nth-child(1) span:nth-child(2) a").Text()
 	alphabetIndex := detailUl.Find("li:nth-child(1) span:nth-child(3) a").Text()
-	aliases := make([]string, 0)
+	mangaAliases := make([]string, 0)
 	detailUl.Find("li:nth-child(3) span:nth-child(1) a").Each(func(i int, sel *goquery.Selection) {
-		aliases = append(aliases, sel.Text())
+		mangaAliases = append(mangaAliases, sel.Text())
 	})
+	aliases := make([]string, 0) // <= 别名
+	if aliasTitle != "" {
+		aliases = append(aliases, aliasTitle)
+	}
+	for _, alias := range mangaAliases {
+		if alias != "暂无" {
+			aliases = append(aliases, alias)
+		}
+	}
 	status := detailUl.Find("li:nth-child(4) span:nth-child(2)").Text()
 	newestChapter := detailUl.Find("li:nth-child(4) a").Text()
 	newestDate := detailUl.Find("li:nth-child(4) span:nth-child(3)").Text()
@@ -82,8 +91,9 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		AlphabetIndex:     alphabetIndex,
 		Genres:            genres,
 		Authors:           authors,
-		Alias:             strings.Join(aliases, ", "),
+		Alias:             strings.Join(mangaAliases, ", "),
 		AliasTitle:        aliasTitle,
+		Aliases:           aliases,
 		Finished:          status == "已完结",
 		NewestChapter:     newestChapter,
 		NewestDate:        newestDate,
@@ -121,16 +131,21 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 		s4 := scoreJson["s4"].(float64)
 		s5 := scoreJson["s5"].(float64)
 		tot := s1 + s2 + s3 + s4 + s5
-		avg := (s1*1 + s2*2 + s3*3 + s4*4 + s5*5) / (tot * 5)
-		per1 := fmt.Sprintf("%2.01f%%", s1/tot*100) // 00.0%
-		per2 := fmt.Sprintf("%2.01f%%", s2/tot*100)
-		per3 := fmt.Sprintf("%2.01f%%", s3/tot*100)
-		per4 := fmt.Sprintf("%2.01f%%", s4/tot*100)
-		per5 := fmt.Sprintf("%2.01f%%", s5/tot*100)
-
-		obj.ScoreCount = int32(tot)
-		obj.AverageScore = float32(math.Round(avg*100) / 10) // 0.0
-		obj.PerScores = [6]string{"", per1, per2, per3, per4, per5}
+		if tot > 0 {
+			avg := (s1*1 + s2*2 + s3*3 + s4*4 + s5*5) / (tot * 5)
+			per1 := fmt.Sprintf("%.01f%%", s1/tot*100) // 0.0%
+			per2 := fmt.Sprintf("%.01f%%", s2/tot*100)
+			per3 := fmt.Sprintf("%.01f%%", s3/tot*100)
+			per4 := fmt.Sprintf("%.01f%%", s4/tot*100)
+			per5 := fmt.Sprintf("%.01f%%", s5/tot*100)
+			obj.ScoreCount = int32(tot)
+			obj.AverageScore = float32(math.Round(avg*100) / 10) // 0.0
+			obj.PerScores = [6]string{"", per1, per2, per3, per4, per5}
+		} else {
+			obj.ScoreCount = 0
+			obj.AverageScore = 0.0
+			obj.PerScores = [6]string{"", "0.0%", "0.0%", "0.0%", "0.0%", "0.0%"}
+		}
 	}
 
 	obj.Copyright = !bytes.Contains(bs, []byte("版权方的要求"))
@@ -179,6 +194,9 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 			})
 			chapters = append(chaptersInUl, chapters...)
 		})
+		for i := 0; i < len(chapters); i++ {
+			chapters[i].Number = int32(len(chapters) - i)
+		}
 		groups[idx] = &vo.MangaChapterGroup{
 			Title:    groupTitles[idx],
 			Chapters: chapters,

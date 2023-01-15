@@ -1041,9 +1041,16 @@
         "manga_count",
         "newest_manga_id",
         "newest_manga_title",
+        "newest_manga_url",
         "newest_date",
+        "highest_manga_id",
+        "highest_manga_title",
+        "highest_manga_url",
+        "highest_score",
         "average_score",
-        "introduction"
+        "popularity",
+        "introduction",
+        "related_authors"
       ],
       "description": "Small author response",
       "properties": {
@@ -1095,10 +1102,37 @@
           "required": true,
           "description": "author newest manga title"
         },
+        "newest_manga_url": {
+          "type": "string",
+          "required": true,
+          "description": "author newest manga url"
+        },
         "newest_date": {
           "type": "string",
           "required": true,
           "description": "author update newest date"
+        },
+        "highest_manga_id": {
+          "type": "integer",
+          "required": true,
+          "description": "author highest manga id",
+          "format": "int32"
+        },
+        "highest_manga_title": {
+          "type": "string",
+          "required": true,
+          "description": "author highest manga title"
+        },
+        "highest_manga_url": {
+          "type": "string",
+          "required": true,
+          "description": "author highest manga url"
+        },
+        "highest_score": {
+          "type": "number",
+          "required": true,
+          "description": "author highest score",
+          "format": "float"
         },
         "average_score": {
           "type": "number",
@@ -1106,10 +1140,25 @@
           "description": "author average score",
           "format": "float"
         },
+        "popularity": {
+          "type": "number",
+          "required": true,
+          "description": "author popularity",
+          "format": "int32"
+        },
         "introduction": {
           "type": "string",
           "required": true,
           "description": "author introduction"
+        },
+        "related_authors": {
+          "type": "array",
+          "required": true,
+          "description": "author related authors",
+          "items": {
+            "originRef": "TinyZonedAuthorDto",
+            "$ref": "#/definitions/TinyZonedAuthorDto"
+          }
         }
       }
     },
@@ -1223,7 +1272,6 @@
         "finish",
         "latest",
         "daily",
-        "weekly",
         "genres"
       ],
       "description": "manga group list",
@@ -1250,15 +1298,6 @@
           "type": "array",
           "required": true,
           "description": "manga daily ranking for homepage",
-          "items": {
-            "originRef": "MangaRankDto",
-            "$ref": "#/definitions/MangaRankDto"
-          }
-        },
-        "weekly": {
-          "type": "array",
-          "required": true,
-          "description": "manga weekly ranking for homepage",
           "items": {
             "originRef": "MangaRankDto",
             "$ref": "#/definitions/MangaRankDto"
@@ -1424,6 +1463,7 @@
         "authors",
         "alias",
         "alias_title",
+        "aliases",
         "finished",
         "newest_chapter",
         "newest_date",
@@ -1491,12 +1531,17 @@
         "alias": {
           "type": "string",
           "required": true,
-          "description": "manga alias name"
+          "description": "manga alias name (deprecated)"
         },
         "alias_title": {
           "type": "string",
           "required": true,
-          "description": "manga alias title name"
+          "description": "manga alias title name (deprecated)"
+        },
+        "aliases": {
+          "type": "string",
+          "required": true,
+          "description": "manga aliases"
         },
         "finished": {
           "type": "boolean",
@@ -2224,7 +2269,8 @@
         "mid",
         "url",
         "page_count",
-        "is_new"
+        "is_new",
+        "number"
       ],
       "description": "Tiny manga chapter response",
       "properties": {
@@ -2260,6 +2306,11 @@
           "type": "boolean",
           "required": true,
           "description": "chapter is uploaded newly"
+        },
+        "number": {
+          "type": "boolean",
+          "required": true,
+          "description": "chapter number"
         }
       }
     },
@@ -2311,6 +2362,39 @@
           "type": "string",
           "required": true,
           "description": "manga last update date"
+        }
+      }
+    },
+    "TinyZonedAuthorDto": {
+      "type": "object",
+      "required": [
+        "aid",
+        "name",
+        "url",
+        "zone"
+      ],
+      "description": "Tiny author with zone response",
+      "properties": {
+        "aid": {
+          "type": "integer",
+          "required": true,
+          "description": "author id",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "author name"
+        },
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "author url"
+        },
+        "zone": {
+          "type": "string",
+          "required": true,
+          "description": "author zone"
         }
       }
     },

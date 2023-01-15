@@ -18,9 +18,16 @@ func init() {
 				goapidoc.NewProperty("manga_count", "integer#int32", true, "author manga count"),
 				goapidoc.NewProperty("newest_manga_id", "integer#int32", true, "author newest manga id"),
 				goapidoc.NewProperty("newest_manga_title", "string", true, "author newest manga title"),
+				goapidoc.NewProperty("newest_manga_url", "string", true, "author newest manga url"),
 				goapidoc.NewProperty("newest_date", "string", true, "author update newest date"),
+				goapidoc.NewProperty("highest_manga_id", "integer#int32", true, "author highest manga id"),
+				goapidoc.NewProperty("highest_manga_title", "string", true, "author highest manga title"),
+				goapidoc.NewProperty("highest_manga_url", "string", true, "author highest manga url"),
+				goapidoc.NewProperty("highest_score", "number#float", true, "author highest score"),
 				goapidoc.NewProperty("average_score", "number#float", true, "author average score"),
+				goapidoc.NewProperty("popularity", "number#int32", true, "author popularity"),
 				goapidoc.NewProperty("introduction", "string", true, "author introduction"),
+				goapidoc.NewProperty("related_authors", "TinyZonedAuthorDto[]", true, "author related authors"),
 			),
 
 		goapidoc.NewDefinition("SmallAuthorDto", "Small author response").
@@ -40,38 +47,60 @@ func init() {
 				goapidoc.NewProperty("name", "string", true, "author name"),
 				goapidoc.NewProperty("url", "string", true, "author url"),
 			),
+
+		goapidoc.NewDefinition("TinyZonedAuthorDto", "Tiny author with zone response").
+			Properties(
+				goapidoc.NewProperty("aid", "integer#int64", true, "author id"),
+				goapidoc.NewProperty("name", "string", true, "author name"),
+				goapidoc.NewProperty("url", "string", true, "author url"),
+				goapidoc.NewProperty("zone", "string", true, "author zone"),
+			),
 	)
 }
 
 type AuthorDto struct {
-	Aid              uint64  `json:"aid"`
-	Name             string  `json:"name"`
-	Alias            string  `json:"alias"`
-	Zone             string  `json:"zone"`
-	Cover            string  `json:"cover"`
-	Url              string  `json:"url"`
-	MangaCount       int32   `json:"manga_count"`
-	NewestMangaId    uint64  `json:"newest_manga_id"`
-	NewestMangaTitle string  `json:"newest_manga_title"`
-	NewestDate       string  `json:"newest_date"`
-	AverageScore     float32 `json:"average_score"`
-	Introduction     string  `json:"introduction"`
+	Aid               uint64                `json:"aid"`
+	Name              string                `json:"name"`
+	Alias             string                `json:"alias"`
+	Zone              string                `json:"zone"`
+	Cover             string                `json:"cover"`
+	Url               string                `json:"url"`
+	MangaCount        int32                 `json:"manga_count"`
+	NewestMangaId     uint64                `json:"newest_manga_id"`
+	NewestMangaTitle  string                `json:"newest_manga_title"`
+	NewestMangaUrl    string                `json:"newest_manga_url"`
+	NewestDate        string                `json:"newest_date"`
+	HighestMangaId    uint64                `json:"highest_manga_id"`
+	HighestMangaTitle string                `json:"highest_manga_title"`
+	HighestMangaUrl   string                `json:"highest_manga_url"`
+	HighestScore      float32               `json:"highest_score"`
+	AverageScore      float32               `json:"average_score"`
+	Popularity        int32                 `json:"popularity"`
+	Introduction      string                `json:"introduction"`
+	RelatedAuthors    []*TinyZonedAuthorDto `json:"related_authors"`
 }
 
 func BuildAuthorDto(author *vo.Author) *AuthorDto {
 	return &AuthorDto{
-		Aid:              author.Aid,
-		Name:             author.Name,
-		Zone:             author.Zone,
-		Cover:            author.Cover,
-		Url:              author.Url,
-		MangaCount:       author.MangaCount,
-		NewestMangaId:    author.NewestMangaId,
-		NewestMangaTitle: author.NewestMangaTitle,
-		NewestDate:       author.NewestDate,
-		Alias:            author.Alias,
-		AverageScore:     author.AverageScore,
-		Introduction:     author.Introduction,
+		Aid:               author.Aid,
+		Name:              author.Name,
+		Alias:             author.Alias,
+		Zone:              author.Zone,
+		Cover:             author.Cover,
+		Url:               author.Url,
+		MangaCount:        author.MangaCount,
+		NewestMangaId:     author.NewestMangaId,
+		NewestMangaTitle:  author.NewestMangaTitle,
+		NewestMangaUrl:    author.NewestMangaUrl,
+		NewestDate:        author.NewestDate,
+		HighestMangaId:    author.HighestMangaId,
+		HighestMangaTitle: author.HighestMangaTitle,
+		HighestMangaUrl:   author.HighestMangaUrl,
+		HighestScore:      author.HighestScore,
+		AverageScore:      author.AverageScore,
+		Popularity:        author.Popularity,
+		Introduction:      author.Introduction,
+		RelatedAuthors:    BuildTinyZonedAuthorDtos(author.RelatedAuthors),
 	}
 }
 
@@ -131,6 +160,30 @@ func BuildTinyAuthorDtos(authors []*vo.TinyAuthor) []*TinyAuthorDto {
 	out := make([]*TinyAuthorDto, len(authors))
 	for idx, author := range authors {
 		out[idx] = BuildTinyAuthorDto(author)
+	}
+	return out
+}
+
+type TinyZonedAuthorDto struct {
+	Aid  uint64 `json:"aid"`
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Zone string `json:"zone"`
+}
+
+func BuildTinyZonedAuthorDto(author *vo.TinyZonedAuthor) *TinyZonedAuthorDto {
+	return &TinyZonedAuthorDto{
+		Aid:  author.Aid,
+		Name: author.Name,
+		Url:  author.Url,
+		Zone: author.Zone,
+	}
+}
+
+func BuildTinyZonedAuthorDtos(authors []*vo.TinyZonedAuthor) []*TinyZonedAuthorDto {
+	out := make([]*TinyZonedAuthorDto, len(authors))
+	for idx, author := range authors {
+		out[idx] = BuildTinyZonedAuthorDto(author)
 	}
 	return out
 }

@@ -17,8 +17,9 @@ func init() {
 				goapidoc.NewProperty("manga_zone", "string", true, "manga zone"),
 				goapidoc.NewProperty("genres", "CategoryDto[]", true, "manga genres"),
 				goapidoc.NewProperty("authors", "TinyAuthorDto[]", true, "manga authors"),
-				goapidoc.NewProperty("alias", "string", true, "manga alias name"),
-				goapidoc.NewProperty("alias_title", "string", true, "manga alias title name"),
+				goapidoc.NewProperty("alias", "string", true, "manga alias name (deprecated)"),
+				goapidoc.NewProperty("alias_title", "string", true, "manga alias title name (deprecated)"),
+				goapidoc.NewProperty("aliases", "string", true, "manga aliases"),
 				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
 				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
 				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
@@ -82,6 +83,7 @@ func init() {
 				goapidoc.NewProperty("url", "string", true, "chapter link"),
 				goapidoc.NewProperty("page_count", "integer#int32", true, "chapter pages count"),
 				goapidoc.NewProperty("is_new", "boolean", true, "chapter is uploaded newly"),
+				goapidoc.NewProperty("number", "boolean", true, "chapter number"),
 			),
 
 		goapidoc.NewDefinition("TinyBlockMangaDto", "Tiny block manga response").
@@ -169,6 +171,7 @@ type MangaDto struct {
 	Authors           []*TinyAuthorDto        `json:"authors"`
 	Alias             string                  `json:"alias"`
 	AliasTitle        string                  `json:"alias_title"`
+	Aliases           []string                `json:"aliases"`
 	Finished          bool                    `json:"finished"`
 	NewestChapter     string                  `json:"newest_chapter"`
 	NewestDate        string                  `json:"newest_date"`
@@ -195,6 +198,7 @@ func BuildMangaDto(manga *vo.Manga) *MangaDto {
 		Authors:           BuildTinyAuthorDtos(manga.Authors),
 		Alias:             manga.Alias,
 		AliasTitle:        manga.AliasTitle,
+		Aliases:           manga.Aliases,
 		Finished:          manga.Finished,
 		NewestChapter:     manga.NewestChapter,
 		NewestDate:        manga.NewestDate,
@@ -335,6 +339,7 @@ type TinyMangaChapterDto struct {
 	Url       string `json:"url"`
 	PageCount int32  `json:"page_count"`
 	IsNew     bool   `json:"is_new"`
+	Number    int32  `json:"number"`
 }
 
 func BuildTinyMangaChapterDto(chapter *vo.TinyMangaChapter) *TinyMangaChapterDto {
@@ -345,6 +350,7 @@ func BuildTinyMangaChapterDto(chapter *vo.TinyMangaChapter) *TinyMangaChapterDto
 		Url:       chapter.Url,
 		PageCount: chapter.PageCount,
 		IsNew:     chapter.IsNew,
+		Number:    chapter.Number,
 	}
 }
 

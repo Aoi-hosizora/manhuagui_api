@@ -945,10 +945,20 @@ message-controller
 + newest_manga_id (number, required) - author newest manga id
     (format: int32)
 + newest_manga_title (string, required) - author newest manga title
++ newest_manga_url (string, required) - author newest manga url
 + newest_date (string, required) - author update newest date
++ highest_manga_id (number, required) - author highest manga id
+    (format: int32)
++ highest_manga_title (string, required) - author highest manga title
++ highest_manga_url (string, required) - author highest manga url
++ highest_score (number, required) - author highest score
+    (format: float)
 + average_score (number, required) - author average score
     (format: float)
++ popularity (number, required) - author popularity
+    (format: int32)
 + introduction (string, required) - author introduction
++ related_authors (array[TinyZonedAuthorDto], required) - author related authors
 
 ## SmallAuthorDto (object)
 
@@ -968,6 +978,14 @@ message-controller
     (format: int64)
 + name (string, required) - author name
 + url (string, required) - author url
+
+## TinyZonedAuthorDto (object)
+
++ aid (number, required) - author id
+    (format: int64)
++ name (string, required) - author name
++ url (string, required) - author url
++ zone (string, required) - author zone
 
 ## CategoryDto (object)
 
@@ -1021,8 +1039,9 @@ message-controller
 + manga_zone (string, required) - manga zone
 + genres (array[CategoryDto], required) - manga genres
 + authors (array[TinyAuthorDto], required) - manga authors
-+ alias (string, required) - manga alias name
-+ alias_title (string, required) - manga alias title name
++ alias (string, required) - manga alias name (deprecated)
++ alias_title (string, required) - manga alias title name (deprecated)
++ aliases (string, required) - manga aliases
 + finished (boolean, required) - manga is finished
 + newest_chapter (string, required) - manga last update chapter
 + newest_date (string, required) - manga last update date
@@ -1094,6 +1113,7 @@ message-controller
 + page_count (number, required) - chapter pages count
     (format: int32)
 + is_new (boolean, required) - chapter is uploaded newly
++ number (boolean, required) - chapter number
 
 ## TinyBlockMangaDto (object)
 
@@ -1135,7 +1155,6 @@ message-controller
 + finish (MangaGroupListDto, required) - homepage finish group list
 + latest (MangaGroupListDto, required) - homepage latest manga group list
 + daily (array[MangaRankDto], required) - manga daily ranking for homepage
-+ weekly (array[MangaRankDto], required) - manga weekly ranking for homepage
 + genres (array[CategoryDto], required) - manga all genres for homepage
 
 ## MangaRankDto (object)

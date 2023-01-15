@@ -11,8 +11,9 @@ type Manga struct {
 	AlphabetIndex     string               // 字母索引
 	Genres            []*Category          // 漫画剧情
 	Authors           []*TinyAuthor        // 漫画作者
-	Alias             string               // 漫画别名
-	AliasTitle        string               // 标题别名
+	Alias             string               // 漫画别名 (x)
+	AliasTitle        string               // 标题别名 (x)
+	Aliases           []string             // 漫画别名
 	Finished          bool                 // 是否完结
 	NewestChapter     string               // 最新章节
 	NewestDate        string               // 更新时间
@@ -83,6 +84,7 @@ type TinyMangaChapter struct {
 	Url       string // 章节链接
 	PageCount int32  // 章节页数
 	IsNew     bool   // 最近发布
+	Number    int32  // 章节顺序
 }
 
 // 漫画页的部分信息 (TinyBlock)

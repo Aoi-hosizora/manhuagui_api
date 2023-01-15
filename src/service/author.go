@@ -96,7 +96,8 @@ func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *vo.SmallAutho
 }
 
 func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
-	url := fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", 1)
+	url := fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "rate", 1)
+	indexUrl := fmt.Sprintf(static.MANGA_AUTHOR_URL, aid, "index", 1)
 	_, doc, err := a.httpService.HttpGetDocument(url, nil)
 	if err != nil {
 		return nil, err
@@ -114,21 +115,46 @@ func (a *AuthorService) GetAuthor(aid uint64) (*vo.Author, error) {
 	newestMangaTitle := strings.TrimSuffix(strings.TrimPrefix(newestP.Find("a").AttrOr("title", ""), "【"), "】")
 	newestDate := newestP.Find("span").Text()
 	mangaCount, _ := xnumber.Atoi32(infoDiv.Find("p:nth-child(5) font").Text())
+	popularity, _ := xnumber.Atoi32(strings.TrimPrefix(infoDiv.Find("p:nth-child(6)").Text(), "人气指数："))
 	averageScore, _ := xnumber.Atof32(infoDiv.Find("p:nth-child(7) span").Text())
 	introduction := doc.Find("div#intro-all h2").Text()
+	highestMangaLi := doc.Find("div.book-result li.cf").First()
+	highestManga := a.GetSmallMangaPageFromLi(highestMangaLi)
+	highestScore, _ := xnumber.Atof32(highestMangaLi.Find("div.book-score p.score-avg strong").Text())
+	relatedAuthors := make([]*vo.TinyZonedAuthor, 0)
+	relatedLis := doc.Find("ul.zzlist li")
+	relatedLis.Each(func(i int, li *goquery.Selection) {
+		a := li.Find("a")
+		font := li.Find("font")
+		href := a.AttrOr("href", "")
+		relatedAuthors = append(relatedAuthors, &vo.TinyZonedAuthor{
+			Aid:  static.ParseAid(href),
+			Name: a.AttrOr("title", ""),
+			Url:  static.HOMEPAGE_URL + href,
+			Zone: font.Text(),
+		})
+	})
+
 	out := &vo.Author{
-		Aid:              aid,
-		Name:             name,
-		Zone:             zone,
-		Cover:            cover,
-		Url:              url,
-		MangaCount:       mangaCount,
-		NewestMangaId:    static.ParseMid(newestMangaUrl),
-		NewestMangaTitle: newestMangaTitle,
-		NewestDate:       newestDate,
-		Alias:            alias,
-		AverageScore:     averageScore,
-		Introduction:     introduction,
+		Aid:               aid,
+		Name:              name,
+		Alias:             alias,
+		Zone:              zone,
+		Cover:             cover,
+		Url:               indexUrl,
+		MangaCount:        mangaCount,
+		NewestMangaId:     static.ParseMid(newestMangaUrl),
+		NewestMangaTitle:  newestMangaTitle,
+		NewestMangaUrl:    static.HOMEPAGE_URL + newestMangaUrl,
+		NewestDate:        newestDate,
+		HighestMangaId:    highestManga.Mid,
+		HighestMangaTitle: highestManga.Title,
+		HighestMangaUrl:   highestManga.Url,
+		HighestScore:      highestScore,
+		AverageScore:      averageScore,
+		Popularity:        popularity,
+		Introduction:      introduction,
+		RelatedAuthors:    relatedAuthors,
 	}
 
 	return out, nil
