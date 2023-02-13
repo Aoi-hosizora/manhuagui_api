@@ -57,6 +57,7 @@ func initRoute(engine *gin.Engine) {
 
 	categoryGroup := v1.Group("category") // /v1/category/...
 	{
+		categoryGroup.GET("", j(categoryController.GetCategories))
 		categoryGroup.GET("genre", j(categoryController.GetGenres))
 		categoryGroup.GET("zone", j(categoryController.GetZones))
 		categoryGroup.GET("age", j(categoryController.GetAges))

@@ -16,6 +16,10 @@ import (
 
 func init() {
 	goapidoc.AddRoutePaths(
+		goapidoc.NewRoutePath("GET", "/v1/category", "Get categories").
+			Tags("Category").
+			Responses(goapidoc.NewResponse(200, "_Result<CategoryListDto>")),
+
 		goapidoc.NewRoutePath("GET", "/v1/category/genre", "Get genres").
 			Tags("Category").
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
@@ -52,6 +56,17 @@ func NewCategoryController() *CategoryController {
 		config:          xdi.GetByNameForce(sn.SConfig).(*config.Config),
 		categoryService: xdi.GetByNameForce(sn.SCategoryService).(*service.CategoryService),
 	}
+}
+
+// GET /v1/category
+func (ca *CategoryController) GetCategories(c *gin.Context) *result.Result {
+	categories, err := ca.categoryService.GetAllCategories()
+	if err != nil {
+		return result.Error(exception.GetCategoriesError).SetError(err, c)
+	}
+
+	res := dto.BuildCategoryListDto(categories)
+	return result.Ok().SetData(res)
 }
 
 // GET /v1/category/genre

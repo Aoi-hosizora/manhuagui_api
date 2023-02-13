@@ -38,6 +38,7 @@ var (
 	GetAgesError        = New(500, se(), "无法获取受众信息")
 	GetGenreMangasError = New(500, se(), "无法获取漫画分类结果")
 	GenreNotFoundError  = New(404, ce(), "类别未找到")
+	GetCategoriesError  = New(500, se(), "无法获取漫画分类信息")
 )
 
 // search

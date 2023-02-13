@@ -129,7 +129,9 @@ type HomepageMangaGroupList struct {
 	Finish *MangaGroupList // 经典完结
 	Latest *MangaGroupList // 最新上架
 	Daily  []*MangaRank    // 日排行榜
-	Genres []*Category     // 漫画类别
+	Genres []*Category     // 漫画类别-剧情
+	Zones  []*Category     // 漫画类别-地区
+	Ages   []*Category     // 漫画类别-受众
 }
 
 // 漫画排名

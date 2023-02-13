@@ -305,7 +305,10 @@ func (m *MangaListService) GetHomepageMangaGroupList() (*vo.HomepageMangaGroupLi
 	fTopGroup, fGroups, fOtherGroups := m.getMangas(doc1, 2, "finish")
 	lTopGroup, lGroups, lOtherGroups := m.getMangas(doc1, 3, "latest")
 	daily := m.rankService.getRankingListFromDoc(doc2)
-	genres := m.categoryService.getGenresFromRankingPage(doc2)
+	categories := m.categoryService.getAllCategories(doc2)
+	genres := categories.Genres
+	zones := categories.Zones
+	ages := categories.Ages
 
 	return &vo.HomepageMangaGroupList{
 		Serial: &vo.MangaGroupList{Title: "热门连载", TopGroup: sTopGroup, Groups: sGroups, OtherGroups: sOtherGroups},
@@ -313,6 +316,8 @@ func (m *MangaListService) GetHomepageMangaGroupList() (*vo.HomepageMangaGroupLi
 		Latest: &vo.MangaGroupList{Title: "最新上架", TopGroup: lTopGroup, Groups: lGroups, OtherGroups: lOtherGroups},
 		Daily:  daily,
 		Genres: genres,
+		Zones:  zones,
+		Ages:   ages,
 	}, nil
 }
 

@@ -129,6 +129,8 @@ func init() {
 				goapidoc.NewProperty("latest", "MangaGroupListDto", true, "homepage latest manga group list"),
 				goapidoc.NewProperty("daily", "MangaRankDto[]", true, "manga daily ranking for homepage"),
 				goapidoc.NewProperty("genres", "CategoryDto[]", true, "manga all genres for homepage"),
+				goapidoc.NewProperty("zones", "CategoryDto[]", true, "manga all zones for homepage"),
+				goapidoc.NewProperty("ages", "CategoryDto[]", true, "manga all ages for homepage"),
 			),
 
 		goapidoc.NewDefinition("MangaRankDto", "Mange rank result response").
@@ -486,6 +488,8 @@ type HomepageMangaGroupListDto struct {
 	Latest *MangaGroupListDto `json:"latest"`
 	Daily  []*MangaRankDto    `json:"daily"`
 	Genres []*CategoryDto     `json:"genres"`
+	Zones  []*CategoryDto     `json:"zones"`
+	Ages   []*CategoryDto     `json:"ages"`
 }
 
 func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMangaGroupListDto {
@@ -495,6 +499,8 @@ func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMa
 		Latest: BuildMangaGroupListDto(list.Latest),
 		Daily:  BuildMangaRankDtos(list.Daily),
 		Genres: BuildCategoryDtos(list.Genres),
+		Zones:  BuildCategoryDtos(list.Zones),
+		Ages:   BuildCategoryDtos(list.Ages),
 	}
 }
 

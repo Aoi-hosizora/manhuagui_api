@@ -246,6 +246,28 @@ manga-list-controller
 
 category-controller
 
+## Get categories [/v1/category]
+
+### Get categories [GET]
+
+`GET /v1/category`
+
++ Request (application/json)
+
+    + Attributes
+
+    + Headers
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Attributes (_Result<CategoryListDto>)
+
+    + Headers
+
+    + Body
+
 ## Get genres [/v1/category/genre]
 
 ### Get genres [GET]
@@ -992,6 +1014,13 @@ message-controller
 + name (string, required) - category name
 + title (string, required) - category title
 + url (string, required) - category link
++ cover (string, required) - category cover
+
+## CategoryListDto (object)
+
++ genres (array[CategoryDto], required) - genre categories
++ zones (array[CategoryDto], required) - zone categories
++ ages (array[CategoryDto], required) - age categories
 
 ## CommentDto (object)
 
@@ -1156,6 +1185,8 @@ message-controller
 + latest (MangaGroupListDto, required) - homepage latest manga group list
 + daily (array[MangaRankDto], required) - manga daily ranking for homepage
 + genres (array[CategoryDto], required) - manga all genres for homepage
++ zones (array[CategoryDto], required) - manga all zones for homepage
++ ages (array[CategoryDto], required) - manga all ages for homepage
 
 ## MangaRankDto (object)
 
@@ -1292,6 +1323,13 @@ message-controller
 + total (number, required) - data count
     (format: int32)
 + data (array[SmallMangaDto], required) - page data
+
+## _Result<CategoryListDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (CategoryListDto, required) - response data
 
 ## _Result<_Page<CategoryDto>> (object)
 

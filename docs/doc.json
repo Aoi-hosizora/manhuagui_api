@@ -181,6 +181,23 @@
         }
       }
     },
+    "/v1/category": {
+      "get": {
+        "summary": "Get categories",
+        "operationId": "-v1-category-get",
+        "tags": [
+          "Category"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "originRef": "_Result<CategoryListDto>",
+              "$ref": "#/definitions/_Result<CategoryListDto>"
+            }
+          }
+        }
+      }
+    },
     "/v1/category/age": {
       "get": {
         "summary": "Get ages",
@@ -1167,7 +1184,8 @@
       "required": [
         "name",
         "title",
-        "url"
+        "url",
+        "cover"
       ],
       "description": "Category response",
       "properties": {
@@ -1185,6 +1203,49 @@
           "type": "string",
           "required": true,
           "description": "category link"
+        },
+        "cover": {
+          "type": "string",
+          "required": true,
+          "description": "category cover"
+        }
+      }
+    },
+    "CategoryListDto": {
+      "type": "object",
+      "required": [
+        "genres",
+        "zones",
+        "ages"
+      ],
+      "description": "Category list response",
+      "properties": {
+        "genres": {
+          "type": "array",
+          "required": true,
+          "description": "genre categories",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
+        },
+        "zones": {
+          "type": "array",
+          "required": true,
+          "description": "zone categories",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
+        },
+        "ages": {
+          "type": "array",
+          "required": true,
+          "description": "age categories",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
         }
       }
     },
@@ -1272,7 +1333,9 @@
         "finish",
         "latest",
         "daily",
-        "genres"
+        "genres",
+        "zones",
+        "ages"
       ],
       "description": "manga group list",
       "properties": {
@@ -1307,6 +1370,24 @@
           "type": "array",
           "required": true,
           "description": "manga all genres for homepage",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
+        },
+        "zones": {
+          "type": "array",
+          "required": true,
+          "description": "manga all zones for homepage",
+          "items": {
+            "originRef": "CategoryDto",
+            "$ref": "#/definitions/CategoryDto"
+          }
+        },
+        "ages": {
+          "type": "array",
+          "required": true,
+          "description": "manga all ages for homepage",
           "items": {
             "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
@@ -2846,6 +2927,34 @@
           "description": "response data",
           "originRef": "AuthorDto",
           "$ref": "#/definitions/AuthorDto"
+        }
+      }
+    },
+    "_Result<CategoryListDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "required": true,
+          "description": "status code",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "status message"
+        },
+        "data": {
+          "required": true,
+          "description": "response data",
+          "originRef": "CategoryListDto",
+          "$ref": "#/definitions/CategoryListDto"
         }
       }
     },
