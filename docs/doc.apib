@@ -1094,6 +1094,8 @@ message-controller
 + mid (number, required) - manga id
     (format: int64)
 + manga_title (string, required) - manga name
++ manga_cover (string, required) - manga cover
++ manga_url (string, required) - manga link
 + url (string, required) - chapter link
 + pages (array[string], required) - chapter pages
 + page_count (number, required) - chapter pages count
@@ -1142,6 +1144,7 @@ message-controller
 + page_count (number, required) - chapter pages count
     (format: int32)
 + is_new (boolean, required) - chapter is uploaded newly
++ group (string, required) - chapter group
 + number (boolean, required) - chapter number
 
 ## TinyBlockMangaDto (object)

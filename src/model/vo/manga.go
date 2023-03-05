@@ -34,7 +34,8 @@ type MangaChapter struct {
 	Title      string   `json:"cname"`    // 章节标题
 	Mid        uint64   `json:"bid"`      // 漫画编号
 	MangaTitle string   `json:"bname"`    // 漫画标题
-	Cover      string   `json:"bpic"`     // 漫画封面
+	MangaCover string   `json:"bpic"`     // 漫画封面
+	MangaUrl   string   `json:"-"`        // 漫画链接
 	Url        string   `json:"url"`      // 章节链接
 	Pages      []string `json:"files"`    // 每页链接
 	Finished   bool     `json:"finished"` // 是否完结
@@ -84,6 +85,7 @@ type TinyMangaChapter struct {
 	Url       string // 章节链接
 	PageCount int32  // 章节页数
 	IsNew     bool   // 最近发布
+	Group     string // 漫画分组
 	Number    int32  // 章节顺序
 }
 

@@ -40,6 +40,8 @@ func init() {
 				goapidoc.NewProperty("title", "string", true, "chapter name"),
 				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewProperty("manga_title", "string", true, "manga name"),
+				goapidoc.NewProperty("manga_cover", "string", true, "manga cover"),
+				goapidoc.NewProperty("manga_url", "string", true, "manga link"),
 				goapidoc.NewProperty("url", "string", true, "chapter link"),
 				goapidoc.NewProperty("pages", "string[]", true, "chapter pages"),
 				goapidoc.NewProperty("page_count", "integer#int32", true, "chapter pages count"),
@@ -83,6 +85,7 @@ func init() {
 				goapidoc.NewProperty("url", "string", true, "chapter link"),
 				goapidoc.NewProperty("page_count", "integer#int32", true, "chapter pages count"),
 				goapidoc.NewProperty("is_new", "boolean", true, "chapter is uploaded newly"),
+				goapidoc.NewProperty("group", "string", true, "chapter group"),
 				goapidoc.NewProperty("number", "boolean", true, "chapter number"),
 			),
 
@@ -230,6 +233,8 @@ type MangaChapterDto struct {
 	Title      string   `json:"title"`
 	Mid        uint64   `json:"mid"`
 	MangaTitle string   `json:"manga_title"`
+	MangaCover string   `json:"manga_cover"`
+	MangaUrl   string   `json:"manga_url"`
 	Url        string   `json:"url"`
 	Pages      []string `json:"pages"`
 	PageCount  int32    `json:"page_count"`
@@ -244,6 +249,8 @@ func BuildMangaChapterDto(chapter *vo.MangaChapter) *MangaChapterDto {
 		Title:      chapter.Title,
 		Mid:        chapter.Mid,
 		MangaTitle: chapter.MangaTitle,
+		MangaCover: chapter.MangaCover,
+		MangaUrl:   chapter.MangaUrl,
 		Url:        chapter.Url,
 		Pages:      chapter.Pages,
 		PageCount:  chapter.PageCount,
@@ -341,6 +348,7 @@ type TinyMangaChapterDto struct {
 	Url       string `json:"url"`
 	PageCount int32  `json:"page_count"`
 	IsNew     bool   `json:"is_new"`
+	Group     string `json:"group"`
 	Number    int32  `json:"number"`
 }
 
@@ -352,6 +360,7 @@ func BuildTinyMangaChapterDto(chapter *vo.TinyMangaChapter) *TinyMangaChapterDto
 		Url:       chapter.Url,
 		PageCount: chapter.PageCount,
 		IsNew:     chapter.IsNew,
+		Group:     chapter.Group,
 		Number:    chapter.Number,
 	}
 }

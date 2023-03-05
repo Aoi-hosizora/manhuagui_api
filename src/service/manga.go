@@ -195,6 +195,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 			chapters = append(chaptersInUl, chapters...)
 		})
 		for i := 0; i < len(chapters); i++ {
+			chapters[i].Group = groupTitles[idx]
 			chapters[i].Number = int32(len(chapters) - i)
 		}
 		groups[idx] = &vo.MangaChapterGroup{
@@ -275,14 +276,17 @@ func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error
 	obj := &vo.MangaChapter{Copyright: true}
 	err = json.Unmarshal([]byte(decodeJson), &obj)
 	if err != nil {
-		if bytes.Contains(bs, []byte("版权方的要求，现已删除屏蔽")) && bytes.Contains(bs, []byte("请喜欢这部漫画的漫迷购买")) {
+		if bytes.Contains(bs, []byte("版权方的要求")) {
 			obj.Copyright = false
 			return obj, nil
 		}
 		return nil, fmt.Errorf("chapter script error: %v", err)
 	}
+	obj.MangaCover = fmt.Sprintf(static.MANGA_COVER_S_URL, obj.MangaCover)
+	obj.MangaUrl = fmt.Sprintf(static.MANGA_PAGE_URL, mid)
 	obj.Url = url
 	for idx := range obj.Pages {
+		// https://cf.hamreus.com/scripts/core_2C5AD3BA009F5A0F5CCE4B6875F17FF70D5663A9.js
 		// 自动 h: "i" (100) | "us" (1)
 		// 电信 h: "eu" (100) | "i" (1) | "us" (1)
 		// 联通 h: "us" (100) | "i" (1) | "eu" (1)

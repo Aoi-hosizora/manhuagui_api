@@ -1438,6 +1438,8 @@
         "title",
         "mid",
         "manga_title",
+        "manga_cover",
+        "manga_url",
         "url",
         "pages",
         "page_count",
@@ -1468,6 +1470,16 @@
           "type": "string",
           "required": true,
           "description": "manga name"
+        },
+        "manga_cover": {
+          "type": "string",
+          "required": true,
+          "description": "manga cover"
+        },
+        "manga_url": {
+          "type": "string",
+          "required": true,
+          "description": "manga link"
         },
         "url": {
           "type": "string",
@@ -2351,6 +2363,7 @@
         "url",
         "page_count",
         "is_new",
+        "group",
         "number"
       ],
       "description": "Tiny manga chapter response",
@@ -2387,6 +2400,11 @@
           "type": "boolean",
           "required": true,
           "description": "chapter is uploaded newly"
+        },
+        "group": {
+          "type": "string",
+          "required": true,
+          "description": "chapter group"
         },
         "number": {
           "type": "boolean",

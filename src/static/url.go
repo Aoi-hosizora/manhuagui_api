@@ -23,6 +23,7 @@ const (
 
 	MANGA_SOURCE_URL       = "https://%s.hamreus.com"
 	MANGA_COVER_URL        = "https://cf.hamreus.com/cpic/g/%d.jpg"
+	MANGA_COVER_S_URL      = "https://cf.hamreus.com/cpic/g/%s"
 	MANGA_SCORE_URL        = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_COMMENT_URL      = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
 	MANGA_LOGIN_URL        = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_login"
