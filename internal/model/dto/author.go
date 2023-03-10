@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 )
 
 func init() {
@@ -80,7 +80,7 @@ type AuthorDto struct {
 	RelatedAuthors    []*TinyZonedAuthorDto `json:"related_authors"`
 }
 
-func BuildAuthorDto(author *vo.Author) *AuthorDto {
+func BuildAuthorDto(author *object.Author) *AuthorDto {
 	return &AuthorDto{
 		Aid:               author.Aid,
 		Name:              author.Name,
@@ -104,7 +104,7 @@ func BuildAuthorDto(author *vo.Author) *AuthorDto {
 	}
 }
 
-func BuildAuthorDtos(authors []*vo.Author) []*AuthorDto {
+func BuildAuthorDtos(authors []*object.Author) []*AuthorDto {
 	out := make([]*AuthorDto, len(authors))
 	for idx, author := range authors {
 		out[idx] = BuildAuthorDto(author)
@@ -122,7 +122,7 @@ type SmallAuthorDto struct {
 	NewestDate string `json:"newest_date"`
 }
 
-func BuildSmallAuthorDto(author *vo.SmallAuthor) *SmallAuthorDto {
+func BuildSmallAuthorDto(author *object.SmallAuthor) *SmallAuthorDto {
 	return &SmallAuthorDto{
 		Aid:        author.Aid,
 		Name:       author.Name,
@@ -134,7 +134,7 @@ func BuildSmallAuthorDto(author *vo.SmallAuthor) *SmallAuthorDto {
 	}
 }
 
-func BuildSmallAuthorDtos(authors []*vo.SmallAuthor) []*SmallAuthorDto {
+func BuildSmallAuthorDtos(authors []*object.SmallAuthor) []*SmallAuthorDto {
 	out := make([]*SmallAuthorDto, len(authors))
 	for idx, author := range authors {
 		out[idx] = BuildSmallAuthorDto(author)
@@ -148,7 +148,7 @@ type TinyAuthorDto struct {
 	Url  string `json:"url"`
 }
 
-func BuildTinyAuthorDto(author *vo.TinyAuthor) *TinyAuthorDto {
+func BuildTinyAuthorDto(author *object.TinyAuthor) *TinyAuthorDto {
 	return &TinyAuthorDto{
 		Aid:  author.Aid,
 		Name: author.Name,
@@ -156,7 +156,7 @@ func BuildTinyAuthorDto(author *vo.TinyAuthor) *TinyAuthorDto {
 	}
 }
 
-func BuildTinyAuthorDtos(authors []*vo.TinyAuthor) []*TinyAuthorDto {
+func BuildTinyAuthorDtos(authors []*object.TinyAuthor) []*TinyAuthorDto {
 	out := make([]*TinyAuthorDto, len(authors))
 	for idx, author := range authors {
 		out[idx] = BuildTinyAuthorDto(author)
@@ -171,7 +171,7 @@ type TinyZonedAuthorDto struct {
 	Zone string `json:"zone"`
 }
 
-func BuildTinyZonedAuthorDto(author *vo.TinyZonedAuthor) *TinyZonedAuthorDto {
+func BuildTinyZonedAuthorDto(author *object.TinyZonedAuthor) *TinyZonedAuthorDto {
 	return &TinyZonedAuthorDto{
 		Aid:  author.Aid,
 		Name: author.Name,
@@ -180,7 +180,7 @@ func BuildTinyZonedAuthorDto(author *vo.TinyZonedAuthor) *TinyZonedAuthorDto {
 	}
 }
 
-func BuildTinyZonedAuthorDtos(authors []*vo.TinyZonedAuthor) []*TinyZonedAuthorDto {
+func BuildTinyZonedAuthorDtos(authors []*object.TinyZonedAuthor) []*TinyZonedAuthorDto {
 	out := make([]*TinyZonedAuthorDto, len(authors))
 	for idx, author := range authors {
 		out[idx] = BuildTinyZonedAuthorDto(author)

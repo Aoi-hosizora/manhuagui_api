@@ -96,7 +96,7 @@ func (m *MangaListController) GetHomepageMangas(c *gin.Context) *result.Result {
 
 // GET /v1/list/updated
 func (m *MangaListController) GetRecentUpdatedMangas(c *gin.Context) *result.Result {
-	pa := param.BindPage(c, m.config)
+	pa := param.BindQueryPage(c)
 	pages, tot, err := m.mangaListService.GetRecentUpdatedMangas(pa) // categoryService.GetGenreMangas
 	if err != nil {
 		return result.Error(errno.GetUpdatedMangasError).SetError(err, c)

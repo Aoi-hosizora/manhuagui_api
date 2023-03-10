@@ -1,42 +1,51 @@
 package main
 
 import (
-	"flag"
+	"fmt"
+	"github.com/Aoi-hosizora/ahlib-more/xpflag"
 	"github.com/Aoi-hosizora/goapidoc"
+	"github.com/Aoi-hosizora/manhuagui-api/api"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/server"
 	"log"
 )
 
 var (
-	fConfig = flag.String("config", "./config.yaml", "change config path")
-	fHelp   = flag.Bool("h", false, "show help")
+	fConfig = xpflag.Cmd().StringP("config", "c", "./config.yaml", "config file path")
+	fHelp   = xpflag.Cmd().BoolP("help", "h", false, "show help")
 )
 
 func main() {
-	flag.Parse()
-	if *fHelp {
-		flag.Usage()
-	} else {
-		run()
+	// flag
+	if xpflag.MustParse(); *fHelp {
+		xpflag.PrintUsage()
+		return
 	}
-}
 
-func run() {
-	_, err := goapidoc.SaveSwaggerJson("./docs/doc.json")
+	// module
+	err := module.Provide(*fConfig) // may call fatal
+	if err != nil {
+		log.Fatalln("Failed to provide all modules:", err)
+	}
+
+	// document
+	api.UpdateApiDoc()
+	_, err = goapidoc.SaveSwaggerJson(api.SwaggerDocFilename)
 	if err != nil {
 		log.Fatalln("Failed to generate swagger:", err)
 	}
-	_, err = goapidoc.SaveApib("./docs/doc.apib")
+	_, err = goapidoc.SaveApib(api.ApibDocFilename)
 	if err != nil {
 		log.Fatalln("Failed to generate apib:", err)
 	}
 
-	err = module.Provide(*fConfig)
+	// server
+	s, err := server.NewServer()
 	if err != nil {
-		log.Fatalln("Failed to load some service:", err)
+		log.Fatalln("Failed to create server:", err)
 	}
 
-	s := server.NewServer()
+	// start
+	fmt.Println()
 	s.Serve()
 }

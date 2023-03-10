@@ -3,11 +3,9 @@ package sn
 import "github.com/Aoi-hosizora/ahlib/xmodule"
 
 const (
-	// common
 	SConfig xmodule.ModuleName = "config" // *config.Config
 	SLogger xmodule.ModuleName = "logger" // *logrus.Logger
 
-	// service
 	SHttpService      xmodule.ModuleName = "http-service"       // *service.HttpService
 	SMangaService     xmodule.ModuleName = "manga-service"      // *service.MangaService
 	SMangaListService xmodule.ModuleName = "manga-list-service" // *service.MangaListService

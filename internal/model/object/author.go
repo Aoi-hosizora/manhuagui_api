@@ -1,4 +1,4 @@
-package vo
+package object
 
 // 作者的完整信息
 type Author struct {

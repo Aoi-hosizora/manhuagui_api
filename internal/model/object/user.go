@@ -1,4 +1,4 @@
-package vo
+package object
 
 // 用户状态
 type UserStatus struct {

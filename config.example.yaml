@@ -1,13 +1,16 @@
 meta:
   port: 10018
+  host: 0.0.0.0
   run-mode: debug
-  log-path: ./logs/
-  log-name: console
+  log-name: ./logs/console
+  ppof: true
+  swagger: true
+  doc-host: 127.0.0.1:10018
   bucket-prd: 60  # token bucket fill period interval in seconds
   bucket-cap: 200 # token bucket capacity
   bucket-qua: 50  # token bucket quantum in every interval
-  def-limit: 20   # default limit size
-  max-limit: 50   # max limit size
+  def-limit: 20
+  max-limit: 50
 
 message:
   github-token: xxx

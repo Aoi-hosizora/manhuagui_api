@@ -4,8 +4,8 @@ import (
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
@@ -104,7 +104,7 @@ func (ca *CategoryController) GetAges(c *gin.Context) *result.Result {
 
 // GET /v1/category/genre/:genre
 func (ca *CategoryController) GetGenreMangas(c *gin.Context) *result.Result {
-	pa := param.BindPageOrder(c, ca.config)
+	pa := param.BindQueryPageOrder(c)
 	genre := c.Param("genre")
 	zone := c.Query("zone")
 	age := c.Query("age")
@@ -117,7 +117,7 @@ func (ca *CategoryController) GetGenreMangas(c *gin.Context) *result.Result {
 	} else if mangas == nil { // not found
 		return result.Error(errno.GenreNotFoundError)
 	} else if len(mangas) == 0 { // empty
-		res := dto.BuildTinyMangaDtos([]*vo.TinyManga{})
+		res := dto.BuildTinyMangaDtos([]*object.TinyManga{})
 		return result.Ok().SetPage(pa.Page, limit, 0, res)
 	}
 

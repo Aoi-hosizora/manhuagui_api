@@ -1,9 +1,9 @@
 FORMAT: 1A
-HOST: localhost:10018/
+HOST: 127.0.0.1:10018/
 
-# manhuagui-backend (1.0)
+# manhuagui-api (v1.0.0)
 
-An unofficial backend for manhuagui written in golang/gin
+An unofficial backend for manhuagui written in golang/gin.
 
 [Aoi-hosizora - Website](https://github.com/Aoi-hosizora)
 
@@ -15,9 +15,11 @@ manga-controller
 
 ## Get all mangas [/v1/manga{?page,order}]
 
+> `/v1/manga`
+
 ### Get all mangas [GET]
 
-`GET /v1/manga`
+> `GET /v1/manga`
 
 order by popular / new / update
 
@@ -29,25 +31,23 @@ order by popular / new / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<TinyMangaDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<TinyMangaDto>>)
 
     + Body
 
 ## Get manga [/v1/manga/{mid}]
 
+> `/v1/manga/{mid}`
+
 ### Get manga [GET]
 
-`GET /v1/manga/{mid}`
+> `GET /v1/manga/{mid}`
 
 + Parameters
 
@@ -56,47 +56,43 @@ order by popular / new / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<MangaDto>)
 
     + Body
 
 ## Get random manga [/v1/manga/random]
 
+> `/v1/manga/random`
+
 ### Get random manga [GET]
 
-`GET /v1/manga/random`
+> `GET /v1/manga/random`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<RandomMangaInfoDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<RandomMangaInfoDto>)
 
     + Body
 
 ## Get manga chapter [/v1/manga/{mid}/{cid}]
 
+> `/v1/manga/{mid}/{cid}`
+
 ### Get manga chapter [GET]
 
-`GET /v1/manga/{mid}/{cid}`
+> `GET /v1/manga/{mid}/{cid}`
 
 + Parameters
 
@@ -107,17 +103,13 @@ order by popular / new / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaChapterDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<MangaChapterDto>)
 
     + Body
 
@@ -127,97 +119,91 @@ manga-list-controller
 
 ## Get hot serial mangas [/v1/list/serial]
 
+> `/v1/list/serial`
+
 ### Get hot serial mangas [GET]
 
-`GET /v1/list/serial`
+> `GET /v1/list/serial`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaGroupListDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<MangaGroupListDto>)
 
     + Body
 
 ## Get finished mangas [/v1/list/finish]
 
+> `/v1/list/finish`
+
 ### Get finished mangas [GET]
 
-`GET /v1/list/finish`
+> `GET /v1/list/finish`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaGroupListDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<MangaGroupListDto>)
 
     + Body
 
 ## Get latest mangas [/v1/list/latest]
 
+> `/v1/list/latest`
+
 ### Get latest mangas [GET]
 
-`GET /v1/list/latest`
+> `GET /v1/list/latest`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<MangaGroupListDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<MangaGroupListDto>)
 
     + Body
 
 ## Get homepage mangas [/v1/list/homepage]
 
+> `/v1/list/homepage`
+
 ### Get homepage mangas [GET]
 
-`GET /v1/list/homepage`
+> `GET /v1/list/homepage`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<HomepageMangaGroupListDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<HomepageMangaGroupListDto>)
 
     + Body
 
 ## Get recent update mangas [/v1/list/updated{?page,limit}]
 
+> `/v1/list/updated`
+
 ### Get recent update mangas [GET]
 
-`GET /v1/list/updated`
+> `GET /v1/list/updated`
 
 + Parameters
 
@@ -228,17 +214,13 @@ manga-list-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<TinyMangaDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<TinyMangaDto>>)
 
     + Body
 
@@ -248,97 +230,91 @@ category-controller
 
 ## Get categories [/v1/category]
 
+> `/v1/category`
+
 ### Get categories [GET]
 
-`GET /v1/category`
+> `GET /v1/category`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<CategoryListDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<CategoryListDto>)
 
     + Body
 
 ## Get genres [/v1/category/genre]
 
+> `/v1/category/genre`
+
 ### Get genres [GET]
 
-`GET /v1/category/genre`
+> `GET /v1/category/genre`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<CategoryDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<CategoryDto>>)
 
     + Body
 
 ## Get zones [/v1/category/zone]
 
+> `/v1/category/zone`
+
 ### Get zones [GET]
 
-`GET /v1/category/zone`
+> `GET /v1/category/zone`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<CategoryDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<CategoryDto>>)
 
     + Body
 
 ## Get ages [/v1/category/age]
 
+> `/v1/category/age`
+
 ### Get ages [GET]
 
-`GET /v1/category/age`
+> `GET /v1/category/age`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<CategoryDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<CategoryDto>>)
 
     + Body
 
 ## Get genre mangas [/v1/category/genre/{genre}{?zone,age,status,page,order}]
 
+> `/v1/category/genre/{genre}`
+
 ### Get genre mangas [GET]
 
-`GET /v1/category/genre/{genre}`
+> `GET /v1/category/genre/{genre}`
 
 order by popular / new / update
 
@@ -354,17 +330,13 @@ order by popular / new / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<TinyMangaDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<TinyMangaDto>>)
 
     + Body
 
@@ -374,9 +346,11 @@ search-controller
 
 ## Search mangas [/v1/search/{keyword}{?page,order}]
 
+> `/v1/search/{keyword}`
+
 ### Search mangas [GET]
 
-`GET /v1/search/{keyword}`
+> `GET /v1/search/{keyword}`
 
 order by popular / new / update
 
@@ -389,17 +363,13 @@ order by popular / new / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<SmallMangaDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<SmallMangaDto>>)
 
     + Body
 
@@ -409,9 +379,11 @@ author-controller
 
 ## Get all authors [/v1/author{?genre,zone,age,page,order}]
 
+> `/v1/author`
+
 ### Get all authors [GET]
 
-`GET /v1/author`
+> `GET /v1/author`
 
 order by popular / comic / update
 
@@ -426,52 +398,48 @@ order by popular / comic / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<SmallAuthorDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<SmallAuthorDto>>)
 
     + Body
 
 ## Get author [/v1/author/{aid}]
 
+> `/v1/author/{aid}`
+
 ### Get author [GET]
 
-`GET /v1/author/{aid}`
+> `GET /v1/author/{aid}`
 
 + Parameters
 
-    + aid (number, optional) - author id
+    + aid (number, required) - author id
         (format: int64)
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<AuthorDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<AuthorDto>)
 
     + Body
 
 ## Get author mangas [/v1/author/{aid}/manga{?page,order}]
 
+> `/v1/author/{aid}/manga`
+
 ### Get author mangas [GET]
 
-`GET /v1/author/{aid}/manga`
+> `GET /v1/author/{aid}/manga`
 
 order by popular / new / update
 
@@ -485,17 +453,13 @@ order by popular / new / update
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<SmallMangaDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<SmallMangaDto>>)
 
     + Body
 
@@ -505,9 +469,11 @@ rank-controller
 
 ## Get day ranking [/v1/rank/day{?type}]
 
+> `/v1/rank/day`
+
 ### Get day ranking [GET]
 
-`GET /v1/rank/day`
+> `GET /v1/rank/day`
 
 + Parameters
 
@@ -515,25 +481,23 @@ rank-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<MangaRankDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<MangaRankDto>>)
 
     + Body
 
 ## Get week ranking [/v1/rank/week{?type}]
 
+> `/v1/rank/week`
+
 ### Get week ranking [GET]
 
-`GET /v1/rank/week`
+> `GET /v1/rank/week`
 
 + Parameters
 
@@ -541,25 +505,23 @@ rank-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<MangaRankDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<MangaRankDto>>)
 
     + Body
 
 ## Get month ranking [/v1/rank/month{?type}]
 
+> `/v1/rank/month`
+
 ### Get month ranking [GET]
 
-`GET /v1/rank/month`
+> `GET /v1/rank/month`
 
 + Parameters
 
@@ -567,25 +529,23 @@ rank-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<MangaRankDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<MangaRankDto>>)
 
     + Body
 
 ## Get total ranking [/v1/rank/total{?type}]
 
+> `/v1/rank/total`
+
 ### Get total ranking [GET]
 
-`GET /v1/rank/total`
+> `GET /v1/rank/total`
 
 + Parameters
 
@@ -593,17 +553,13 @@ rank-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<MangaRankDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<MangaRankDto>>)
 
     + Body
 
@@ -613,9 +569,11 @@ comment-controller
 
 ## Get manga comments [/v1/comment/manga/{mid}{?page}]
 
+> `/v1/comment/manga/{mid}`
+
 ### Get manga comments [GET]
 
-`GET /v1/comment/manga/{mid}`
+> `GET /v1/comment/manga/{mid}`
 
 + Parameters
 
@@ -626,17 +584,13 @@ comment-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<CommentDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<CommentDto>>)
 
     + Body
 
@@ -646,9 +600,11 @@ user-controller
 
 ## Login [/v1/user/login{?username,password}]
 
+> `/v1/user/login`
+
 ### Login [POST]
 
-`POST /v1/user/login`
+> `POST /v1/user/login`
 
 + Parameters
 
@@ -657,75 +613,73 @@ user-controller
 
 + Request (application/json)
 
-    + Attributes
-
-    + Headers
-
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<TokenDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<TokenDto>)
 
     + Body
 
 ## Check login [/v1/user/check_login]
 
+> `/v1/user/check_login`
+
 ### Check login [POST]
 
-`POST /v1/user/check_login`
+> `POST /v1/user/check_login`
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<UsernameDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<UsernameDto>)
 
     + Body
 
 ## Get authorized user information [/v1/user/info]
 
+> `/v1/user/info`
+
 ### Get authorized user information [GET]
 
-`GET /v1/user/info`
+> `GET /v1/user/info`
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<UserDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<UserDto>)
 
     + Body
 
-## Record manga for the authorized user, Record manga for the authorized user [/v1/user/manga/{mid}/{cid}]
+## Record manga for the authorized user | Record manga for the authorized user [/v1/user/manga/{mid}/{cid}]
+
+> `/v1/user/manga/{mid}/{cid}`
 
 ### Record manga for the authorized user [GET]
 
-`GET /v1/user/manga/{mid}/{cid}`
+> `GET /v1/user/manga/{mid}/{cid}`
 
-Attention: This api is deprecated.
+**Attention: This api is deprecated!**
 
 + Parameters
 
@@ -736,25 +690,23 @@ Attention: This api is deprecated.
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (Result)
+    200 OK
 
-    + Headers
+    + Attributes (Result)
 
     + Body
 
 ### Record manga for the authorized user [POST]
 
-`POST /v1/user/manga/{mid}/{cid}`
+> `POST /v1/user/manga/{mid}/{cid}`
 
 + Parameters
 
@@ -765,19 +717,17 @@ Attention: This api is deprecated.
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (Result)
+    200 OK
 
-    + Headers
+    + Attributes (Result)
 
     + Body
 
@@ -787,9 +737,11 @@ shelf-controller
 
 ## Get shelf mangas [/v1/shelf{?page}]
 
+> `/v1/shelf`
+
 ### Get shelf mangas [GET]
 
-`GET /v1/shelf`
+> `GET /v1/shelf`
 
 + Parameters
 
@@ -798,27 +750,27 @@ shelf-controller
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<ShelfMangaDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<ShelfMangaDto>>)
 
     + Body
 
-## Check manga in shelf, Save manga to shelf, Remove manga from shelf [/v1/shelf/{mid}]
+## Check manga in shelf | Save manga to shelf | Remove manga from shelf [/v1/shelf/{mid}]
+
+> `/v1/shelf/{mid}`
 
 ### Check manga in shelf [GET]
 
-`GET /v1/shelf/{mid}`
+> `GET /v1/shelf/{mid}`
 
 + Parameters
 
@@ -827,25 +779,23 @@ shelf-controller
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<ShelfStatusDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<ShelfStatusDto>)
 
     + Body
 
 ### Save manga to shelf [POST]
 
-`POST /v1/shelf/{mid}`
+> `POST /v1/shelf/{mid}`
 
 + Parameters
 
@@ -854,25 +804,23 @@ shelf-controller
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (Result)
+    200 OK
 
-    + Headers
+    + Attributes (Result)
 
     + Body
 
 ### Remove manga from shelf [DELETE]
 
-`DELETE /v1/shelf/{mid}`
+> `DELETE /v1/shelf/{mid}`
 
 + Parameters
 
@@ -881,19 +829,17 @@ shelf-controller
 
 + Request (application/json)
 
-    + Attributes
-
     + Headers
 
-            Authorization: access token (string, required)
+            Authorization: (string, required) - access token
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (Result)
+    200 OK
 
-    + Headers
+    + Attributes (Result)
 
     + Body
 
@@ -903,55 +849,45 @@ message-controller
 
 ## Get all messages [/v1/message]
 
+> `/v1/message`
+
 ### Get all messages [GET]
 
-`GET /v1/message`
+> `GET /v1/message`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<_Page<MessageDto>>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<_Page<MessageDto>>)
 
     + Body
 
 ## Get latest message [/v1/message/latest]
 
+> `/v1/message/latest`
+
 ### Get latest message [GET]
 
-`GET /v1/message/latest`
+> `GET /v1/message/latest`
 
 + Request (application/json)
-
-    + Attributes
-
-    + Headers
 
     + Body
 
 + Response 200 (application/json)
 
-    + Attributes (_Result<LatestMessageDto>)
+    200 OK
 
-    + Headers
+    + Attributes (_Result<LatestMessageDto>)
 
     + Body
 
 # Data Structures
-
-## Result (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
 
 ## AuthorDto (object)
 
@@ -1226,9 +1162,9 @@ message-controller
     (format: int64)
 + title (string, required) - message title
 + notification (NotificationContentDto, required) - notification content
-    (allow empty)
+    (allow empty value)
 + new_version (NewVersionContentDto, required) - new version content
-    (allow empty)
+    (allow empty value)
 + created_at (string, required) - created time
     (format: date-time)
 + updated_at (string, required) - updated time
@@ -1286,12 +1222,11 @@ message-controller
 + count (number, required) - manga starred count
     (format: int32)
 
-## _Result<_Page<SmallAuthorDto>> (object)
+## Result (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<SmallAuthorDto>, required) - response data
 
 ## _Page<SmallAuthorDto> (object)
 
@@ -1303,19 +1238,19 @@ message-controller
     (format: int32)
 + data (array[SmallAuthorDto], required) - page data
 
+## _Result<_Page<SmallAuthorDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<SmallAuthorDto>, required) - response data
+
 ## _Result<AuthorDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
 + data (AuthorDto, required) - response data
-
-## _Result<_Page<SmallMangaDto>> (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
-+ data (_Page<SmallMangaDto>, required) - response data
 
 ## _Page<SmallMangaDto> (object)
 
@@ -1327,19 +1262,19 @@ message-controller
     (format: int32)
 + data (array[SmallMangaDto], required) - page data
 
+## _Result<_Page<SmallMangaDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<SmallMangaDto>, required) - response data
+
 ## _Result<CategoryListDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
 + data (CategoryListDto, required) - response data
-
-## _Result<_Page<CategoryDto>> (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
-+ data (_Page<CategoryDto>, required) - response data
 
 ## _Page<CategoryDto> (object)
 
@@ -1351,12 +1286,12 @@ message-controller
     (format: int32)
 + data (array[CategoryDto], required) - page data
 
-## _Result<_Page<TinyMangaDto>> (object)
+## _Result<_Page<CategoryDto>> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<TinyMangaDto>, required) - response data
++ data (_Page<CategoryDto>, required) - response data
 
 ## _Page<TinyMangaDto> (object)
 
@@ -1368,12 +1303,12 @@ message-controller
     (format: int32)
 + data (array[TinyMangaDto], required) - page data
 
-## _Result<_Page<CommentDto>> (object)
+## _Result<_Page<TinyMangaDto>> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<CommentDto>, required) - response data
++ data (_Page<TinyMangaDto>, required) - response data
 
 ## _Page<CommentDto> (object)
 
@@ -1384,6 +1319,13 @@ message-controller
 + total (number, required) - data count
     (format: int32)
 + data (array[CommentDto], required) - page data
+
+## _Result<_Page<CommentDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<CommentDto>, required) - response data
 
 ## _Result<MangaDto> (object)
 
@@ -1420,13 +1362,6 @@ message-controller
 + message (string, required) - status message
 + data (HomepageMangaGroupListDto, required) - response data
 
-## _Result<_Page<MessageDto>> (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
-+ data (_Page<MessageDto>, required) - response data
-
 ## _Page<MessageDto> (object)
 
 + page (number, required) - current page
@@ -1437,19 +1372,19 @@ message-controller
     (format: int32)
 + data (array[MessageDto], required) - page data
 
+## _Result<_Page<MessageDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<MessageDto>, required) - response data
+
 ## _Result<LatestMessageDto> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
 + data (LatestMessageDto, required) - response data
-
-## _Result<_Page<MangaRankDto>> (object)
-
-+ code (number, required) - status code
-    (format: int32)
-+ message (string, required) - status message
-+ data (_Page<MangaRankDto>, required) - response data
 
 ## _Page<MangaRankDto> (object)
 
@@ -1461,12 +1396,12 @@ message-controller
     (format: int32)
 + data (array[MangaRankDto], required) - page data
 
-## _Result<_Page<ShelfMangaDto>> (object)
+## _Result<_Page<MangaRankDto>> (object)
 
 + code (number, required) - status code
     (format: int32)
 + message (string, required) - status message
-+ data (_Page<ShelfMangaDto>, required) - response data
++ data (_Page<MangaRankDto>, required) - response data
 
 ## _Page<ShelfMangaDto> (object)
 
@@ -1477,6 +1412,13 @@ message-controller
 + total (number, required) - data count
     (format: int32)
 + data (array[ShelfMangaDto], required) - page data
+
+## _Result<_Page<ShelfMangaDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<ShelfMangaDto>, required) - response data
 
 ## _Result<ShelfStatusDto> (object)
 

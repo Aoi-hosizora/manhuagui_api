@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"github.com/PuerkitoBio/goquery"
@@ -53,7 +53,7 @@ func (s *ShelfService) _httpPostWithToken(url, token string, form *url.Values) (
 	return bs, nil
 }
 
-func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*vo.ShelfManga, int32, int32, error) {
+func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*object.ShelfManga, int32, int32, error) {
 	u := fmt.Sprintf(static.MANGA_SHELF_URL, page)
 	_, doc, err := s._httpGetWithToken(u, token)
 	if err != nil {
@@ -62,7 +62,7 @@ func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*vo.ShelfMang
 		return nil, 0, 0, nil
 	}
 
-	mangas := make([]*vo.ShelfManga, 0)
+	mangas := make([]*object.ShelfManga, 0)
 	divs := doc.Find("div.dy_content_li")
 	divs.Each(func(idx int, sel *goquery.Selection) {
 		cover := sel.Find("img").AttrOr("src", "")
@@ -73,7 +73,7 @@ func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*vo.ShelfMang
 		lastChapter := sel.Find("p:nth-of-type(2) em:nth-child(1)").Text()
 		lastDuration := sel.Find("p:nth-of-type(2) em:nth-child(2)").Text()
 
-		manga := &vo.ShelfManga{
+		manga := &object.ShelfManga{
 			Mid:            static.ParseMid(ur),
 			Title:          title,
 			Cover:          static.ParseCoverUrl(cover),
@@ -92,19 +92,19 @@ func (s *ShelfService) GetShelfMangas(token string, page int32) ([]*vo.ShelfMang
 	if totalSpan.Length() > 0 {
 		pages := int32(math.Ceil(float64(total) / float64(limit)))
 		if page > pages {
-			return []*vo.ShelfManga{}, limit, total, nil
+			return []*object.ShelfManga{}, limit, total, nil
 		}
 	} else {
 		total = int32(len(mangas))
 		if page > 1 {
-			return []*vo.ShelfManga{}, limit, total, nil
+			return []*object.ShelfManga{}, limit, total, nil
 		}
 	}
 
 	return mangas, limit, total, nil
 }
 
-func (s *ShelfService) CheckMangaInShelf(token string, mid uint64) (*vo.ShelfStatus, error) {
+func (s *ShelfService) CheckMangaInShelf(token string, mid uint64) (*object.ShelfStatus, error) {
 	u := fmt.Sprintf(static.MANGA_SHELF_CHECK_URL, mid)
 	bs, doc, err := s._httpGetWithToken(u, token)
 	if err != nil {
@@ -114,7 +114,7 @@ func (s *ShelfService) CheckMangaInShelf(token string, mid uint64) (*vo.ShelfSta
 	}
 
 	// {"status":0, "total":3274}
-	status := &vo.ShelfStatus{}
+	status := &object.ShelfStatus{}
 	err = json.Unmarshal(bs, status)
 	if err != nil {
 		return nil, err

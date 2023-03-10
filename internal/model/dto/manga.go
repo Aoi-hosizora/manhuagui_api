@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 )
 
 func init() {
@@ -164,7 +164,7 @@ func init() {
 	)
 }
 
-// 漫画页的完整信息 vo.Manga
+// 漫画页的完整信息 object.Manga
 type MangaDto struct {
 	Mid               uint64                  `json:"mid"`
 	Title             string                  `json:"title"`
@@ -191,7 +191,7 @@ type MangaDto struct {
 	ChapterGroups     []*MangaChapterGroupDto `json:"chapter_groups"`
 }
 
-func BuildMangaDto(manga *vo.Manga) *MangaDto {
+func BuildMangaDto(manga *object.Manga) *MangaDto {
 	return &MangaDto{
 		Mid:               manga.Mid,
 		Title:             manga.Title,
@@ -219,7 +219,7 @@ func BuildMangaDto(manga *vo.Manga) *MangaDto {
 	}
 }
 
-func BuildMangaDtos(mangas []*vo.Manga) []*MangaDto {
+func BuildMangaDtos(mangas []*object.Manga) []*MangaDto {
 	out := make([]*MangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildMangaDto(manga)
@@ -227,7 +227,7 @@ func BuildMangaDtos(mangas []*vo.Manga) []*MangaDto {
 	return out
 }
 
-// 漫画章节的完整信息 vo.MangaChapter
+// 漫画章节的完整信息 object.MangaChapter
 type MangaChapterDto struct {
 	Cid        uint64   `json:"cid"`
 	Title      string   `json:"title"`
@@ -243,7 +243,7 @@ type MangaChapterDto struct {
 	Copyright  bool     `json:"copyright"`
 }
 
-func BuildMangaChapterDto(chapter *vo.MangaChapter) *MangaChapterDto {
+func BuildMangaChapterDto(chapter *object.MangaChapter) *MangaChapterDto {
 	return &MangaChapterDto{
 		Cid:        chapter.Cid,
 		Title:      chapter.Title,
@@ -260,7 +260,7 @@ func BuildMangaChapterDto(chapter *vo.MangaChapter) *MangaChapterDto {
 	}
 }
 
-func BuildMangaChapterDtos(chapters []*vo.MangaChapter) []*MangaChapterDto {
+func BuildMangaChapterDtos(chapters []*object.MangaChapter) []*MangaChapterDto {
 	out := make([]*MangaChapterDto, len(chapters))
 	for idx, chapter := range chapters {
 		out[idx] = BuildMangaChapterDto(chapter)
@@ -268,7 +268,7 @@ func BuildMangaChapterDtos(chapters []*vo.MangaChapter) []*MangaChapterDto {
 	return out
 }
 
-// 漫画页的部分信息 vo.SmallManga
+// 漫画页的部分信息 object.SmallManga
 type SmallMangaDto struct {
 	Mid               uint64           `json:"mid"`
 	Title             string           `json:"title"`
@@ -284,7 +284,7 @@ type SmallMangaDto struct {
 	BriefIntroduction string           `json:"brief_introduction"`
 }
 
-func BuildSmallMangaDto(manga *vo.SmallManga) *SmallMangaDto {
+func BuildSmallMangaDto(manga *object.SmallManga) *SmallMangaDto {
 	return &SmallMangaDto{
 		Mid:               manga.Mid,
 		Title:             manga.Title,
@@ -301,7 +301,7 @@ func BuildSmallMangaDto(manga *vo.SmallManga) *SmallMangaDto {
 	}
 }
 
-func BuildSmallMangaDtos(mangas []*vo.SmallManga) []*SmallMangaDto {
+func BuildSmallMangaDtos(mangas []*object.SmallManga) []*SmallMangaDto {
 	out := make([]*SmallMangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildSmallMangaDto(manga)
@@ -309,7 +309,7 @@ func BuildSmallMangaDtos(mangas []*vo.SmallManga) []*SmallMangaDto {
 	return out
 }
 
-// 漫画页的部分信息 vo.TinyManga
+// 漫画页的部分信息 object.TinyManga
 type TinyMangaDto struct {
 	Mid           uint64 `json:"mid"`
 	Title         string `json:"title"`
@@ -320,7 +320,7 @@ type TinyMangaDto struct {
 	NewestDate    string `json:"newest_date"`
 }
 
-func BuildTinyMangaDto(manga *vo.TinyManga) *TinyMangaDto {
+func BuildTinyMangaDto(manga *object.TinyManga) *TinyMangaDto {
 	return &TinyMangaDto{
 		Mid:           manga.Mid,
 		Title:         manga.Title,
@@ -332,7 +332,7 @@ func BuildTinyMangaDto(manga *vo.TinyManga) *TinyMangaDto {
 	}
 }
 
-func BuildTinyMangaDtos(mangas []*vo.TinyManga) []*TinyMangaDto {
+func BuildTinyMangaDtos(mangas []*object.TinyManga) []*TinyMangaDto {
 	out := make([]*TinyMangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildTinyMangaDto(manga)
@@ -340,7 +340,7 @@ func BuildTinyMangaDtos(mangas []*vo.TinyManga) []*TinyMangaDto {
 	return out
 }
 
-// 漫画章节的部分信息 vo.TinyMangaChapter
+// 漫画章节的部分信息 object.TinyMangaChapter
 type TinyMangaChapterDto struct {
 	Cid       uint64 `json:"cid"`
 	Title     string `json:"title"`
@@ -352,7 +352,7 @@ type TinyMangaChapterDto struct {
 	Number    int32  `json:"number"`
 }
 
-func BuildTinyMangaChapterDto(chapter *vo.TinyMangaChapter) *TinyMangaChapterDto {
+func BuildTinyMangaChapterDto(chapter *object.TinyMangaChapter) *TinyMangaChapterDto {
 	return &TinyMangaChapterDto{
 		Cid:       chapter.Cid,
 		Title:     chapter.Title,
@@ -365,7 +365,7 @@ func BuildTinyMangaChapterDto(chapter *vo.TinyMangaChapter) *TinyMangaChapterDto
 	}
 }
 
-func BuildTinyMangaChapterDtos(chapters []*vo.TinyMangaChapter) []*TinyMangaChapterDto {
+func BuildTinyMangaChapterDtos(chapters []*object.TinyMangaChapter) []*TinyMangaChapterDto {
 	out := make([]*TinyMangaChapterDto, len(chapters))
 	for idx, link := range chapters {
 		out[idx] = BuildTinyMangaChapterDto(link)
@@ -373,7 +373,7 @@ func BuildTinyMangaChapterDtos(chapters []*vo.TinyMangaChapter) []*TinyMangaChap
 	return out
 }
 
-// 漫画页的部分信息 vo.TinyBlockManga
+// 漫画页的部分信息 object.TinyBlockManga
 type TinyBlockMangaDto struct {
 	Mid           uint64 `json:"mid"`
 	Title         string `json:"title"`
@@ -383,7 +383,7 @@ type TinyBlockMangaDto struct {
 	NewestChapter string `json:"newest_chapter"`
 }
 
-func BuildTinyBlockMangaDto(manga *vo.TinyBlockManga) *TinyBlockMangaDto {
+func BuildTinyBlockMangaDto(manga *object.TinyBlockManga) *TinyBlockMangaDto {
 	return &TinyBlockMangaDto{
 		Mid:           manga.Mid,
 		Title:         manga.Title,
@@ -394,7 +394,7 @@ func BuildTinyBlockMangaDto(manga *vo.TinyBlockManga) *TinyBlockMangaDto {
 	}
 }
 
-func BuildTinyBlockMangaDtos(mangas []*vo.TinyBlockManga) []*TinyBlockMangaDto {
+func BuildTinyBlockMangaDtos(mangas []*object.TinyBlockManga) []*TinyBlockMangaDto {
 	out := make([]*TinyBlockMangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildTinyBlockMangaDto(manga)
@@ -402,20 +402,20 @@ func BuildTinyBlockMangaDtos(mangas []*vo.TinyBlockManga) []*TinyBlockMangaDto {
 	return out
 }
 
-// 随机漫画信息 vo.RandomMangaInfo
+// 随机漫画信息 object.RandomMangaInfo
 type RandomMangaInfoDto struct {
 	Mid uint64 `json:"mid"`
 	Url string `json:"url"`
 }
 
-func BuildRandomMangaInfoDto(info *vo.RandomMangaInfo) *RandomMangaInfoDto {
+func BuildRandomMangaInfoDto(info *object.RandomMangaInfo) *RandomMangaInfoDto {
 	return &RandomMangaInfoDto{
 		Mid: info.Mid,
 		Url: info.Url,
 	}
 }
 
-func BuildRandomMangaInfoDtos(infos []*vo.RandomMangaInfo) []*RandomMangaInfoDto {
+func BuildRandomMangaInfoDtos(infos []*object.RandomMangaInfo) []*RandomMangaInfoDto {
 	out := make([]*RandomMangaInfoDto, len(infos))
 	for idx, info := range infos {
 		out[idx] = BuildRandomMangaInfoDto(info)
@@ -423,20 +423,20 @@ func BuildRandomMangaInfoDtos(infos []*vo.RandomMangaInfo) []*RandomMangaInfoDto
 	return out
 }
 
-// 漫画页分组 vo.MangaGroup
+// 漫画页分组 object.MangaGroup
 type MangaGroupDto struct {
 	Title  string               `json:"title"`
 	Mangas []*TinyBlockMangaDto `json:"mangas"`
 }
 
-func BuildMangaGroupDto(group *vo.MangaGroup) *MangaGroupDto {
+func BuildMangaGroupDto(group *object.MangaGroup) *MangaGroupDto {
 	return &MangaGroupDto{
 		Title:  group.Title,
 		Mangas: BuildTinyBlockMangaDtos(group.Mangas),
 	}
 }
 
-func BuildMangaGroupDtos(groups []*vo.MangaGroup) []*MangaGroupDto {
+func BuildMangaGroupDtos(groups []*object.MangaGroup) []*MangaGroupDto {
 	out := make([]*MangaGroupDto, len(groups))
 	for idx, group := range groups {
 		out[idx] = BuildMangaGroupDto(group)
@@ -444,20 +444,20 @@ func BuildMangaGroupDtos(groups []*vo.MangaGroup) []*MangaGroupDto {
 	return out
 }
 
-// 漫画章节分组 vo.MangaChapterGroup
+// 漫画章节分组 object.MangaChapterGroup
 type MangaChapterGroupDto struct {
 	Title    string                 `json:"title"`
 	Chapters []*TinyMangaChapterDto `json:"chapters"`
 }
 
-func BuildMangaChapterGroupDto(group *vo.MangaChapterGroup) *MangaChapterGroupDto {
+func BuildMangaChapterGroupDto(group *object.MangaChapterGroup) *MangaChapterGroupDto {
 	return &MangaChapterGroupDto{
 		Title:    group.Title,
 		Chapters: BuildTinyMangaChapterDtos(group.Chapters),
 	}
 }
 
-func BuildMangaChapterGroupDtos(groups []*vo.MangaChapterGroup) []*MangaChapterGroupDto {
+func BuildMangaChapterGroupDtos(groups []*object.MangaChapterGroup) []*MangaChapterGroupDto {
 	out := make([]*MangaChapterGroupDto, len(groups))
 	for idx, group := range groups {
 		out[idx] = BuildMangaChapterGroupDto(group)
@@ -465,7 +465,7 @@ func BuildMangaChapterGroupDtos(groups []*vo.MangaChapterGroup) []*MangaChapterG
 	return out
 }
 
-// 主页的漫画列表 vo.MangaGroupList
+// 主页的漫画列表 object.MangaGroupList
 type MangaGroupListDto struct {
 	Title       string           `json:"title"`
 	TopGroup    *MangaGroupDto   `json:"top_group"`
@@ -473,7 +473,7 @@ type MangaGroupListDto struct {
 	OtherGroups []*MangaGroupDto `json:"other_groups"`
 }
 
-func BuildMangaGroupListDto(list *vo.MangaGroupList) *MangaGroupListDto {
+func BuildMangaGroupListDto(list *object.MangaGroupList) *MangaGroupListDto {
 	return &MangaGroupListDto{
 		Title:       list.Title,
 		TopGroup:    BuildMangaGroupDto(list.TopGroup),
@@ -482,7 +482,7 @@ func BuildMangaGroupListDto(list *vo.MangaGroupList) *MangaGroupListDto {
 	}
 }
 
-func BuildMangaGroupListDtos(lists []*vo.MangaGroupList) []*MangaGroupListDto {
+func BuildMangaGroupListDtos(lists []*object.MangaGroupList) []*MangaGroupListDto {
 	out := make([]*MangaGroupListDto, len(lists))
 	for idx, list := range lists {
 		out[idx] = BuildMangaGroupListDto(list)
@@ -490,7 +490,7 @@ func BuildMangaGroupListDtos(lists []*vo.MangaGroupList) []*MangaGroupListDto {
 	return out
 }
 
-// 主页的三个漫画列表等数据 vo.HomepageMangaGroupList
+// 主页的三个漫画列表等数据 object.HomepageMangaGroupList
 type HomepageMangaGroupListDto struct {
 	Serial *MangaGroupListDto `json:"serial"`
 	Finish *MangaGroupListDto `json:"finish"`
@@ -501,7 +501,7 @@ type HomepageMangaGroupListDto struct {
 	Ages   []*CategoryDto     `json:"ages"`
 }
 
-func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMangaGroupListDto {
+func BuildHomepageMangaGroupListDto(list *object.HomepageMangaGroupList) *HomepageMangaGroupListDto {
 	return &HomepageMangaGroupListDto{
 		Serial: BuildMangaGroupListDto(list.Serial),
 		Finish: BuildMangaGroupListDto(list.Finish),
@@ -513,7 +513,7 @@ func BuildHomepageMangaGroupListDto(list *vo.HomepageMangaGroupList) *HomepageMa
 	}
 }
 
-func BuildHomepageMangaGroupListDtos(lists []*vo.HomepageMangaGroupList) []*HomepageMangaGroupListDto {
+func BuildHomepageMangaGroupListDtos(lists []*object.HomepageMangaGroupList) []*HomepageMangaGroupListDto {
 	out := make([]*HomepageMangaGroupListDto, len(lists))
 	for idx, list := range lists {
 		out[idx] = BuildHomepageMangaGroupListDto(list)
@@ -521,7 +521,7 @@ func BuildHomepageMangaGroupListDtos(lists []*vo.HomepageMangaGroupList) []*Home
 	return out
 }
 
-// 漫画排名 vo.MangaRank
+// 漫画排名 object.MangaRank
 type MangaRankDto struct {
 	Mid           uint64           `json:"mid"`
 	Title         string           `json:"title"`
@@ -536,7 +536,7 @@ type MangaRankDto struct {
 	Trend         uint8            `json:"trend"`
 }
 
-func BuildMangaRankDto(rank *vo.MangaRank) *MangaRankDto {
+func BuildMangaRankDto(rank *object.MangaRank) *MangaRankDto {
 	return &MangaRankDto{
 		Mid:           rank.Mid,
 		Title:         rank.Title,
@@ -552,7 +552,7 @@ func BuildMangaRankDto(rank *vo.MangaRank) *MangaRankDto {
 	}
 }
 
-func BuildMangaRankDtos(ranks []*vo.MangaRank) []*MangaRankDto {
+func BuildMangaRankDtos(ranks []*object.MangaRank) []*MangaRankDto {
 	out := make([]*MangaRankDto, len(ranks))
 	for idx, rank := range ranks {
 		out[idx] = BuildMangaRankDto(rank)
@@ -560,7 +560,7 @@ func BuildMangaRankDtos(ranks []*vo.MangaRank) []*MangaRankDto {
 	return out
 }
 
-// 书架漫画 vo.ShelfManga
+// 书架漫画 object.ShelfManga
 type ShelfMangaDto struct {
 	Mid            uint64 `json:"mid"`
 	Title          string `json:"title"`
@@ -572,7 +572,7 @@ type ShelfMangaDto struct {
 	LastDuration   string `json:"last_duration"`
 }
 
-func BuildShelfMangaDto(manga *vo.ShelfManga) *ShelfMangaDto {
+func BuildShelfMangaDto(manga *object.ShelfManga) *ShelfMangaDto {
 	return &ShelfMangaDto{
 		Mid:            manga.Mid,
 		Title:          manga.Title,
@@ -585,7 +585,7 @@ func BuildShelfMangaDto(manga *vo.ShelfManga) *ShelfMangaDto {
 	}
 }
 
-func BuildShelfMangaDtos(mangas []*vo.ShelfManga) []*ShelfMangaDto {
+func BuildShelfMangaDtos(mangas []*object.ShelfManga) []*ShelfMangaDto {
 	out := make([]*ShelfMangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildShelfMangaDto(manga)

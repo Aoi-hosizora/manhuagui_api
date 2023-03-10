@@ -3,6 +3,7 @@ package result
 import (
 	"github.com/Aoi-hosizora/ahlib-mx/xgin"
 	"github.com/Aoi-hosizora/goapidoc"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -28,11 +29,12 @@ func init() {
 }
 
 type Result struct {
-	Status  int32          `json:"-"`
-	Code    int32          `json:"code"`
-	Message string         `json:"message"`
-	Data    interface{}    `json:"data,omitempty"`
-	Error   *xdto.ErrorDto `json:"error,omitempty"` // TODO
+	status int32
+
+	Code    int32           `json:"code"`
+	Message string          `json:"message"`
+	Data    any             `json:"data,omitempty"`
+	Error   *errno.ErrorDto `json:"error,omitempty"`
 }
 
 func Status(status int32) *Result {
@@ -42,11 +44,8 @@ func Status(status int32) *Result {
 	} else if message == "" {
 		message = "unknown"
 	}
-	return &Result{
-		Status:  status,
-		Code:    status,
-		Message: strings.ToLower(message),
-	}
+	message = strings.ToLower(message)
+	return &Result{status: status, Code: status, Message: message}
 }
 
 func Ok() *Result {
@@ -57,8 +56,16 @@ func Error(e *errno.Error) *Result {
 	return Status(e.Status).SetCode(e.Code).SetMessage(e.Message)
 }
 
+func BindingError(err error, ctx *gin.Context) *Result {
+	translated, need4xx := xgin.TranslateBindingError(err, xgin.WithUtTranslator(xgin.GetGlobalTranslator()))
+	if need4xx {
+		return Error(errno.RequestParamError).SetData(translated).SetError(err, nil) // no request info
+	}
+	return Error(errno.ServerUnknownError).SetError(err, ctx) // include request info
+}
+
 func (r *Result) SetStatus(status int32) *Result {
-	r.Status = status
+	r.status = status
 	return r
 }
 
@@ -72,32 +79,35 @@ func (r *Result) SetMessage(message string) *Result {
 	return r
 }
 
-func (r *Result) SetData(data interface{}) *Result {
+func (r *Result) SetData(data any) *Result {
 	r.Data = data
 	return r
 }
 
-func (r *Result) SetPage(page int32, limit int32, total int32, data interface{}) *Result {
+func (r *Result) SetPage(page int32, limit int32, total int32, data any) *Result {
 	r.Data = NewPage(page, limit, total, data)
 	return r
 }
 
-func (r *Result) SetError(err error, c *gin.Context) *Result {
-	rid := c.Writer.Header().Get("X-Request-Id")
-	r.Error = xgin.BuildBasicErrorDto(err, c, "request_id", rid) // TODO
+func (r *Result) SetError(err error, ctx *gin.Context) *Result {
+	if err != nil {
+		r.Error = errno.BuildBasicErrorDto(err, ctx) // include request info, exclude trace info
+	}
 	return r
 }
 
-func (r *Result) JSON(c *gin.Context) {
-	if gin.Mode() != gin.DebugMode {
-		r.Error = nil // TODO
+func (r *Result) prehandle() {
+	if !config.IsDebugMode() && r.Error != nil {
+		r.Error = r.Error.RequestOnly()
 	}
-	c.JSON(int(r.Status), r)
 }
 
-func (r *Result) XML(c *gin.Context) {
-	if gin.Mode() != gin.DebugMode {
-		r.Error = nil // TODO
-	}
-	c.XML(int(r.Status), r)
+func (r *Result) JSON(ctx *gin.Context) {
+	r.prehandle()
+	ctx.JSON(int(r.status), r) // application/json; charset=utf-8
+}
+
+func (r *Result) XML(ctx *gin.Context) {
+	r.prehandle()
+	ctx.XML(int(r.status), r) // application/xml; charset=utf-8
 }

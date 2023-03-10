@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 )
 
 func init() {
@@ -45,7 +45,7 @@ type TokenDto struct {
 	Token string `json:"token"` // 登录令牌
 }
 
-// 用户信息 vo.User
+// 用户信息 object.User
 type UserDto struct {
 	Username           string `json:"username"`             // 用户名
 	Avatar             string `json:"avatar"`               // 用户头像
@@ -61,7 +61,7 @@ type UserDto struct {
 	TotalCommentCount  int32  `json:"total_comment_count"`  // 累计评论总数
 }
 
-func BuildUserDto(user *vo.User) *UserDto {
+func BuildUserDto(user *object.User) *UserDto {
 	return &UserDto{
 		Username:           user.Username,
 		Avatar:             user.Avatar,
@@ -78,7 +78,7 @@ func BuildUserDto(user *vo.User) *UserDto {
 	}
 }
 
-func BuildBuildUserDtos(users []*vo.User) []*UserDto {
+func BuildBuildUserDtos(users []*object.User) []*UserDto {
 	out := make([]*UserDto, len(users))
 	for idx, user := range users {
 		out[idx] = BuildUserDto(user)
@@ -90,13 +90,13 @@ type UsernameDto struct {
 	Username string `json:"username"`
 }
 
-// 书柜状态 vo.ShelfStatus
+// 书柜状态 object.ShelfStatus
 type ShelfStatusDto struct {
 	In    bool  `json:"in"`    // 已收藏
 	Count int32 `json:"count"` // 收藏用户数
 }
 
-func BuildShelfStatusDto(status *vo.ShelfStatus) *ShelfStatusDto {
+func BuildShelfStatusDto(status *object.ShelfStatus) *ShelfStatusDto {
 	return &ShelfStatusDto{
 		In:    status.Status == 1,
 		Count: status.Total,

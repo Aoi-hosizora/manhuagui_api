@@ -1,4 +1,4 @@
-package vo
+package object
 
 // 漫画评论列表
 type Comments struct {

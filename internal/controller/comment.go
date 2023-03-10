@@ -39,10 +39,10 @@ func NewCommentService() *CommentController {
 
 // /v1/comment/manga/:mid
 func (co *CommentController) GetComments(c *gin.Context) *result.Result {
-	pa := param.BindPage(c, co.config)
-	mid, err := param.BindRouteId(c, "mid")
+	pa := param.BindQueryPage(c)
+	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	comments, total, err := co.commentService.GetComments(mid, pa.Page)

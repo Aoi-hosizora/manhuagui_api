@@ -8,23 +8,29 @@ import (
 	"strings"
 )
 
-func initRoute(engine *gin.Engine) {
-	engine.HandleMethodNotAllowed = true
+func setupRoutes(engine *gin.Engine) {
+	// ===========
+	// meta routes
+	// ===========
+
 	engine.NoRoute(func(c *gin.Context) {
-		result.Status(404).SetMessage(fmt.Sprintf("route %s is not found", c.Request.URL.Path)).JSON(c)
+		msg := fmt.Sprintf("route '%s' is not found", c.Request.URL.Path)
+		result.Status(404).SetMessage(msg).JSON(c)
 	})
 	engine.NoMethod(func(c *gin.Context) {
-		result.Status(405).SetMessage(fmt.Sprintf("method %s is not allowed", strings.ToUpper(c.Request.Method))).JSON(c)
+		msg := fmt.Sprintf("method '%s' is not allowed", strings.ToUpper(c.Request.Method))
+		result.Status(405).SetMessage(msg).JSON(c)
 	})
 	engine.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, &gin.H{"ping": "pong"})
+		c.JSON(200, gin.H{"ping": "pong"})
 	})
 	engine.GET("", func(c *gin.Context) {
-		c.JSON(200, &gin.H{"message": "Welcome to manhuagui-backend."})
+		c.JSON(200, &gin.H{"message": "Here is manhuagui-backend."})
 	})
 
-	// controller
-	v1 := engine.Group("v1")
+	// ===========
+	// controllers
+	// ===========
 
 	var (
 		mangaController     = controller.NewMangaController()
@@ -39,89 +45,64 @@ func initRoute(engine *gin.Engine) {
 		messageController   = controller.NewMessageController()
 	)
 
-	mangaGroup := v1.Group("manga") // /v1/manga/...
-	{
-		mangaGroup.GET("", j(mangaController.GetAllMangas))
-		mangaGroup.GET(":mid", j(mangaController.GetManga))
-		mangaGroup.GET(":mid/:cid", j(mangaController.GetMangaChapter))
-	}
+	// ============
+	// route groups
+	// ============
 
-	listGroup := v1.Group("list") // /v1/list/...
-	{
-		listGroup.GET("serial", j(mangaListController.GetHotSerialMangas))
-		listGroup.GET("finish", j(mangaListController.GetFinishedMangas))
-		listGroup.GET("latest", j(mangaListController.GetLatestMangas))
-		listGroup.GET("homepage", j(mangaListController.GetHomepageMangas))
-		listGroup.GET("updated", j(mangaListController.GetRecentUpdatedMangas))
-	}
+	// v1 route group
+	v1Group := engine.Group("v1")
+	v1 := result.NewRouteRegisterer(v1Group)
 
-	categoryGroup := v1.Group("category") // /v1/category/...
-	{
-		categoryGroup.GET("", j(categoryController.GetCategories))
-		categoryGroup.GET("genre", j(categoryController.GetGenres))
-		categoryGroup.GET("zone", j(categoryController.GetZones))
-		categoryGroup.GET("age", j(categoryController.GetAges))
-		categoryGroup.GET("genre/:genre", j(categoryController.GetGenreMangas))
-	}
+	mangaGroup := v1.Group("manga")
+	mangaGroup.GET("", mangaController.GetAllMangas)
+	mangaGroup.GET(":mid", mangaController.GetManga)
+	mangaGroup.GET(":mid/:cid", mangaController.GetMangaChapter)
 
-	searchGroup := v1.Group("search") // /v1/search/...
-	{
-		searchGroup.GET(":keyword", j(searchController.SearchMangas))
-	}
+	listGroup := v1.Group("list")
+	listGroup.GET("serial", mangaListController.GetHotSerialMangas)
+	listGroup.GET("finish", mangaListController.GetFinishedMangas)
+	listGroup.GET("latest", mangaListController.GetLatestMangas)
+	listGroup.GET("homepage", mangaListController.GetHomepageMangas)
+	listGroup.GET("updated", mangaListController.GetRecentUpdatedMangas)
 
-	authorGroup := v1.Group("author") // /v1/author/...
-	{
-		authorGroup.GET("", j(authorController.GetAllAuthors))
-		authorGroup.GET(":aid", j(authorController.GetAuthor))
-		authorGroup.GET(":aid/manga", j(authorController.GetAuthorMangas))
-	}
+	categoryGroup := v1.Group("category")
+	categoryGroup.GET("", categoryController.GetCategories)
+	categoryGroup.GET("genre", categoryController.GetGenres)
+	categoryGroup.GET("zone", categoryController.GetZones)
+	categoryGroup.GET("age", categoryController.GetAges)
+	categoryGroup.GET("genre/:genre", categoryController.GetGenreMangas)
 
-	rankGroup := v1.Group("rank") // /v1/rank/...
-	{
-		rankGroup.GET("day", j(rankController.GetDayRanking))
-		rankGroup.GET("week", j(rankController.GetWeekRanking))
-		rankGroup.GET("month", j(rankController.GetMonthRanking))
-		rankGroup.GET("total", j(rankController.GetTotalRanking))
-	}
+	searchGroup := v1.Group("search")
+	searchGroup.GET(":keyword", searchController.SearchMangas)
 
-	commentGroup := v1.Group("comment") // /v1/comment/...
-	{
-		commentGroup.GET("manga/:mid", j(commentController.GetComments))
-	}
+	authorGroup := v1.Group("author")
+	authorGroup.GET("", authorController.GetAllAuthors)
+	authorGroup.GET(":aid", authorController.GetAuthor)
+	authorGroup.GET(":aid/manga", authorController.GetAuthorMangas)
 
-	userGroup := v1.Group("user") // /v1/user/...
-	{
-		userGroup.POST("login", j(userController.Login))
-		userGroup.POST("check_login", j(userController.CheckLogin))
-		userGroup.GET("info", j(userController.GetUser))
-		userGroup.GET("manga/:mid/:cid", j(userController.RecordManga)) // deprecated
-		userGroup.POST("manga/:mid/:cid", j(userController.RecordManga))
-	}
+	rankGroup := v1.Group("rank")
+	rankGroup.GET("day", rankController.GetDayRanking)
+	rankGroup.GET("week", rankController.GetWeekRanking)
+	rankGroup.GET("month", rankController.GetMonthRanking)
+	rankGroup.GET("total", rankController.GetTotalRanking)
 
-	shelfGroup := v1.Group("shelf") // /v1/shelf/...
-	{
-		shelfGroup.GET("", j(shelfController.GetShelfMangas))
-		shelfGroup.GET(":mid", j(shelfController.CheckMangaInShelf))
-		shelfGroup.POST(":mid", j(shelfController.SaveMangaToShelf))
-		shelfGroup.DELETE(":mid", j(shelfController.RemoveMangaFromShelf))
-	}
+	commentGroup := v1.Group("comment")
+	commentGroup.GET("manga/:mid", commentController.GetComments)
 
-	messageGroup := v1.Group("message") // /v1/message/...
-	{
-		messageGroup.GET("", j(messageController.GetMessages))
-		messageGroup.GET("latest", j(messageController.GetLatestMessage))
-	}
-}
+	userGroup := v1.Group("user")
+	userGroup.POST("login", userController.Login)
+	userGroup.POST("check_login", userController.CheckLogin)
+	userGroup.GET("info", userController.GetUser)
+	userGroup.GET("manga/:mid/:cid", userController.RecordManga) // deprecated
+	userGroup.POST("manga/:mid/:cid", userController.RecordManga)
 
-// j Simplify controller's functions.
-func j(fn func(c *gin.Context) *result.Result) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		if c.IsAborted() {
-			return
-		}
-		r := fn(c)
-		if r != nil {
-			r.JSON(c)
-		}
-	}
+	shelfGroup := v1.Group("shelf")
+	shelfGroup.GET("", shelfController.GetShelfMangas)
+	shelfGroup.GET(":mid", shelfController.CheckMangaInShelf)
+	shelfGroup.POST(":mid", shelfController.SaveMangaToShelf)
+	shelfGroup.DELETE(":mid", shelfController.RemoveMangaFromShelf)
+
+	messageGroup := v1.Group("message")
+	messageGroup.GET("", messageController.GetMessages)
+	messageGroup.GET("latest", messageController.GetLatestMessage)
 }

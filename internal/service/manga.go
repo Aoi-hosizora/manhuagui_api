@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/lzstring"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
@@ -32,7 +32,7 @@ func NewMangaService() *MangaService {
 	}
 }
 
-func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
+func (m *MangaService) GetMangaPage(mid uint64) (*object.Manga, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_PAGE_URL, mid)
 	bs, doc, err := m.httpService.HttpGetDocument(url, nil)
@@ -72,16 +72,16 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	mangaRank := doc.Find("div.rank").Text()
 
 	genreA := detailUl.Find("li:nth-child(2) span:nth-child(1) a")
-	genres := make([]*vo.Category, 0)
+	genres := make([]*object.Category, 0)
 	genreA.Each(func(idx int, sel *goquery.Selection) {
 		genres = append(genres, m.categoryService.getCategoryFromA(sel))
 	})
 	authorA := detailUl.Find("li:nth-child(2) span:nth-child(2) a")
-	authors := make([]*vo.TinyAuthor, 0)
+	authors := make([]*object.TinyAuthor, 0)
 	authorA.Each(func(idx int, sel *goquery.Selection) {
 		authors = append(authors, m.authorService.GetAuthorFromA(sel))
 	})
-	obj := &vo.Manga{
+	obj := &object.Manga{
 		Mid:               mid,
 		Title:             title,
 		Cover:             static.ParseCoverUrl(cover),
@@ -109,7 +109,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	if err != nil {
 		return nil, err
 	}
-	scoreMap := make(map[string]interface{})
+	scoreMap := make(map[string]any)
 	err = json.Unmarshal(scoreJsonBs, &scoreMap)
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	}
 	if scoreJsonItf, ok := scoreMap["data"]; !ok {
 		return nil, scoreErr
-	} else if scoreJson, ok := scoreJsonItf.(map[string]interface{}); !ok {
+	} else if scoreJson, ok := scoreJsonItf.(map[string]any); !ok {
 		return nil, scoreErr
 	} else {
 		s1 := scoreJson["s1"].(float64)
@@ -168,14 +168,14 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	groupTitleH4s := newDoc.Find("div.chapter h4").Children()
 	groupListDivs := newDoc.Find("div.chapter div.chapter-list")
 	groupTitles := make([]string, groupTitleH4s.Length())
-	groups := make([]*vo.MangaChapterGroup, len(groupTitles))
+	groups := make([]*object.MangaChapterGroup, len(groupTitles))
 	groupTitleH4s.Each(func(idx int, sel *goquery.Selection) {
 		groupTitles[idx] = sel.Text()
 	})
 	groupListDivs.Each(func(idx int, sel *goquery.Selection) {
-		chapters := make([]*vo.TinyMangaChapter, 0)
+		chapters := make([]*object.TinyMangaChapter, 0)
 		sel.Find("ul").Each(func(idx int, sel *goquery.Selection) {
-			chaptersInUl := make([]*vo.TinyMangaChapter, 0)
+			chaptersInUl := make([]*object.TinyMangaChapter, 0)
 			sel.Find("li").Each(func(idx int, sel *goquery.Selection) {
 				title := sel.Find("a").AttrOr("title", "")
 				pageCount, _ := xnumber.Atoi32(strings.TrimSuffix(sel.Find("i").Text(), "p"))
@@ -183,7 +183,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 				sp := strings.Split(url, "/")
 				cid, _ := xnumber.Atou64(strings.TrimSuffix(sp[len(sp)-1], ".html"))
 				em := sel.Find("em").AttrOr("class", "")
-				chaptersInUl = append(chaptersInUl, &vo.TinyMangaChapter{
+				chaptersInUl = append(chaptersInUl, &object.TinyMangaChapter{
 					Cid:       cid,
 					Title:     title,
 					Mid:       mid,
@@ -198,7 +198,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 			chapters[i].Group = groupTitles[idx]
 			chapters[i].Number = int32(len(chapters) - i)
 		}
-		groups[idx] = &vo.MangaChapterGroup{
+		groups[idx] = &object.MangaChapterGroup{
 			Title:    groupTitles[idx],
 			Chapters: chapters,
 		}
@@ -209,7 +209,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*vo.Manga, error) {
 	return obj, nil
 }
 
-func (m *MangaService) GetRandomMangaInfo() (*vo.RandomMangaInfo, error) {
+func (m *MangaService) GetRandomMangaInfo() (*object.RandomMangaInfo, error) {
 	resp, err := m.httpService.HttpHeadNoRedirect(static.MANGA_RANDOM_URL, nil) // 302 Found
 	if err != nil {
 		return nil, err
@@ -225,14 +225,14 @@ func (m *MangaService) GetRandomMangaInfo() (*vo.RandomMangaInfo, error) {
 		return nil, errors.New("failed to get random manga")
 	}
 
-	info := &vo.RandomMangaInfo{
+	info := &object.RandomMangaInfo{
 		Mid: mid,
 		Url: fmt.Sprintf(static.MANGA_PAGE_URL, mid),
 	}
 	return info, nil
 }
 
-func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error) {
+func (m *MangaService) GetMangaChapter(mid, cid uint64) (*object.MangaChapter, error) {
 	// get document
 	url := fmt.Sprintf(static.MANGA_CHAPTER_URL, mid, cid)
 	bs, doc, err := m.httpService.HttpGetDocument(url, nil)
@@ -273,7 +273,7 @@ func (m *MangaService) GetMangaChapter(mid, cid uint64) (*vo.MangaChapter, error
 	decodeJson := decodeJsonResults[0][1]
 
 	// unmarshal
-	obj := &vo.MangaChapter{Copyright: true}
+	obj := &object.MangaChapter{Copyright: true}
 	err = json.Unmarshal([]byte(decodeJson), &obj)
 	if err != nil {
 		if bytes.Contains(bs, []byte("版权方的要求")) {

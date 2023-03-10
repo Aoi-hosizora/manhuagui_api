@@ -3,7 +3,7 @@ package dto
 import (
 	"github.com/Aoi-hosizora/ahlib/xpointer"
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"time"
 )
 
@@ -54,7 +54,7 @@ type MessageDto struct {
 	UpdatedAt    time.Time               `json:"updated_at"`   // 通知更新时间
 }
 
-func BuildMessageDto(message *vo.Message) *MessageDto {
+func BuildMessageDto(message *object.Message) *MessageDto {
 	if message == nil {
 		return nil
 	}
@@ -68,7 +68,7 @@ func BuildMessageDto(message *vo.Message) *MessageDto {
 	}
 }
 
-func BuildMessageDtos(messages []*vo.Message) []*MessageDto {
+func BuildMessageDtos(messages []*object.Message) []*MessageDto {
 	out := make([]*MessageDto, len(messages))
 	for i, message := range messages {
 		out[i] = BuildMessageDto(message)
@@ -83,7 +83,7 @@ type NotificationContentDto struct {
 	Link        string `json:"link"`        // 关联的链接
 }
 
-func BuildNotificationContentDto(notification *vo.NotificationContent) *NotificationContentDto {
+func BuildNotificationContentDto(notification *object.NotificationContent) *NotificationContentDto {
 	if notification == nil {
 		return nil
 	}
@@ -102,7 +102,7 @@ type NewVersionContentDto struct {
 	ReleasePage string `json:"release_page"` // 发布页面
 }
 
-func BuildNewVersionContentDto(newVersion *vo.NewVersionContent) *NewVersionContentDto {
+func BuildNewVersionContentDto(newVersion *object.NewVersionContent) *NewVersionContentDto {
 	if newVersion == nil {
 		return nil
 	}
@@ -122,7 +122,7 @@ type LatestMessageDto struct {
 	MustUpgradeNewVersion      *MessageDto `json:"must_upgrade_new_version"`     // 新版本更新 (必须更新)
 }
 
-func BuildLatestMessageDto(message *vo.LatestMessage) *LatestMessageDto {
+func BuildLatestMessageDto(message *object.LatestMessage) *LatestMessageDto {
 	return &LatestMessageDto{
 		Notification:               BuildMessageDto(message.Notification),
 		NewVersion:                 BuildMessageDto(message.NewVersion),

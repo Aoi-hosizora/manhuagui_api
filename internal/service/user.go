@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"github.com/PuerkitoBio/goquery"
@@ -60,7 +60,7 @@ func (u *UserService) CheckLogin(token string) (bool, string, error) {
 		return false, "", err
 	}
 
-	status := &vo.UserStatus{}
+	status := &object.UserStatus{}
 	err = json.Unmarshal(bs, status)
 	if err != nil {
 		return false, "", err
@@ -86,7 +86,7 @@ func (u *UserService) _httpGetWithToken(url, token string) ([]byte, *goquery.Doc
 	return bs, doc, nil
 }
 
-func (u *UserService) GetUser(token string) (*vo.User, error) {
+func (u *UserService) GetUser(token string) (*object.User, error) {
 	_, doc, err := u._httpGetWithToken(static.MANGA_USER_URL, token)
 	if err != nil {
 		return nil, err
@@ -117,7 +117,7 @@ func (u *UserService) GetUser(token string) (*vo.User, error) {
 	cumulativeDayCount, _ := xnumber.Atoi32(loginDiv.Find("dl:nth-of-type(5) dd").Text())
 	totalCommentCount, _ := xnumber.Atoi32(loginDiv.Find("dl:nth-of-type(6) dd").Text())
 
-	user := &vo.User{
+	user := &object.User{
 		Username:           username,
 		Avatar:             avatar,
 		Class:              class,

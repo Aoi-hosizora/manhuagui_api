@@ -5,7 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
@@ -41,14 +41,14 @@ func NewSearchController() *SearchController {
 
 // GET /v1/search/:keyword
 func (s *SearchController) SearchMangas(c *gin.Context) *result.Result {
-	pa := param.BindPageOrder(c, s.config)
+	pa := param.BindQueryPageOrder(c)
 	keyword := c.Param("keyword")
 
 	mangas, limit, total, err := s.searchService.SearchMangas(keyword, pa.Page, pa.Order) // popular / new / update
 	if err != nil {
 		return result.Error(errno.SearchMangasError).SetError(err, c)
 	} else if mangas == nil { // empty
-		res := dto.BuildSmallMangaDtos([]*vo.SmallManga{})
+		res := dto.BuildSmallMangaDtos([]*object.SmallManga{})
 		return result.Ok().SetPage(pa.Page, limit, 0, res)
 	}
 

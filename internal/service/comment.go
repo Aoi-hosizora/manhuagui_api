@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"strings"
@@ -20,13 +20,13 @@ func NewCommentService() *CommentService {
 	}
 }
 
-func (c *CommentService) GetComments(mid uint64, page int32) ([]*vo.Comment, int32, error) {
+func (c *CommentService) GetComments(mid uint64, page int32) ([]*object.Comment, int32, error) {
 	url := fmt.Sprintf(static.MANGA_COMMENT_URL, mid, page)
 	bs, _, err := c.httpService.HttpGet(url, nil)
 	if err != nil {
 		return nil, 0, err
 	}
-	commentsObj := &vo.Comments{}
+	commentsObj := &object.Comments{}
 	err = json.Unmarshal(bs, commentsObj)
 	if err != nil {
 		return nil, 0, err
@@ -41,7 +41,7 @@ func (c *CommentService) GetComments(mid uint64, page int32) ([]*vo.Comment, int
 		}
 	}
 
-	out := make([]*vo.Comment, 0, len(chains))
+	out := make([]*object.Comment, 0, len(chains))
 	for _, chain := range chains {
 		cmt, ok := commentsObj.Comments[chain[0]]
 		if !ok {
@@ -54,12 +54,12 @@ func (c *CommentService) GetComments(mid uint64, page int32) ([]*vo.Comment, int
 			cmt.Avatar = "https://cf.hamreus.com/images/default.png"
 		}
 
-		timeline := make([]*vo.RepliedComment, 0, len(chain)-1)
+		timeline := make([]*object.RepliedComment, 0, len(chain)-1)
 		if len(chain) > 1 {
 			for idx := len(chain) - 1; idx >= 1; idx-- {
 				repliedId := chain[idx]
 				if reply, ok := commentsObj.Comments[repliedId]; ok {
-					cmt := vo.NewRepliedComment(reply)
+					cmt := object.NewRepliedComment(reply)
 					if cmt.Username == "" {
 						cmt.Username = "-"
 					}

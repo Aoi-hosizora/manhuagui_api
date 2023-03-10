@@ -1,4 +1,4 @@
-package vo
+package object
 
 // 漫画页的完整信息
 type Manga struct {

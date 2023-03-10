@@ -7,7 +7,7 @@ import (
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/ahlib/xpointer"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"gopkg.in/yaml.v2"
@@ -29,14 +29,14 @@ func NewMessageService() *MessageService {
 	}
 }
 
-func (m *MessageService) GetAllMessages(token string) ([]*vo.Message, error) {
+func (m *MessageService) GetAllMessages(token string) ([]*object.Message, error) {
 	pageCount, err := m.getCommentPageCount(token)
 	if err != nil {
 		return nil, err
 	}
 
 	// get messages
-	messageLists := make([][]*vo.Message, pageCount)
+	messageLists := make([][]*object.Message, pageCount)
 	err = error(nil)
 	once := sync.Once{}
 	mu := sync.Mutex{}
@@ -62,7 +62,7 @@ func (m *MessageService) GetAllMessages(token string) ([]*vo.Message, error) {
 
 	// merge messages
 	vis := make(map[uint64]bool)
-	messages := make([]*vo.Message, 0)
+	messages := make([]*object.Message, 0)
 	for _, messageList := range messageLists {
 		for _, msg := range messageList {
 			if _, ok := vis[msg.Mid]; !ok {
@@ -77,13 +77,13 @@ func (m *MessageService) GetAllMessages(token string) ([]*vo.Message, error) {
 	return messages, nil
 }
 
-func (m *MessageService) GetLatestMessage(token string) (*vo.LatestMessage, error) {
+func (m *MessageService) GetLatestMessage(token string) (*object.LatestMessage, error) {
 	messages, err := m.GetAllMessages(token) // almost one page
 	if err != nil {
 		return nil, err
 	}
 
-	latestMessage := &vo.LatestMessage{}
+	latestMessage := &object.LatestMessage{}
 	for _, msg := range messages {
 		if msg.Notification != nil && *msg.Notification.Dismissible {
 			latestMessage.Notification = msg
@@ -125,7 +125,7 @@ func (m *MessageService) getCommentPageCount(token string) (int32, error) {
 		return 0, fmt.Errorf("got %d response code", resp.StatusCode)
 	}
 
-	issue := &vo.Issue{}
+	issue := &object.Issue{}
 	err = json.Unmarshal(bs, issue)
 	if err != nil {
 		return 0, err
@@ -136,7 +136,7 @@ func (m *MessageService) getCommentPageCount(token string) (int32, error) {
 	return int32(pageCount), nil
 }
 
-func (m *MessageService) getMessages(page int32, token string) ([]*vo.Message, error) {
+func (m *MessageService) getMessages(page int32, token string) ([]*object.Message, error) {
 	apiUrl := fmt.Sprintf(static.MESSAGE_COMMENTS_API, page, static.MESSAGE_COMMENTS_PERPAGE /* 100 */)
 	bs, resp, err := m.httpService.HttpGet(apiUrl, func(r *http.Request) {
 		r.Header.Set("Accept", static.GITHUB_ACCEPT)
@@ -150,17 +150,17 @@ func (m *MessageService) getMessages(page int32, token string) ([]*vo.Message, e
 	}
 
 	// unmarshal
-	comments := make([]*vo.IssueComment, 0)
+	comments := make([]*object.IssueComment, 0)
 	err = json.Unmarshal(bs, &comments)
 	if err != nil {
 		return nil, err
 	}
 
 	// parse body
-	messages := make([]*vo.Message, 0, len(comments))
+	messages := make([]*object.Message, 0, len(comments))
 	for _, comment := range comments {
 		bodyString := strings.TrimSpace(strings.Trim(strings.Trim(strings.TrimSpace(comment.Body), "```yaml"), "```"))
-		bodyObj := &vo.IssueCommentBody{}
+		bodyObj := &object.IssueCommentBody{}
 		err = yaml.Unmarshal([]byte(bodyString), bodyObj)
 		if err != nil {
 			continue
@@ -174,8 +174,8 @@ func (m *MessageService) getMessages(page int32, token string) ([]*vo.Message, e
 	return messages, nil
 }
 
-func (m *MessageService) parseCommentBody(comment *vo.IssueComment, body *vo.IssueCommentBody) *vo.Message {
-	out := &vo.Message{
+func (m *MessageService) parseCommentBody(comment *object.IssueComment, body *object.IssueCommentBody) *object.Message {
+	out := &object.Message{
 		Mid:          comment.Id,
 		Title:        body.Title,
 		Notification: body.Notification,

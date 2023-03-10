@@ -28,7 +28,7 @@ func init() {
 
 		goapidoc.NewOperation("GET", "/v1/author/{aid}", "Get author").
 			Tags("Author").
-			Params(goapidoc.NewPathParam("aid", "integer#int64", false, "author id")).
+			Params(goapidoc.NewPathParam("aid", "integer#int64", true, "author id")).
 			Responses(goapidoc.NewResponse(200, "_Result<AuthorDto>")),
 
 		goapidoc.NewOperation("GET", "/v1/author/{aid}/manga", "Get author mangas").
@@ -56,7 +56,7 @@ func NewAuthorController() *AuthorController {
 
 // GET /v1/author
 func (a *AuthorController) GetAllAuthors(c *gin.Context) *result.Result {
-	pa := param.BindPageOrder(c, a.config)
+	pa := param.BindQueryPageOrder(c)
 	genre := c.Query("genre")
 	zone := c.Query("zone")
 	age := c.Query("age")
@@ -72,9 +72,9 @@ func (a *AuthorController) GetAllAuthors(c *gin.Context) *result.Result {
 
 // GET /v1/author/:aid
 func (a *AuthorController) GetAuthor(c *gin.Context) *result.Result {
-	aid, err := param.BindRouteId(c, "aid")
+	aid, err := param.BindRouteID(c, "aid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	author, err := a.authorService.GetAuthor(aid)
@@ -90,11 +90,11 @@ func (a *AuthorController) GetAuthor(c *gin.Context) *result.Result {
 
 // GET /v1/author/:aid/manga
 func (a *AuthorController) GetAuthorMangas(c *gin.Context) *result.Result {
-	aid, err := param.BindRouteId(c, "aid")
+	aid, err := param.BindRouteID(c, "aid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
-	pa := param.BindPageOrder(c, a.config)
+	pa := param.BindQueryPageOrder(c)
 
 	mangas, limit, total, err := a.authorService.GetAuthorMangas(aid, pa.Page, pa.Order) // popular / new / update
 	if err != nil {

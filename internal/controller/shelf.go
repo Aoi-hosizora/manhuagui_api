@@ -69,7 +69,7 @@ func (s *ShelfController) GetShelfMangas(c *gin.Context) *result.Result {
 	if token == "" {
 		token = c.Query("token")
 	}
-	pa := param.BindPage(c, s.config)
+	pa := param.BindQueryPage(c)
 
 	mangas, limit, total, err := s.shelfService.GetShelfMangas(token, pa.Page)
 	if err != nil {
@@ -88,9 +88,9 @@ func (s *ShelfController) CheckMangaInShelf(c *gin.Context) *result.Result {
 	if token == "" {
 		token = c.Query("token")
 	}
-	mid, err := param.BindRouteId(c, "mid")
+	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	ok, _, err := s.userService.CheckLogin(token)
@@ -115,9 +115,9 @@ func (s *ShelfController) SaveMangaToShelf(c *gin.Context) *result.Result {
 	if token == "" {
 		token = c.Query("token")
 	}
-	mid, err := param.BindRouteId(c, "mid")
+	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	auth, existed, err := s.shelfService.SaveMangaToShelf(token, mid)
@@ -139,9 +139,9 @@ func (s *ShelfController) RemoveMangaFromShelf(c *gin.Context) *result.Result {
 	if token == "" {
 		token = c.Query("token")
 	}
-	mid, err := param.BindRouteId(c, "mid")
+	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	auth, notFound, err := s.shelfService.RemoveMangaFromShelf(token, mid)

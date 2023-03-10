@@ -119,13 +119,13 @@ func (u *UserController) RecordManga(c *gin.Context) *result.Result {
 	if token == "" {
 		token = c.Query("token")
 	}
-	mid, err := param.BindRouteId(c, "mid")
+	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
-	cid, err := param.BindRouteId(c, "cid")
+	cid, err := param.BindRouteID(c, "cid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	ok, _, err := u.userService.CheckLogin(token)

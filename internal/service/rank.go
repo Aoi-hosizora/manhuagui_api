@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"github.com/PuerkitoBio/goquery"
@@ -22,7 +22,7 @@ func NewRankService() *RankService {
 	}
 }
 
-func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, error) {
+func (r *RankService) getRankingList(time string, typ string) ([]*object.MangaRank, error) {
 	url := ""
 	part := ""
 	if typ == "" || typ == "all" {
@@ -48,8 +48,8 @@ func (r *RankService) getRankingList(time string, typ string) ([]*vo.MangaRank, 
 	return r.getRankingListFromDoc(doc), nil
 }
 
-func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*vo.MangaRank {
-	out := make([]*vo.MangaRank, 0)
+func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*object.MangaRank {
+	out := make([]*object.MangaRank, 0)
 	trs := doc.Find("div.top-cont tr:not(.rank-split-first):not(.rank-split):not(:first-child)")
 	trs.Each(func(idx int, tr *goquery.Selection) {
 		order, _ := xnumber.Atoi8(tr.Find("td.rank-no").Text())
@@ -57,7 +57,7 @@ func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*vo.MangaRa
 		url := tr.Find("td.rank-title a").AttrOr("href", "")
 		status := tr.Find("td.rank-title span").Text()
 		authorA := tr.Find("div.rank-author a")
-		authors := make([]*vo.TinyAuthor, 0)
+		authors := make([]*object.TinyAuthor, 0)
 		authorA.Each(func(idx int, sel *goquery.Selection) {
 			authors = append(authors, r.authorService.GetAuthorFromA(sel))
 		})
@@ -71,7 +71,7 @@ func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*vo.MangaRa
 			trend = uint8(1)
 		}
 		id := static.ParseMid(url)
-		rank := &vo.MangaRank{
+		rank := &object.MangaRank{
 			Mid:           id,
 			Title:         title,
 			Cover:         fmt.Sprintf(static.MANGA_COVER_URL, id),
@@ -90,18 +90,18 @@ func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*vo.MangaRa
 	return out
 }
 
-func (r *RankService) GetDayRanking(typ string) ([]*vo.MangaRank, error) {
+func (r *RankService) GetDayRanking(typ string) ([]*object.MangaRank, error) {
 	return r.getRankingList("day", typ)
 }
 
-func (r *RankService) GetWeekRanking(typ string) ([]*vo.MangaRank, error) {
+func (r *RankService) GetWeekRanking(typ string) ([]*object.MangaRank, error) {
 	return r.getRankingList("week", typ)
 }
 
-func (r *RankService) GetMonthRanking(typ string) ([]*vo.MangaRank, error) {
+func (r *RankService) GetMonthRanking(typ string) ([]*object.MangaRank, error) {
 	return r.getRankingList("month", typ)
 }
 
-func (r *RankService) GetTotalRanking(typ string) ([]*vo.MangaRank, error) {
+func (r *RankService) GetTotalRanking(typ string) ([]*object.MangaRank, error) {
 	return r.getRankingList("total", typ)
 }

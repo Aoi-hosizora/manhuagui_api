@@ -56,7 +56,7 @@ func NewMangaController() *MangaController {
 
 // GET /v1/manga
 func (m *MangaController) GetAllMangas(c *gin.Context) *result.Result {
-	pa := param.BindPageOrder(c, m.config)
+	pa := param.BindQueryPageOrder(c)
 
 	mangas, limit, total, err := m.categoryService.GetGenreMangas("all", "all", "all", "all", pa.Page, pa.Order) // popular / new / update
 	if err != nil {
@@ -77,9 +77,9 @@ func (m *MangaController) GetManga(c *gin.Context) *result.Result {
 
 // GET /v1/manga/:mid
 func (m *MangaController) getManga(c *gin.Context) *result.Result {
-	id, err := param.BindRouteId(c, "mid")
+	id, err := param.BindRouteID(c, "mid")
 	if err != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	manga, err := m.mangaService.GetMangaPage(id)
@@ -106,10 +106,10 @@ func (m *MangaController) getRandomManga(c *gin.Context) *result.Result {
 
 // GET /v1/manga/:mid/:cid
 func (m *MangaController) GetMangaChapter(c *gin.Context) *result.Result {
-	id, err := param.BindRouteId(c, "mid")
-	cid, err2 := param.BindRouteId(c, "cid")
+	id, err := param.BindRouteID(c, "mid")
+	cid, err2 := param.BindRouteID(c, "cid")
 	if err != nil || err2 != nil {
-		return result.Error(errno.RequestParamError).SetError(err, c)
+		return result.BindingError(err, c)
 	}
 
 	chapter, err := m.mangaService.GetMangaChapter(id, cid)

@@ -1,4 +1,4 @@
-package vo
+package object
 
 // 索引项
 type Category struct {

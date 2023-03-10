@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 )
 
 func init() {
@@ -24,7 +24,7 @@ func init() {
 	)
 }
 
-// 索引项 vo.Category
+// 索引项 object.Category
 type CategoryDto struct {
 	Name  string `json:"name"`
 	Title string `json:"title"`
@@ -32,7 +32,7 @@ type CategoryDto struct {
 	Cover string `json:"cover"`
 }
 
-func BuildCategoryDto(category *vo.Category) *CategoryDto {
+func BuildCategoryDto(category *object.Category) *CategoryDto {
 	return &CategoryDto{
 		Name:  category.Name,
 		Title: category.Title,
@@ -40,7 +40,7 @@ func BuildCategoryDto(category *vo.Category) *CategoryDto {
 		Cover: category.Cover,
 	}
 }
-func BuildCategoryDtos(categories []*vo.Category) []*CategoryDto {
+func BuildCategoryDtos(categories []*object.Category) []*CategoryDto {
 	out := make([]*CategoryDto, len(categories))
 	for idx, category := range categories {
 		out[idx] = BuildCategoryDto(category)
@@ -48,21 +48,21 @@ func BuildCategoryDtos(categories []*vo.Category) []*CategoryDto {
 	return out
 }
 
-// 索引列表 vo.CategoryList
+// 索引列表 object.CategoryList
 type CategoryListDto struct {
 	Genres []*CategoryDto `json:"genres"`
 	Zones  []*CategoryDto `json:"zones"`
 	Ages   []*CategoryDto `json:"ages"`
 }
 
-func BuildCategoryListDto(lists *vo.CategoryList) *CategoryListDto {
+func BuildCategoryListDto(lists *object.CategoryList) *CategoryListDto {
 	return &CategoryListDto{
 		Genres: BuildCategoryDtos(lists.Genres),
 		Zones:  BuildCategoryDtos(lists.Zones),
 		Ages:   BuildCategoryDtos(lists.Ages),
 	}
 }
-func BuildCategoryListDtos(lists []*vo.CategoryList) []*CategoryListDto {
+func BuildCategoryListDtos(lists []*object.CategoryList) []*CategoryListDto {
 	out := make([]*CategoryListDto, len(lists))
 	for idx, list := range lists {
 		out[idx] = BuildCategoryListDto(list)

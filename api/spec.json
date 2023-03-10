@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
-  "host": "localhost:10018",
+  "host": "127.0.0.1:10018",
   "basePath": "/",
   "info": {
-    "title": "manhuagui-backend",
-    "description": "An unofficial backend for manhuagui written in golang/gin",
-    "version": "1.0",
+    "title": "manhuagui-api",
+    "version": "v1.0.0",
+    "description": "An unofficial backend for manhuagui written in golang/gin.",
     "contact": {
       "name": "Aoi-hosizora",
       "url": "https://github.com/Aoi-hosizora",
@@ -68,43 +68,43 @@
             "name": "genre",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "author genre"
+            "description": "author genre",
+            "type": "string"
           },
           {
             "name": "zone",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "author zone"
+            "description": "author zone",
+            "type": "string"
           },
           {
             "name": "age",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "author age range, (shaonv|shaonian|qingnian|ertong|tongyong)"
+            "description": "author age range, (shaonv|shaonian|qingnian|ertong|tongyong)",
+            "type": "string"
           },
           {
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           },
           {
             "name": "order",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "order string"
+            "description": "order string",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<SmallAuthorDto>>",
               "$ref": "#/definitions/_Result<_Page<SmallAuthorDto>>"
             }
           }
@@ -114,7 +114,7 @@
     "/v1/author/{aid}": {
       "get": {
         "summary": "Get author",
-        "operationId": "-v1-author-aid-get",
+        "operationId": "-v1-author-:aid-get",
         "tags": [
           "Author"
         ],
@@ -122,16 +122,16 @@
           {
             "name": "aid",
             "in": "path",
-            "required": false,
-            "type": "integer",
+            "required": true,
             "description": "author id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<AuthorDto>",
               "$ref": "#/definitions/_Result<AuthorDto>"
             }
           }
@@ -141,7 +141,7 @@
     "/v1/author/{aid}/manga": {
       "get": {
         "summary": "Get author mangas",
-        "operationId": "-v1-author-aid-manga-get",
+        "operationId": "-v1-author-:aid-manga-get",
         "description": "order by popular / new / update",
         "tags": [
           "Author"
@@ -151,30 +151,30 @@
             "name": "aid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "author id",
+            "type": "integer",
             "format": "int64"
           },
           {
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           },
           {
             "name": "order",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "order string"
+            "description": "order string",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<SmallMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<SmallMangaDto>>"
             }
           }
@@ -190,8 +190,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<CategoryListDto>",
               "$ref": "#/definitions/_Result<CategoryListDto>"
             }
           }
@@ -207,8 +207,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<CategoryDto>>",
               "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
             }
           }
@@ -224,8 +224,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<CategoryDto>>",
               "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
             }
           }
@@ -235,7 +235,7 @@
     "/v1/category/genre/{genre}": {
       "get": {
         "summary": "Get genre mangas",
-        "operationId": "-v1-category-genre-genre-get",
+        "operationId": "-v1-category-genre-:genre-get",
         "description": "order by popular / new / update",
         "tags": [
           "Category"
@@ -245,50 +245,50 @@
             "name": "genre",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "genre name, (all|...)"
+            "description": "genre name, (all|...)",
+            "type": "string"
           },
           {
             "name": "zone",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga zone, (all|japan|hongkong|other|europe|china|korea)"
+            "description": "manga zone, (all|japan|hongkong|other|europe|china|korea)",
+            "type": "string"
           },
           {
             "name": "age",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga age, (all|shaonv|shaonian|qingnian|ertong|tongyong)"
+            "description": "manga age, (all|shaonv|shaonian|qingnian|ertong|tongyong)",
+            "type": "string"
           },
           {
             "name": "status",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga status, (all|lianzai|wanjie)"
+            "description": "manga status, (all|lianzai|wanjie)",
+            "type": "string"
           },
           {
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           },
           {
             "name": "order",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "order string"
+            "description": "order string",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
             }
           }
@@ -304,8 +304,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<CategoryDto>>",
               "$ref": "#/definitions/_Result<_Page<CategoryDto>>"
             }
           }
@@ -315,7 +315,7 @@
     "/v1/comment/manga/{mid}": {
       "get": {
         "summary": "Get manga comments",
-        "operationId": "-v1-comment-manga-mid-get",
+        "operationId": "-v1-comment-manga-:mid-get",
         "tags": [
           "Comment"
         ],
@@ -324,23 +324,23 @@
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           },
           {
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<CommentDto>>",
               "$ref": "#/definitions/_Result<_Page<CommentDto>>"
             }
           }
@@ -356,8 +356,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<MangaGroupListDto>",
               "$ref": "#/definitions/_Result<MangaGroupListDto>"
             }
           }
@@ -373,8 +373,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<HomepageMangaGroupListDto>",
               "$ref": "#/definitions/_Result<HomepageMangaGroupListDto>"
             }
           }
@@ -390,8 +390,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<MangaGroupListDto>",
               "$ref": "#/definitions/_Result<MangaGroupListDto>"
             }
           }
@@ -407,8 +407,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<MangaGroupListDto>",
               "$ref": "#/definitions/_Result<MangaGroupListDto>"
             }
           }
@@ -427,23 +427,23 @@
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "page size",
+            "type": "integer",
             "format": "int32"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
             }
           }
@@ -463,22 +463,22 @@
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           },
           {
             "name": "order",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "order string"
+            "description": "order string",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<TinyMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
             }
           }
@@ -494,8 +494,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<RandomMangaInfoDto>",
               "$ref": "#/definitions/_Result<RandomMangaInfoDto>"
             }
           }
@@ -505,7 +505,7 @@
     "/v1/manga/{mid}": {
       "get": {
         "summary": "Get manga",
-        "operationId": "-v1-manga-mid-get",
+        "operationId": "-v1-manga-:mid-get",
         "tags": [
           "Manga"
         ],
@@ -514,15 +514,15 @@
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<MangaDto>",
               "$ref": "#/definitions/_Result<MangaDto>"
             }
           }
@@ -532,7 +532,7 @@
     "/v1/manga/{mid}/{cid}": {
       "get": {
         "summary": "Get manga chapter",
-        "operationId": "-v1-manga-mid-cid-get",
+        "operationId": "-v1-manga-:mid-:cid-get",
         "tags": [
           "Manga"
         ],
@@ -541,23 +541,23 @@
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           },
           {
             "name": "cid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga chapter id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<MangaChapterDto>",
               "$ref": "#/definitions/_Result<MangaChapterDto>"
             }
           }
@@ -573,8 +573,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<MessageDto>>",
               "$ref": "#/definitions/_Result<_Page<MessageDto>>"
             }
           }
@@ -590,8 +590,8 @@
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<LatestMessageDto>",
               "$ref": "#/definitions/_Result<LatestMessageDto>"
             }
           }
@@ -610,14 +610,14 @@
             "name": "type",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga genre / zone / age, empty or all if all"
+            "description": "manga genre / zone / age, empty or all if all",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<MangaRankDto>>",
               "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
             }
           }
@@ -636,14 +636,14 @@
             "name": "type",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga genre / zone / age, empty or all if all"
+            "description": "manga genre / zone / age, empty or all if all",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<MangaRankDto>>",
               "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
             }
           }
@@ -662,14 +662,14 @@
             "name": "type",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga genre / zone / age, empty or all if all"
+            "description": "manga genre / zone / age, empty or all if all",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<MangaRankDto>>",
               "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
             }
           }
@@ -688,14 +688,14 @@
             "name": "type",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "manga genre / zone / age, empty or all if all"
+            "description": "manga genre / zone / age, empty or all if all",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<MangaRankDto>>",
               "$ref": "#/definitions/_Result<_Page<MangaRankDto>>"
             }
           }
@@ -705,7 +705,7 @@
     "/v1/search/{keyword}": {
       "get": {
         "summary": "Search mangas",
-        "operationId": "-v1-search-keyword-get",
+        "operationId": "-v1-search-:keyword-get",
         "description": "order by popular / new / update",
         "tags": [
           "Search"
@@ -715,29 +715,29 @@
             "name": "keyword",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "search keyword"
+            "description": "search keyword",
+            "type": "string"
           },
           {
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           },
           {
             "name": "order",
             "in": "query",
             "required": false,
-            "type": "string",
-            "description": "order string"
+            "description": "order string",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<SmallMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<SmallMangaDto>>"
             }
           }
@@ -756,22 +756,22 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
             "description": "current page",
+            "type": "integer",
             "format": "int32"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<_Page<ShelfMangaDto>>",
               "$ref": "#/definitions/_Result<_Page<ShelfMangaDto>>"
             }
           }
@@ -781,7 +781,7 @@
     "/v1/shelf/{mid}": {
       "delete": {
         "summary": "Remove manga from shelf",
-        "operationId": "-v1-shelf-mid-delete",
+        "operationId": "-v1-shelf-:mid-delete",
         "tags": [
           "Shelf"
         ],
@@ -790,22 +790,22 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "Result",
               "$ref": "#/definitions/Result"
             }
           }
@@ -813,7 +813,7 @@
       },
       "get": {
         "summary": "Check manga in shelf",
-        "operationId": "-v1-shelf-mid-get",
+        "operationId": "-v1-shelf-:mid-get",
         "tags": [
           "Shelf"
         ],
@@ -822,22 +822,22 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<ShelfStatusDto>",
               "$ref": "#/definitions/_Result<ShelfStatusDto>"
             }
           }
@@ -845,7 +845,7 @@
       },
       "post": {
         "summary": "Save manga to shelf",
-        "operationId": "-v1-shelf-mid-post",
+        "operationId": "-v1-shelf-:mid-post",
         "tags": [
           "Shelf"
         ],
@@ -854,22 +854,22 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "Result",
               "$ref": "#/definitions/Result"
             }
           }
@@ -888,14 +888,14 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<UsernameDto>",
               "$ref": "#/definitions/_Result<UsernameDto>"
             }
           }
@@ -914,14 +914,14 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<UserDto>",
               "$ref": "#/definitions/_Result<UserDto>"
             }
           }
@@ -940,21 +940,21 @@
             "name": "username",
             "in": "query",
             "required": true,
-            "type": "string",
-            "description": "login username"
+            "description": "login username",
+            "type": "string"
           },
           {
             "name": "password",
             "in": "query",
             "required": true,
-            "type": "string",
-            "description": "login password"
+            "description": "login password",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "_Result<TokenDto>",
               "$ref": "#/definitions/_Result<TokenDto>"
             }
           }
@@ -964,7 +964,7 @@
     "/v1/user/manga/{mid}/{cid}": {
       "get": {
         "summary": "Record manga for the authorized user",
-        "operationId": "-v1-user-manga-mid-cid-get",
+        "operationId": "-v1-user-manga-:mid-:cid-get",
         "tags": [
           "User"
         ],
@@ -974,30 +974,30 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           },
           {
             "name": "cid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga chapter id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "Result",
               "$ref": "#/definitions/Result"
             }
           }
@@ -1005,7 +1005,7 @@
       },
       "post": {
         "summary": "Record manga for the authorized user",
-        "operationId": "-v1-user-manga-mid-cid-post",
+        "operationId": "-v1-user-manga-:mid-:cid-post",
         "tags": [
           "User"
         ],
@@ -1014,30 +1014,30 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string",
-            "description": "access token"
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "mid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga id",
+            "type": "integer",
             "format": "int64"
           },
           {
             "name": "cid",
             "in": "path",
             "required": true,
-            "type": "integer",
             "description": "manga chapter id",
+            "type": "integer",
             "format": "int64"
           }
         ],
         "responses": {
           "200": {
+            "description": "200 OK",
             "schema": {
-              "originRef": "Result",
               "$ref": "#/definitions/Result"
             }
           }
@@ -1073,107 +1073,87 @@
       "properties": {
         "aid": {
           "type": "integer",
-          "required": true,
-          "description": "author id",
-          "format": "int64"
+          "format": "int64",
+          "description": "author id"
         },
         "name": {
           "type": "string",
-          "required": true,
           "description": "author name"
         },
         "alias": {
           "type": "string",
-          "required": true,
           "description": "author alias"
         },
         "zone": {
           "type": "string",
-          "required": true,
           "description": "author zone"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "author cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "author url"
         },
         "manga_count": {
           "type": "integer",
-          "required": true,
-          "description": "author manga count",
-          "format": "int32"
+          "format": "int32",
+          "description": "author manga count"
         },
         "newest_manga_id": {
           "type": "integer",
-          "required": true,
-          "description": "author newest manga id",
-          "format": "int32"
+          "format": "int32",
+          "description": "author newest manga id"
         },
         "newest_manga_title": {
           "type": "string",
-          "required": true,
           "description": "author newest manga title"
         },
         "newest_manga_url": {
           "type": "string",
-          "required": true,
           "description": "author newest manga url"
         },
         "newest_date": {
           "type": "string",
-          "required": true,
           "description": "author update newest date"
         },
         "highest_manga_id": {
           "type": "integer",
-          "required": true,
-          "description": "author highest manga id",
-          "format": "int32"
+          "format": "int32",
+          "description": "author highest manga id"
         },
         "highest_manga_title": {
           "type": "string",
-          "required": true,
           "description": "author highest manga title"
         },
         "highest_manga_url": {
           "type": "string",
-          "required": true,
           "description": "author highest manga url"
         },
         "highest_score": {
           "type": "number",
-          "required": true,
-          "description": "author highest score",
-          "format": "float"
+          "format": "float",
+          "description": "author highest score"
         },
         "average_score": {
           "type": "number",
-          "required": true,
-          "description": "author average score",
-          "format": "float"
+          "format": "float",
+          "description": "author average score"
         },
         "popularity": {
           "type": "number",
-          "required": true,
-          "description": "author popularity",
-          "format": "int32"
+          "format": "int32",
+          "description": "author popularity"
         },
         "introduction": {
           "type": "string",
-          "required": true,
           "description": "author introduction"
         },
         "related_authors": {
           "type": "array",
-          "required": true,
           "description": "author related authors",
           "items": {
-            "originRef": "TinyZonedAuthorDto",
             "$ref": "#/definitions/TinyZonedAuthorDto"
           }
         }
@@ -1191,22 +1171,18 @@
       "properties": {
         "name": {
           "type": "string",
-          "required": true,
           "description": "category name"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "category title"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "category link"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "category cover"
         }
       }
@@ -1222,28 +1198,22 @@
       "properties": {
         "genres": {
           "type": "array",
-          "required": true,
           "description": "genre categories",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         },
         "zones": {
           "type": "array",
-          "required": true,
           "description": "zone categories",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         },
         "ages": {
           "type": "array",
-          "required": true,
           "description": "age categories",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         }
@@ -1267,61 +1237,50 @@
       "properties": {
         "cid": {
           "type": "integer",
-          "required": true,
-          "description": "comment id",
-          "format": "int64"
+          "format": "int64",
+          "description": "comment id"
         },
         "uid": {
           "type": "integer",
-          "required": true,
-          "description": "user id",
-          "format": "int64"
+          "format": "int64",
+          "description": "user id"
         },
         "username": {
           "type": "string",
-          "required": true,
           "description": "username"
         },
         "avatar": {
           "type": "string",
-          "required": true,
           "description": "user avatar"
         },
         "gender": {
           "type": "integer",
-          "required": true,
-          "description": "user gender, 1: Male, 2: Female",
-          "format": "int32"
+          "format": "int32",
+          "description": "user gender, 1: Male, 2: Female"
         },
         "content": {
           "type": "string",
-          "required": true,
           "description": "comment content"
         },
         "like_count": {
           "type": "integer",
-          "required": true,
-          "description": "comment liked count",
-          "format": "int32"
+          "format": "int32",
+          "description": "comment liked count"
         },
         "reply_count": {
           "type": "integer",
-          "required": true,
-          "description": "comment reply count",
-          "format": "int32"
+          "format": "int32",
+          "description": "comment reply count"
         },
         "reply_timeline": {
           "type": "array",
-          "required": true,
           "description": "comment reply timeline",
           "items": {
-            "originRef": "RepliedCommentDto",
             "$ref": "#/definitions/RepliedCommentDto"
           }
         },
         "comment_time": {
           "type": "string",
-          "required": true,
           "description": "comment create time"
         }
       }
@@ -1340,56 +1299,39 @@
       "description": "manga group list",
       "properties": {
         "serial": {
-          "required": true,
-          "description": "homepage serial manga group list",
-          "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
         },
         "finish": {
-          "required": true,
-          "description": "homepage finish group list",
-          "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
         },
         "latest": {
-          "required": true,
-          "description": "homepage latest manga group list",
-          "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
         },
         "daily": {
           "type": "array",
-          "required": true,
           "description": "manga daily ranking for homepage",
           "items": {
-            "originRef": "MangaRankDto",
             "$ref": "#/definitions/MangaRankDto"
           }
         },
         "genres": {
           "type": "array",
-          "required": true,
           "description": "manga all genres for homepage",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         },
         "zones": {
           "type": "array",
-          "required": true,
           "description": "manga all zones for homepage",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         },
         "ages": {
           "type": "array",
-          "required": true,
           "description": "manga all ages for homepage",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         }
@@ -1406,27 +1348,15 @@
       "description": "Latest message response",
       "properties": {
         "notification": {
-          "required": true,
-          "description": "latest notification message",
-          "originRef": "MessageDto",
           "$ref": "#/definitions/MessageDto"
         },
         "new_version": {
-          "required": true,
-          "description": "latest new version message",
-          "originRef": "MessageDto",
           "$ref": "#/definitions/MessageDto"
         },
         "not_dismissible_notification": {
-          "required": true,
-          "description": "latest notification message (not dismissible)",
-          "originRef": "MessageDto",
           "$ref": "#/definitions/MessageDto"
         },
         "must_upgrade_new_version": {
-          "required": true,
-          "description": "latest new version message (must upgrade)",
-          "originRef": "MessageDto",
           "$ref": "#/definitions/MessageDto"
         }
       }
@@ -1451,44 +1381,36 @@
       "properties": {
         "cid": {
           "type": "integer",
-          "required": true,
-          "description": "chapter id",
-          "format": "int64"
+          "format": "int64",
+          "description": "chapter id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "chapter name"
         },
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "manga_title": {
           "type": "string",
-          "required": true,
           "description": "manga name"
         },
         "manga_cover": {
           "type": "string",
-          "required": true,
           "description": "manga cover"
         },
         "manga_url": {
           "type": "string",
-          "required": true,
           "description": "manga link"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "chapter link"
         },
         "pages": {
           "type": "array",
-          "required": true,
           "description": "chapter pages",
           "items": {
             "type": "string"
@@ -1496,25 +1418,21 @@
         },
         "page_count": {
           "type": "integer",
-          "required": true,
-          "description": "chapter pages count",
-          "format": "int32"
+          "format": "int32",
+          "description": "chapter pages count"
         },
         "next_cid": {
           "type": "integer",
-          "required": true,
-          "description": "next chapter id",
-          "format": "int64"
+          "format": "int64",
+          "description": "next chapter id"
         },
         "prev_cid": {
           "type": "integer",
-          "required": true,
-          "description": "prev chapter id",
-          "format": "int64"
+          "format": "int64",
+          "description": "prev chapter id"
         },
         "copyright": {
           "type": "boolean",
-          "required": true,
           "description": "has copyright"
         }
       }
@@ -1529,15 +1447,12 @@
       "properties": {
         "title": {
           "type": "string",
-          "required": true,
           "description": "group title"
         },
         "chapters": {
           "type": "array",
-          "required": true,
           "description": "group chapters",
           "items": {
-            "originRef": "TinyMangaChapterDto",
             "$ref": "#/definitions/TinyMangaChapterDto"
           }
         }
@@ -1574,113 +1489,91 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "manga name"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "manga cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "manga link"
         },
         "publish_year": {
           "type": "string",
-          "required": true,
           "description": "manga publish year"
         },
         "manga_zone": {
           "type": "string",
-          "required": true,
           "description": "manga zone"
         },
         "genres": {
           "type": "array",
-          "required": true,
           "description": "manga genres",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         },
         "authors": {
           "type": "array",
-          "required": true,
           "description": "manga authors",
           "items": {
-            "originRef": "TinyAuthorDto",
             "$ref": "#/definitions/TinyAuthorDto"
           }
         },
         "alias": {
           "type": "string",
-          "required": true,
           "description": "manga alias name (deprecated)"
         },
         "alias_title": {
           "type": "string",
-          "required": true,
           "description": "manga alias title name (deprecated)"
         },
         "aliases": {
           "type": "string",
-          "required": true,
           "description": "manga aliases"
         },
         "finished": {
           "type": "boolean",
-          "required": true,
           "description": "manga is finished"
         },
         "newest_chapter": {
           "type": "string",
-          "required": true,
           "description": "manga last update chapter"
         },
         "newest_date": {
           "type": "string",
-          "required": true,
           "description": "manga last update date"
         },
         "brief_introduction": {
           "type": "string",
-          "required": true,
           "description": "manga brief introduction"
         },
         "introduction": {
           "type": "string",
-          "required": true,
           "description": "manga introduction"
         },
         "manga_rank": {
           "type": "string",
-          "required": true,
           "description": "manga rank"
         },
         "score_count": {
           "type": "integer",
-          "required": true,
-          "description": "manga score count",
-          "format": "int32"
+          "format": "int32",
+          "description": "manga score count"
         },
         "average_score": {
           "type": "number",
-          "required": true,
-          "description": "manga average score",
-          "format": "float"
+          "format": "float",
+          "description": "manga average score"
         },
         "per_scores": {
           "type": "array",
-          "required": true,
           "description": "manga per scores, skip 0, from 1 to 5",
           "items": {
             "type": "string"
@@ -1688,20 +1581,16 @@
         },
         "banned": {
           "type": "boolean",
-          "required": true,
           "description": "manga is banned"
         },
         "copyright": {
           "type": "boolean",
-          "required": true,
           "description": "has copyright"
         },
         "chapter_groups": {
           "type": "array",
-          "required": true,
           "description": "manga chapter groups",
           "items": {
-            "originRef": "MangaChapterGroupDto",
             "$ref": "#/definitions/MangaChapterGroupDto"
           }
         }
@@ -1717,15 +1606,12 @@
       "properties": {
         "title": {
           "type": "string",
-          "required": true,
           "description": "group title"
         },
         "mangas": {
           "type": "array",
-          "required": true,
           "description": "group mangas",
           "items": {
-            "originRef": "TinyBlockMangaDto",
             "$ref": "#/definitions/TinyBlockMangaDto"
           }
         }
@@ -1743,30 +1629,22 @@
       "properties": {
         "title": {
           "type": "string",
-          "required": true,
           "description": "list title"
         },
         "top_group": {
-          "required": true,
-          "description": "manga top page group",
-          "originRef": "MangaGroupDto",
           "$ref": "#/definitions/MangaGroupDto"
         },
         "groups": {
           "type": "array",
-          "required": true,
           "description": "manga groups",
           "items": {
-            "originRef": "MangaGroupDto",
             "$ref": "#/definitions/MangaGroupDto"
           }
         },
         "other_groups": {
           "type": "array",
-          "required": true,
           "description": "manga other page groups",
           "items": {
-            "originRef": "MangaGroupDto",
             "$ref": "#/definitions/MangaGroupDto"
           }
         }
@@ -1790,57 +1668,47 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "rank manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "rank manga id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "rank manga title"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "rank manga url"
         },
         "finished": {
           "type": "boolean",
-          "required": true,
           "description": "rank manga is finished"
         },
         "authors": {
           "type": "string",
-          "required": true,
           "description": "rank manga authors"
         },
         "newest_chapter": {
           "type": "string",
-          "required": true,
           "description": "rank manga newest chapter"
         },
         "newest_date": {
           "type": "string",
-          "required": true,
           "description": "rank manga newest date"
         },
         "order": {
           "type": "integer",
-          "required": true,
-          "description": "rank order",
-          "format": "int32"
+          "format": "int32",
+          "description": "rank order"
         },
         "score": {
           "type": "number",
-          "required": true,
-          "description": "rank manga score",
-          "format": "float"
+          "format": "float",
+          "description": "rank manga score"
         },
         "trend": {
           "type": "integer",
-          "required": true,
-          "description": "rank trend, 0: None, 1: Up, 2: Down",
-          "format": "int32"
+          "format": "int32",
+          "description": "rank trend, 0: None, 1: Up, 2: Down"
         }
       }
     },
@@ -1858,40 +1726,28 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "message id",
-          "format": "int64"
+          "format": "int64",
+          "description": "message id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "message title"
         },
         "notification": {
-          "required": true,
-          "description": "notification content",
-          "allowEmptyValue": true,
-          "originRef": "NotificationContentDto",
           "$ref": "#/definitions/NotificationContentDto"
         },
         "new_version": {
-          "required": true,
-          "description": "new version content",
-          "allowEmptyValue": true,
-          "originRef": "NewVersionContentDto",
           "$ref": "#/definitions/NewVersionContentDto"
         },
         "created_at": {
           "type": "string",
-          "required": true,
-          "description": "created time",
-          "format": "date-time"
+          "format": "date-time",
+          "description": "created time"
         },
         "updated_at": {
           "type": "string",
-          "required": true,
-          "description": "updated time",
-          "format": "date-time"
+          "format": "date-time",
+          "description": "updated time"
         }
       }
     },
@@ -1907,22 +1763,18 @@
       "properties": {
         "version": {
           "type": "string",
-          "required": true,
           "description": "version string"
         },
         "must_upgrade": {
           "type": "boolean",
-          "required": true,
           "description": "flag if must be upgrade"
         },
         "change_logs": {
           "type": "string",
-          "required": true,
           "description": "version change logs"
         },
         "release_page": {
           "type": "string",
-          "required": true,
           "description": "version release page"
         }
       }
@@ -1938,17 +1790,14 @@
       "properties": {
         "content": {
           "type": "string",
-          "required": true,
           "description": "notification content"
         },
         "dismissible": {
           "type": "boolean",
-          "required": true,
           "description": "flag if the message is dismissible"
         },
         "link": {
           "type": "boolean",
-          "required": true,
           "description": "link associated to the message"
         }
       }
@@ -1963,15 +1812,13 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "url": {
           "type": "integer",
-          "required": true,
-          "description": "manga link",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga link"
         }
       }
     },
@@ -1992,52 +1839,43 @@
       "properties": {
         "cid": {
           "type": "integer",
-          "required": true,
-          "description": "comment id",
-          "format": "int64"
+          "format": "int64",
+          "description": "comment id"
         },
         "uid": {
           "type": "integer",
-          "required": true,
-          "description": "user id",
-          "format": "int64"
+          "format": "int64",
+          "description": "user id"
         },
         "username": {
           "type": "string",
-          "required": true,
           "description": "username"
         },
         "avatar": {
           "type": "string",
-          "required": true,
           "description": "user avatar"
         },
         "gender": {
           "type": "integer",
-          "required": true,
-          "description": "user gender, 1: Male, 2: Female",
-          "format": "int32"
+          "format": "int32",
+          "description": "user gender, 1: Male, 2: Female"
         },
         "content": {
           "type": "string",
-          "required": true,
           "description": "comment content"
         },
         "like_count": {
           "type": "integer",
-          "required": true,
-          "description": "comment liked count",
-          "format": "int32"
+          "format": "int32",
+          "description": "comment liked count"
         },
         "reply_count": {
           "type": "integer",
-          "required": true,
-          "description": "comment reply count",
-          "format": "int32"
+          "format": "int32",
+          "description": "comment reply count"
         },
         "comment_time": {
           "type": "string",
-          "required": true,
           "description": "comment create time"
         }
       }
@@ -2052,13 +1890,11 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         }
       }
@@ -2079,43 +1915,35 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "manga name"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "manga cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "manga link"
         },
         "newest_chapter": {
           "type": "string",
-          "required": true,
           "description": "manga last update chapter"
         },
         "newest_duration": {
           "type": "string",
-          "required": true,
           "description": "manga last update duration"
         },
         "last_chapter": {
           "type": "string",
-          "required": true,
           "description": "manga last read chapter"
         },
         "last_duration": {
           "type": "string",
-          "required": true,
           "description": "manga last read duration"
         }
       }
@@ -2130,14 +1958,12 @@
       "properties": {
         "in": {
           "type": "boolean",
-          "required": true,
           "description": "manga is in the shelf"
         },
         "count": {
           "type": "integer",
-          "required": true,
-          "description": "manga starred count",
-          "format": "int32"
+          "format": "int32",
+          "description": "manga starred count"
         }
       }
     },
@@ -2156,39 +1982,32 @@
       "properties": {
         "aid": {
           "type": "integer",
-          "required": true,
-          "description": "author id",
-          "format": "int64"
+          "format": "int64",
+          "description": "author id"
         },
         "name": {
           "type": "string",
-          "required": true,
           "description": "author name"
         },
         "zone": {
           "type": "string",
-          "required": true,
           "description": "author zone"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "author cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "author url"
         },
         "manga_count": {
           "type": "integer",
-          "required": true,
-          "description": "author manga count",
-          "format": "int32"
+          "format": "int32",
+          "description": "author manga count"
         },
         "newest_date": {
           "type": "string",
-          "required": true,
           "description": "author update newest date"
         }
       }
@@ -2213,71 +2032,57 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "manga name"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "manga cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "manga link"
         },
         "publish_year": {
           "type": "string",
-          "required": true,
           "description": "manga publish year"
         },
         "manga_zone": {
           "type": "string",
-          "required": true,
           "description": "manga zone"
         },
         "genres": {
           "type": "array",
-          "required": true,
           "description": "manga genres",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         },
         "authors": {
           "type": "array",
-          "required": true,
           "description": "manga authors",
           "items": {
-            "originRef": "TinyAuthorDto",
             "$ref": "#/definitions/TinyAuthorDto"
           }
         },
         "finished": {
           "type": "boolean",
-          "required": true,
           "description": "manga is finished"
         },
         "newest_chapter": {
           "type": "string",
-          "required": true,
           "description": "manga last update chapter"
         },
         "newest_date": {
           "type": "string",
-          "required": true,
           "description": "manga last update date"
         },
         "brief_introduction": {
           "type": "string",
-          "required": true,
           "description": "manga brief introduction"
         }
       }
@@ -2293,18 +2098,15 @@
       "properties": {
         "aid": {
           "type": "integer",
-          "required": true,
-          "description": "author id",
-          "format": "int64"
+          "format": "int64",
+          "description": "author id"
         },
         "name": {
           "type": "string",
-          "required": true,
           "description": "author name"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "author url"
         }
       }
@@ -2323,33 +2125,27 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "manga name"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "manga cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "manga link"
         },
         "finished": {
           "type": "boolean",
-          "required": true,
           "description": "manga is finished"
         },
         "newest_chapter": {
           "type": "string",
-          "required": true,
           "description": "manga last update chapter"
         }
       }
@@ -2370,45 +2166,37 @@
       "properties": {
         "cid": {
           "type": "integer",
-          "required": true,
-          "description": "chapter id",
-          "format": "int64"
+          "format": "int64",
+          "description": "chapter id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "chapter name"
         },
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "chapter link"
         },
         "page_count": {
           "type": "integer",
-          "required": true,
-          "description": "chapter pages count",
-          "format": "int32"
+          "format": "int32",
+          "description": "chapter pages count"
         },
         "is_new": {
           "type": "boolean",
-          "required": true,
           "description": "chapter is uploaded newly"
         },
         "group": {
           "type": "string",
-          "required": true,
           "description": "chapter group"
         },
         "number": {
           "type": "boolean",
-          "required": true,
           "description": "chapter number"
         }
       }
@@ -2428,38 +2216,31 @@
       "properties": {
         "mid": {
           "type": "integer",
-          "required": true,
-          "description": "manga id",
-          "format": "int64"
+          "format": "int64",
+          "description": "manga id"
         },
         "title": {
           "type": "string",
-          "required": true,
           "description": "manga name"
         },
         "cover": {
           "type": "string",
-          "required": true,
           "description": "manga cover"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "manga link"
         },
         "finished": {
           "type": "boolean",
-          "required": true,
           "description": "manga is finished"
         },
         "newest_chapter": {
           "type": "string",
-          "required": true,
           "description": "manga last update chapter"
         },
         "newest_date": {
           "type": "string",
-          "required": true,
           "description": "manga last update date"
         }
       }
@@ -2476,23 +2257,19 @@
       "properties": {
         "aid": {
           "type": "integer",
-          "required": true,
-          "description": "author id",
-          "format": "int64"
+          "format": "int64",
+          "description": "author id"
         },
         "name": {
           "type": "string",
-          "required": true,
           "description": "author name"
         },
         "url": {
           "type": "string",
-          "required": true,
           "description": "author url"
         },
         "zone": {
           "type": "string",
-          "required": true,
           "description": "author zone"
         }
       }
@@ -2506,7 +2283,6 @@
       "properties": {
         "token": {
           "type": "string",
-          "required": true,
           "description": "access token"
         }
       }
@@ -2531,65 +2307,53 @@
       "properties": {
         "username": {
           "type": "string",
-          "required": true,
           "description": "user name"
         },
         "avatar": {
           "type": "string",
-          "required": true,
           "description": "user avatar"
         },
         "class": {
           "type": "string",
-          "required": true,
           "description": "user class (会员等级)"
         },
         "score": {
           "type": "integer",
-          "required": true,
-          "description": "user score (个人成长值)",
-          "format": "int32"
+          "format": "int32",
+          "description": "user score (个人成长值)"
         },
         "account_point": {
           "type": "integer",
-          "required": true,
-          "description": "user account point (账户积分)",
-          "format": "int32"
+          "format": "int32",
+          "description": "user account point (账户积分)"
         },
         "unread_message_count": {
           "type": "integer",
-          "required": true,
-          "description": "unread message count)",
-          "format": "int32"
+          "format": "int32",
+          "description": "unread message count)"
         },
         "login_ip": {
           "type": "string",
-          "required": true,
           "description": "user current login ip"
         },
         "last_login_ip": {
           "type": "string",
-          "required": true,
           "description": "user last login ip"
         },
         "register_time": {
           "type": "string",
-          "required": true,
           "description": "user register time"
         },
         "last_login_time": {
           "type": "string",
-          "required": true,
           "description": "user last login time"
         },
         "cumulative_day_count": {
           "type": "string",
-          "required": true,
           "description": "user cumulative logined day count"
         },
         "total_comment_count": {
           "type": "string",
-          "required": true,
           "description": "user total comment count"
         }
       }
@@ -2603,7 +2367,6 @@
       "properties": {
         "username": {
           "type": "string",
-          "required": true,
           "description": "username"
         }
       }
@@ -2620,28 +2383,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "CategoryDto",
             "$ref": "#/definitions/CategoryDto"
           }
         }
@@ -2659,28 +2417,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "CommentDto",
             "$ref": "#/definitions/CommentDto"
           }
         }
@@ -2698,28 +2451,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "MangaRankDto",
             "$ref": "#/definitions/MangaRankDto"
           }
         }
@@ -2737,28 +2485,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "MessageDto",
             "$ref": "#/definitions/MessageDto"
           }
         }
@@ -2776,28 +2519,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "ShelfMangaDto",
             "$ref": "#/definitions/ShelfMangaDto"
           }
         }
@@ -2815,28 +2553,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "SmallAuthorDto",
             "$ref": "#/definitions/SmallAuthorDto"
           }
         }
@@ -2854,28 +2587,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "SmallMangaDto",
             "$ref": "#/definitions/SmallMangaDto"
           }
         }
@@ -2893,28 +2621,23 @@
       "properties": {
         "page": {
           "type": "integer",
-          "required": true,
-          "description": "current page",
-          "format": "int32"
+          "format": "int32",
+          "description": "current page"
         },
         "limit": {
           "type": "integer",
-          "required": true,
-          "description": "page size",
-          "format": "int32"
+          "format": "int32",
+          "description": "page size"
         },
         "total": {
           "type": "integer",
-          "required": true,
-          "description": "data count",
-          "format": "int32"
+          "format": "int32",
+          "description": "data count"
         },
         "data": {
           "type": "array",
-          "required": true,
           "description": "page data",
           "items": {
-            "originRef": "TinyMangaDto",
             "$ref": "#/definitions/TinyMangaDto"
           }
         }
@@ -2931,19 +2654,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "AuthorDto",
           "$ref": "#/definitions/AuthorDto"
         }
       }
@@ -2959,19 +2677,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "CategoryListDto",
           "$ref": "#/definitions/CategoryListDto"
         }
       }
@@ -2987,19 +2700,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "HomepageMangaGroupListDto",
           "$ref": "#/definitions/HomepageMangaGroupListDto"
         }
       }
@@ -3015,19 +2723,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "LatestMessageDto",
           "$ref": "#/definitions/LatestMessageDto"
         }
       }
@@ -3043,19 +2746,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "MangaChapterDto",
           "$ref": "#/definitions/MangaChapterDto"
         }
       }
@@ -3071,19 +2769,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "MangaDto",
           "$ref": "#/definitions/MangaDto"
         }
       }
@@ -3099,19 +2792,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "MangaGroupListDto",
           "$ref": "#/definitions/MangaGroupListDto"
         }
       }
@@ -3127,19 +2815,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "RandomMangaInfoDto",
           "$ref": "#/definitions/RandomMangaInfoDto"
         }
       }
@@ -3155,19 +2838,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "ShelfStatusDto",
           "$ref": "#/definitions/ShelfStatusDto"
         }
       }
@@ -3183,19 +2861,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "TokenDto",
           "$ref": "#/definitions/TokenDto"
         }
       }
@@ -3211,19 +2884,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "UserDto",
           "$ref": "#/definitions/UserDto"
         }
       }
@@ -3239,19 +2907,14 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "UsernameDto",
           "$ref": "#/definitions/UsernameDto"
         }
       }
@@ -3267,20 +2930,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cCategoryDto\u003e",
-          "$ref": "#/definitions/_Page\u003cCategoryDto\u003e"
+          "$ref": "#/definitions/_Page<CategoryDto>"
         }
       }
     },
@@ -3295,20 +2953,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cCommentDto\u003e",
-          "$ref": "#/definitions/_Page\u003cCommentDto\u003e"
+          "$ref": "#/definitions/_Page<CommentDto>"
         }
       }
     },
@@ -3323,20 +2976,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cMangaRankDto\u003e",
-          "$ref": "#/definitions/_Page\u003cMangaRankDto\u003e"
+          "$ref": "#/definitions/_Page<MangaRankDto>"
         }
       }
     },
@@ -3351,20 +2999,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cMessageDto\u003e",
-          "$ref": "#/definitions/_Page\u003cMessageDto\u003e"
+          "$ref": "#/definitions/_Page<MessageDto>"
         }
       }
     },
@@ -3379,20 +3022,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cShelfMangaDto\u003e",
-          "$ref": "#/definitions/_Page\u003cShelfMangaDto\u003e"
+          "$ref": "#/definitions/_Page<ShelfMangaDto>"
         }
       }
     },
@@ -3407,20 +3045,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cSmallAuthorDto\u003e",
-          "$ref": "#/definitions/_Page\u003cSmallAuthorDto\u003e"
+          "$ref": "#/definitions/_Page<SmallAuthorDto>"
         }
       }
     },
@@ -3435,20 +3068,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cSmallMangaDto\u003e",
-          "$ref": "#/definitions/_Page\u003cSmallMangaDto\u003e"
+          "$ref": "#/definitions/_Page<SmallMangaDto>"
         }
       }
     },
@@ -3463,20 +3091,15 @@
       "properties": {
         "code": {
           "type": "integer",
-          "required": true,
-          "description": "status code",
-          "format": "int32"
+          "format": "int32",
+          "description": "status code"
         },
         "message": {
           "type": "string",
-          "required": true,
           "description": "status message"
         },
         "data": {
-          "required": true,
-          "description": "response data",
-          "originRef": "_Page\u003cTinyMangaDto\u003e",
-          "$ref": "#/definitions/_Page\u003cTinyMangaDto\u003e"
+          "$ref": "#/definitions/_Page<TinyMangaDto>"
         }
       }
     }

@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 )
 
 func init() {
@@ -36,7 +36,7 @@ func init() {
 	)
 }
 
-// 漫画评论 vo.Comment
+// 漫画评论 object.Comment
 type CommentDto struct {
 	Cid           uint64               `json:"cid"`            // 评论编号
 	Uid           uint64               `json:"uid"`            // 用户编号
@@ -50,7 +50,7 @@ type CommentDto struct {
 	CommentTime   string               `json:"comment_time"`   // 评论时间
 }
 
-func BuildCommentDto(comment *vo.Comment) *CommentDto {
+func BuildCommentDto(comment *object.Comment) *CommentDto {
 	return &CommentDto{
 		Cid:           comment.Id,
 		Uid:           comment.UserId,
@@ -65,7 +65,7 @@ func BuildCommentDto(comment *vo.Comment) *CommentDto {
 	}
 }
 
-func BuildCommentDtos(comments []*vo.Comment) []*CommentDto {
+func BuildCommentDtos(comments []*object.Comment) []*CommentDto {
 	out := make([]*CommentDto, len(comments))
 	for idx, comment := range comments {
 		out[idx] = BuildCommentDto(comment)
@@ -73,7 +73,7 @@ func BuildCommentDtos(comments []*vo.Comment) []*CommentDto {
 	return out
 }
 
-// 被回复的评论 vo.RepliedComment
+// 被回复的评论 object.RepliedComment
 type RepliedCommentDto struct {
 	Cid         uint64 `json:"cid"`          // 评论编号
 	Uid         uint64 `json:"uid"`          // 用户编号
@@ -86,7 +86,7 @@ type RepliedCommentDto struct {
 	CommentTime string `json:"comment_time"` // 评论时间
 }
 
-func BuildRepliedCommentDto(comment *vo.RepliedComment) *RepliedCommentDto {
+func BuildRepliedCommentDto(comment *object.RepliedComment) *RepliedCommentDto {
 	return &RepliedCommentDto{
 		Cid:         comment.Id,
 		Uid:         comment.UserId,
@@ -100,7 +100,7 @@ func BuildRepliedCommentDto(comment *vo.RepliedComment) *RepliedCommentDto {
 	}
 }
 
-func BuildRepliedCommentDtos(comments []*vo.RepliedComment) []*RepliedCommentDto {
+func BuildRepliedCommentDtos(comments []*object.RepliedComment) []*RepliedCommentDto {
 	if comments == nil {
 		return []*RepliedCommentDto{}
 	}

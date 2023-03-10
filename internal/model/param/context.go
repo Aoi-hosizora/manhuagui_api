@@ -1,14 +1,16 @@
 package param
 
 import (
-	"fmt"
+	"errors"
+	"github.com/Aoi-hosizora/ahlib-mx/xgin"
+	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/gin-gonic/gin"
 )
 
-// noinspection GoNameStartsWithPackageName
 var (
 	ParamPage  = goapidoc.NewQueryParam("page", "integer#int32", false, "current page")
 	ParamLimit = goapidoc.NewQueryParam("limit", "integer#int32", false, "page size")
@@ -27,38 +29,50 @@ type PageOrderParam struct {
 }
 
 // Bind ?page&limit
-func BindPage(c *gin.Context, config *config.Config) *PageParam {
-	page, err := xnumber.Atoi32(c.DefaultQuery("page", "1"))
+func BindQueryPage(c *gin.Context) *PageParam {
+	page, err := xnumber.Atoi32(c.Query("page"))
 	if err != nil || page <= 0 {
 		page = 1
 	}
 
-	limit, err := xnumber.Atoi32(c.DefaultQuery("limit", "0"))
-	if def := config.Meta.DefLimit; err != nil || limit <= 0 {
-		limit = def
-	} else if max := config.Meta.MaxLimit; limit > max {
-		limit = max
+	limit, err := xnumber.Atoi32(c.Query("limit"))
+	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Meta
+	if err != nil || limit <= 0 {
+		limit = cfg.DefLimit
+	} else if limit > cfg.MaxLimit {
+		limit = cfg.MaxLimit
 	}
 
 	return &PageParam{Page: page, Limit: limit}
 }
 
 // Bind ?page&limit&order
-func BindPageOrder(c *gin.Context, config *config.Config) *PageOrderParam {
-	page := BindPage(c, config)
+func BindQueryPageOrder(c *gin.Context) *PageOrderParam {
+	page := BindQueryPage(c)
 	order := c.DefaultQuery("order", "")
 	return &PageOrderParam{Page: page.Page, Limit: page.Limit, Order: order}
 }
 
 // Bind :xid
-func BindRouteId(c *gin.Context, field string) (uint64, error) {
-	uid, err := xnumber.Atou64(c.Param(field))
+func BindRouteID(c *gin.Context, name string) (uint64, error) {
+	s := c.Param(name)
+	id, err := xnumber.Atou64(s)
 	if err != nil {
-		return 0, err
+		return 0, xgin.NewRouterDecodeError(name, s, err, "")
 	}
-	if uid <= 0 {
-		return 0, fmt.Errorf("id shoule larger than 0")
+	if id <= 0 {
+		err = errors.New("non-positive number")
+		return 0, xgin.NewRouterDecodeError(name, s, err, "must be a positive number")
 	}
+	return id, nil
+}
 
-	return uid, nil
+// Bind body
+func BindBody[T any](c *gin.Context, obj T) (T, error) {
+	err := c.ShouldBind(obj)
+	if err != nil {
+		var zero T
+		return zero, err
+	}
+	return obj, nil
 }

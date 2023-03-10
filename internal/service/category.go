@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/model/vo"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"github.com/PuerkitoBio/goquery"
@@ -22,7 +22,7 @@ func NewCategoryService() *CategoryService {
 	}
 }
 
-func (c *CategoryService) GetAllCategories() (*vo.CategoryList, error) {
+func (c *CategoryService) GetAllCategories() (*object.CategoryList, error) {
 	_, doc, err := c.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_RANK_URL, ""), nil)
 	if err != nil {
 		return nil, err
@@ -30,8 +30,8 @@ func (c *CategoryService) GetAllCategories() (*vo.CategoryList, error) {
 	return c.getAllCategories(doc), nil
 }
 
-func (c *CategoryService) getAllCategories(doc *goquery.Document) *vo.CategoryList {
-	zones := make([]*vo.Category, 0)
+func (c *CategoryService) getAllCategories(doc *goquery.Document) *object.CategoryList {
+	zones := make([]*object.Category, 0)
 	zoneLis := doc.Find("div.category-list ul:nth-of-type(2) li")
 	zoneLis.Each(func(i int, sel *goquery.Selection) {
 		a := sel.Find("a")
@@ -41,7 +41,7 @@ func (c *CategoryService) getAllCategories(doc *goquery.Document) *vo.CategoryLi
 		}
 	})
 
-	ages := make([]*vo.Category, 0)
+	ages := make([]*object.Category, 0)
 	ageLis := doc.Find("div.category-list ul:nth-of-type(3) li")
 	ageLis.Each(func(i int, sel *goquery.Selection) {
 		a := sel.Find("a")
@@ -51,7 +51,7 @@ func (c *CategoryService) getAllCategories(doc *goquery.Document) *vo.CategoryLi
 		}
 	})
 
-	genres := make([]*vo.Category, 0)
+	genres := make([]*object.Category, 0)
 	genresLis := doc.Find("div.category-list ul:nth-of-type(4) li")
 	genresLis.Each(func(i int, sel *goquery.Selection) {
 		a := sel.Find("a")
@@ -61,7 +61,7 @@ func (c *CategoryService) getAllCategories(doc *goquery.Document) *vo.CategoryLi
 		}
 	})
 
-	out := &vo.CategoryList{
+	out := &object.CategoryList{
 		Genres: genres,
 		Zones:  zones,
 		Ages:   ages,
@@ -69,7 +69,7 @@ func (c *CategoryService) getAllCategories(doc *goquery.Document) *vo.CategoryLi
 	return out
 }
 
-func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
+func (c *CategoryService) GetGenres() ([]*object.Category, error) {
 	_, doc, err := c.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_RANK_URL, ""), nil)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (c *CategoryService) GetGenres() ([]*vo.Category, error) {
 	return c.getAllCategories(doc).Genres, nil
 }
 
-func (c *CategoryService) GetZones() ([]*vo.Category, error) {
+func (c *CategoryService) GetZones() ([]*object.Category, error) {
 	_, doc, err := c.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_RANK_URL, ""), nil)
 	if err != nil {
 		return nil, err
@@ -85,7 +85,7 @@ func (c *CategoryService) GetZones() ([]*vo.Category, error) {
 	return c.getAllCategories(doc).Zones, nil
 }
 
-func (c *CategoryService) GetAges() ([]*vo.Category, error) {
+func (c *CategoryService) GetAges() ([]*object.Category, error) {
 	_, doc, err := c.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_RANK_URL, ""), nil)
 	if err != nil {
 		return nil, err
@@ -93,12 +93,12 @@ func (c *CategoryService) GetAges() ([]*vo.Category, error) {
 	return c.getAllCategories(doc).Ages, nil
 }
 
-func (c *CategoryService) getCategoryFromA(a *goquery.Selection) *vo.Category {
+func (c *CategoryService) getCategoryFromA(a *goquery.Selection) *object.Category {
 	title := a.Text()
 	url := strings.TrimSuffix(strings.TrimSuffix(a.AttrOr("href", ""), ".html"), "/")
 	sp := strings.Split(url, "/")
 	name := sp[len(sp)-1]
-	return &vo.Category{
+	return &object.Category{
 		Name:  name,
 		Title: title,
 		Url:   static.HOMEPAGE_URL + url,
@@ -106,7 +106,7 @@ func (c *CategoryService) getCategoryFromA(a *goquery.Selection) *vo.Category {
 	}
 }
 
-func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, order string) ([]*vo.TinyManga, int32, int32, error) {
+func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page int32, order string) ([]*object.TinyManga, int32, int32, error) {
 	url := static.MANGA_CATEGORY_URL + "/" // https://www.manhuagui.com/list/update_p1.html
 	if zone != "" && zone != "all" {
 		url += zone + "_" // https://www.manhuagui.com/list/japan/update.html
@@ -135,14 +135,14 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 	} else if doc == nil {
 		return nil, 0, 0, nil
 	} else if bytes.Contains(bs, []byte(static.NOT_FOUND2_TOKEN)) {
-		return []*vo.TinyManga{}, 0, 0, nil
+		return []*object.TinyManga{}, 0, 0, nil
 	}
 
 	limit := int32(42)
 	pages, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(2)").Text())
 	total, _ := xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(3)").Text())
 
-	mangas := make([]*vo.TinyManga, 0)
+	mangas := make([]*object.TinyManga, 0)
 	if page <= pages {
 		listLis := doc.Find("ul#contList li")
 		listLis.Each(func(idx int, li *goquery.Selection) {
@@ -153,7 +153,7 @@ func (c *CategoryService) GetGenreMangas(genre, zone, age, status string, page i
 	return mangas, limit, total, nil
 }
 
-func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.TinyManga {
+func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *object.TinyManga {
 	url := li.Find("a").AttrOr("href", "")
 	title := li.Find("a").AttrOr("title", "")
 	cover := li.Find("a img").AttrOr("src", "")
@@ -164,7 +164,7 @@ func (c *CategoryService) getTinyMangaPageFromLi(li *goquery.Selection) *vo.Tiny
 	newestChapter := strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(tt, "更新至"), "共"), "[完]")
 	score := li.Find("span.updateon em").Text()
 	newestDate := strings.TrimPrefix(strings.TrimSuffix(li.Find("span.updateon").Text(), score), "更新于：")
-	return &vo.TinyManga{
+	return &object.TinyManga{
 		Mid:           static.ParseMid(url),
 		Title:         title,
 		Cover:         static.ParseCoverUrl(cover),

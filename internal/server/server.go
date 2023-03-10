@@ -4,15 +4,18 @@ import (
 	"context"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib-mx/xgin"
+	"github.com/Aoi-hosizora/ahlib/xcolor"
+	"github.com/Aoi-hosizora/ahlib/xgeneric/xsugar"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
+	"github.com/Aoi-hosizora/ahlib/xruntime"
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/api"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/server/middleware"
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -23,8 +26,8 @@ import (
 
 func init() {
 	goapidoc.SetDocument(
-		"localhost:10018", "/",
-		goapidoc.NewInfo("manhuagui-backend", "An unofficial backend for manhuagui written in golang/gin", "1.0").
+		"<placeholder>", "/",
+		goapidoc.NewInfo("manhuagui-api", "An unofficial backend for manhuagui written in golang/gin.", "v1.0.0").
 			Contact(goapidoc.NewContact("Aoi-hosizora", "https://github.com/Aoi-hosizora", "aoihosizora@hotmail.com")),
 	)
 
@@ -46,67 +49,72 @@ func init() {
 
 type Server struct {
 	engine *gin.Engine
-	config *config.Config
 }
 
-func NewServer() *Server {
-	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config)
-	gin.SetMode(cfg.Meta.RunMode)
-	engine := gin.New()
+func NewServer() (*Server, error) {
+	// server
+	engine := xgin.NewEngineSilently(
+		xgin.WithDebugPrintRouteFunc(result.PrintRouteFunc(xgin.DefaultColorizedPrintRouteFunc)),
+		xgin.WithDefaultWriter(xsugar.If(config.IsDebugMode(), nil, io.Discard)),
+		xgin.WithDefaultErrorWriter(xsugar.If(config.IsDebugMode(), nil, io.Discard)),
+		xgin.WithRedirectTrailingSlash(true),
+		xgin.WithRedirectFixedPath(false),
+		xgin.WithRemoveExtraSlash(true),
+		xgin.WithHandleMethodNotAllowed(true),
+	)
 
-	// mw
-	engine.Use(middleware.RequestIdMiddleware())
+	// middlewares
+	engine.Use(middleware.RequestIDMiddleware())
 	engine.Use(middleware.LoggerMiddleware())
 	engine.Use(middleware.RecoveryMiddleware())
 	engine.Use(middleware.LimiterMiddleware())
 	engine.Use(middleware.CorsMiddleware())
 
-	// route
-	if gin.Mode() == gin.DebugMode {
+	// routes
+	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config)
+	if cfg.Meta.Pprof {
 		xgin.WrapPprofSilently(engine)
 	}
-	api.RegisterSwag()
-	engine.GET("/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.URL("doc.json")))
-	engine.GET("/v1/swagger", func(c *gin.Context) { c.Redirect(http.StatusPermanentRedirect, "/v1/swagger/index.html") })
-	initRoute(engine)
+	if cfg.Meta.Swagger {
+		xgin.WrapSwagger(engine.Group("/v1/swagger"), api.ReadSwaggerDoc)
+	}
+	setupRoutes(engine)
 
-	return &Server{engine: engine, config: cfg}
+	s := &Server{engine: engine}
+	return s, nil
 }
 
 func (s *Server) Serve() {
-	addr := fmt.Sprintf("0.0.0.0:%d", s.config.Meta.Port)
-	server := &http.Server{
-		Addr:    addr,
-		Handler: s.engine,
-	}
+	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Meta
+	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
+	server := &http.Server{Addr: addr, Handler: s.engine}
 
-	closeCh := make(chan int)
+	proxyEnv := xruntime.GetProxyEnv()
+	proxyEnv.PrintLog(nil, "[Gin] ")
+
+	terminated := make(chan struct{})
 	go func() {
-		signalCh := make(chan os.Signal)
-		signal.Notify(signalCh, os.Interrupt)
-		sig := <-signalCh
-		log.Printf("Shutdown server by %s(%#x)", sig.String(), int(sig.(syscall.Signal)))
+		defer close(terminated)
+		ch := make(chan os.Signal)
+		signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+		sig := <-ch
+		signal.Stop(ch)
+		log.Printf("[Gin] Shutting down due to %s received...", xruntime.SignalName(sig.(syscall.Signal)))
 
-		err := server.Shutdown(context.Background())
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+		defer cancel()
+		err := server.Shutdown(ctx)
 		if err != nil {
-			log.Fatalln("Failed to shutdown HTTP server:", err)
+			log.Fatalln("Failed to shut down:", err)
 		}
-		closeCh <- 0
 	}()
 
-	time.Sleep(500 * time.Millisecond)
-	if e := os.Getenv("HTTP_PROXY"); e != "" {
-		log.Printf("Using env HTTP_PROXY as %s", e)
-	}
-	if e := os.Getenv("HTTPS_PROXY"); e != "" {
-		log.Printf("Using env HTTPS_PROXY as %s", e)
-	}
-	log.Printf("Listening and serving HTTP on %s", addr)
+	log.Println(xcolor.Bold.Sprintf("[Gin] Listening and serving HTTP on %s", addr))
+	fmt.Println()
 	err := server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatalln("Failed to serve:", err)
 	}
-
-	<-closeCh
-	log.Println("HTTP server exiting...")
+	<-terminated
+	log.Println("[Gin] HTTP server is shut down successfully")
 }
