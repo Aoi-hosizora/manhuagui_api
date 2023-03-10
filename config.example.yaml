@@ -3,8 +3,11 @@ meta:
   run-mode: debug
   log-path: ./logs/
   log-name: console
-  def-limit: 20
-  max-limit: 50
+  bucket-prd: 60  # token bucket fill period interval in seconds
+  bucket-cap: 200 # token bucket capacity
+  bucket-qua: 50  # token bucket quantum in every interval
+  def-limit: 20   # default limit size
+  max-limit: 50   # max limit size
 
 message:
   github-token: xxx
