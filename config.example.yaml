@@ -6,11 +6,19 @@ meta:
   ppof: true
   swagger: true
   doc-host: 127.0.0.1:10018
-  bucket-prd: 60  # token bucket fill period interval in seconds
-  bucket-cap: 200 # token bucket capacity
-  bucket-qua: 50  # token bucket quantum in every interval
-  def-limit: 20
-  max-limit: 50
+
+server:
+  bucket-period: 60    # token bucket fill period interval in seconds
+  bucket-capacity: 200 # token bucket capacity
+  bucket-quantum: 50   # token bucket quantum in every interval
+  bucket-cleanup: 120  # token bucket cleanup interval in seconds
+  bucket-survived: 3   # token bucket max survived times for cleanable tokens
+  disable-cache: false # disable application cache or not
+  cache-size: 50       # application cache size
+  cache-expire: 300    # application cache expiration in seconds
+  client-cache: false  # allow client store cached result
+  def-limit: 20        # default limit query parameter value
+  max-limit: 50        # maximum limit query parameter value
 
 message:
   github-token: xxx

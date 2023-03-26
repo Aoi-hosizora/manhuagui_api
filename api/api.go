@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib-mx/xgin"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
@@ -17,6 +18,15 @@ const (
 func ReadSwaggerDoc() []byte {
 	bs, _ := os.ReadFile(SwaggerDocFilename)
 	return bs
+}
+
+func SwaggerOptions() []xgin.SwaggerOption {
+	return []xgin.SwaggerOption{
+		xgin.WithSwaggerDefaultModelExpandDepth(999),
+		xgin.WithSwaggerDisplayRequestDuration(true),
+		xgin.WithSwaggerShowExtensions(true),
+		xgin.WithSwaggerShowCommonExtensions(true),
+	}
 }
 
 func UpdateApiDoc() {

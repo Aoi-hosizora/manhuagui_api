@@ -69,6 +69,7 @@ func NewServer() (*Server, error) {
 	engine.Use(middleware.RecoveryMiddleware())
 	engine.Use(middleware.LimiterMiddleware())
 	engine.Use(middleware.CorsMiddleware())
+	engine.Use(middleware.CacheMiddleware())
 
 	// routes
 	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config)
@@ -76,7 +77,7 @@ func NewServer() (*Server, error) {
 		xgin.WrapPprofSilently(engine)
 	}
 	if cfg.Meta.Swagger {
-		xgin.WrapSwagger(engine.Group("/v1/swagger"), api.ReadSwaggerDoc)
+		xgin.WrapSwagger(engine.Group("/v1/swagger"), api.ReadSwaggerDoc, api.SwaggerOptions()...)
 	}
 	setupRoutes(engine)
 

@@ -36,11 +36,11 @@ func BindQueryPage(c *gin.Context) *PageParam {
 	}
 
 	limit, err := xnumber.Atoi32(c.Query("limit"))
-	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Meta
+	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Server
 	if err != nil || limit <= 0 {
-		limit = cfg.DefLimit
-	} else if limit > cfg.MaxLimit {
-		limit = cfg.MaxLimit
+		limit = int32(cfg.DefLimit)
+	} else if limit > int32(cfg.MaxLimit) {
+		limit = int32(cfg.MaxLimit)
 	}
 
 	return &PageParam{Page: page, Limit: limit}

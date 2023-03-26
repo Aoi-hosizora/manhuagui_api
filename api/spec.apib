@@ -344,6 +344,35 @@ order by popular / new / update
 
 search-controller
 
+## Search mangas [/v1/search{?keyword,page,order}]
+
+> `/v1/search`
+
+### Search mangas [GET]
+
+> `GET /v1/search`
+
+order by popular / new / update
+
++ Parameters
+
+    + keyword (string, required) - search keyword
+    + page (number, optional) - current page
+        (format: int32)
+    + order (string, optional) - order string
+
++ Request (application/json)
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (_Result<_Page<SmallMangaDto>>)
+
+    + Body
+
 ## Search mangas [/v1/search/{keyword}{?page,order}]
 
 > `/v1/search/{keyword}`
@@ -353,6 +382,8 @@ search-controller
 > `GET /v1/search/{keyword}`
 
 order by popular / new / update
+
+**Attention: This api is deprecated!**
 
 + Parameters
 

@@ -702,6 +702,48 @@
         }
       }
     },
+    "/v1/search": {
+      "get": {
+        "summary": "Search mangas",
+        "operationId": "-v1-search-get",
+        "description": "order by popular / new / update",
+        "tags": [
+          "Search"
+        ],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "search keyword",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "current page",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "description": "order string",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/_Result<_Page<SmallMangaDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/search/{keyword}": {
       "get": {
         "summary": "Search mangas",
@@ -710,6 +752,7 @@
         "tags": [
           "Search"
         ],
+        "deprecated": true,
         "parameters": [
           {
             "name": "keyword",

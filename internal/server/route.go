@@ -73,6 +73,7 @@ func setupRoutes(engine *gin.Engine) {
 	categoryGroup.GET("genre/:genre", categoryController.GetGenreMangas)
 
 	searchGroup := v1.Group("search")
+	searchGroup.GET("", searchController.SearchMangas)
 	searchGroup.GET(":keyword", searchController.SearchMangas)
 
 	authorGroup := v1.Group("author")

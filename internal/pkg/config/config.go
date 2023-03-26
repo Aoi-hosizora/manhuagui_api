@@ -11,6 +11,7 @@ import (
 
 type Config struct {
 	Meta    *MetaConfig    `yaml:"meta"    validate:"required"`
+	Server  *ServerConfig  `yaml:"server"  validate:"required"`
 	Message *MessageConfig `yaml:"message" validate:"required"`
 }
 
@@ -22,12 +23,22 @@ type MetaConfig struct {
 	Pprof   bool   `yaml:"pprof"    default:"false"`
 	Swagger bool   `yaml:"swagger"  default:"false"`
 	DocHost string `yaml:"doc-host"`
+}
 
-	BucketPrd int64 `yaml:"bucket-prd" default:"60"  validate:"gt=0"`
-	BucketCap int64 `yaml:"bucket-cap" default:"200" validate:"gt=0"`
-	BucketQua int64 `yaml:"bucket-qua" default:"50"  validate:"gt=0"`
-	DefLimit  int32 `yaml:"def-limit"  default:"20"  validate:"gt=0"`
-	MaxLimit  int32 `yaml:"max-limit"  default:"50"  validate:"gt=0"`
+type ServerConfig struct {
+	BucketPeriod   uint64 `yaml:"bucket-period"   default:"60"  validate:"gt=0"`
+	BucketCap      uint64 `yaml:"bucket-cap"      default:"200" validate:"gt=0"`
+	BucketQua      uint64 `yaml:"bucket-qua"      default:"50"  validate:"gt=0"`
+	BucketCleanup  uint64 `yaml:"bucket-cleanup"  default:"120" validate:"gt=0"`
+	BucketSurvived uint16 `yaml:"bucket-survived" default:"3"   validate:"gt=0"`
+
+	DisableCache bool   `yaml:"disable-cache" default:"false"`
+	CacheSize    uint16 `yaml:"cache-size"    default:"50"  validate:"gt=0"`
+	CacheExpire  uint64 `yaml:"cache-expire"  default:"300" validate:"gt=0"`
+	ClientCache  bool   `yaml:"client-cache"  default:"false"`
+
+	DefLimit uint32 `yaml:"def-limit"  default:"20"  validate:"gt=0"`
+	MaxLimit uint32 `yaml:"max-limit"  default:"50"  validate:"gt=0"`
 }
 
 type MessageConfig struct {

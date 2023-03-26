@@ -3,13 +3,14 @@ module github.com/Aoi-hosizora/manhuagui-api
 go 1.19
 
 require (
-	github.com/Aoi-hosizora/ahlib v1.5.1-0.20230319065338-82b0ef154752
+	github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed
 	github.com/Aoi-hosizora/ahlib-more v1.5.1-0.20230317135735-8e68ae315a63
-	github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230319065408-9195fb2f4249
-	github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-00010101000000-000000000000
-	github.com/Aoi-hosizora/ahlib/xgeneric v0.0.0-20230319065338-82b0ef154752
+	github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230326143111-3876231a4143
+	github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143
+	github.com/Aoi-hosizora/ahlib/xgeneric v0.0.0-20230326143001-6c896488caed
 	github.com/Aoi-hosizora/goapidoc v1.3.0
 	github.com/PuerkitoBio/goquery v1.8.1
+	github.com/bluele/gcache v0.0.2
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/google/uuid v1.3.0
@@ -41,6 +42,6 @@ require (
 )
 
 replace (
-	github.com/Aoi-hosizora/ahlib v0.0.0-00010101000000-000000000000 => github.com/Aoi-hosizora/ahlib v1.5.1-0.20230319065338-82b0ef154752
-	github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-00010101000000-000000000000 => github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230319065408-9195fb2f4249
+	github.com/Aoi-hosizora/ahlib v0.0.0-00010101000000-000000000000 => github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed
+	github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-00010101000000-000000000000 => github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143
 )
