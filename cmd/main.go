@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib-more/xpflag"
-	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/api"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/server"
 	"log"
@@ -23,20 +22,15 @@ func main() {
 	}
 
 	// module
-	err := module.Provide(*fConfig) // may call fatal
+	err := module.Provide(*fConfig)
 	if err != nil {
 		log.Fatalln("Failed to provide all modules:", err)
 	}
 
 	// document
-	api.UpdateApiDoc()
-	_, err = goapidoc.SaveSwaggerJson(api.SwaggerDocFilename)
+	err = apidoc.UpdateAndSave()
 	if err != nil {
-		log.Fatalln("Failed to generate swagger:", err)
-	}
-	_, err = goapidoc.SaveApib(api.ApibDocFilename)
-	if err != nil {
-		log.Fatalln("Failed to generate apib:", err)
+		log.Fatalln("Failed to save api document:", err)
 	}
 
 	// server

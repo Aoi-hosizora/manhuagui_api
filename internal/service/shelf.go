@@ -40,13 +40,10 @@ func (s *ShelfService) _httpGetWithToken(url, token string) ([]byte, *goquery.Do
 }
 
 func (s *ShelfService) _httpPostWithToken(url, token string, form *url.Values) ([]byte, error) {
-	req, err := http.NewRequest("POST", url, strings.NewReader(form.Encode()))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Cookie", "my="+token)
-	bs, _, err := s.httpService.DoRequest(req)
+	bs, _, err := s.httpService.HttpPost(url, strings.NewReader(form.Encode()), func(req *http.Request) {
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		req.Header.Set("Cookie", "my="+token)
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +119,7 @@ func (s *ShelfService) CheckMangaInShelf(token string, mid uint64) (*object.Shel
 	return status, nil
 }
 
-func (s *ShelfService) SaveMangaToShelf(token string, mid uint64) (auth bool, existed bool, err error) {
+func (s *ShelfService) AddMangaToShelf(token string, mid uint64) (auth bool, existed bool, err error) {
 	bs, err := s._httpPostWithToken(static.MANGA_SHELF_ADD_URL, token, &url.Values{"book_id": {xnumber.U64toa(mid)}})
 	if err != nil {
 		return false, false, err

@@ -24,16 +24,6 @@ func NewAuthorService() *AuthorService {
 	}
 }
 
-func (a *AuthorService) GetAuthorFromA(sel *goquery.Selection) *object.TinyAuthor {
-	name := sel.AttrOr("title", "")
-	url := strings.TrimSuffix(sel.AttrOr("href", ""), "/")
-	return &object.TinyAuthor{
-		Aid:  static.ParseAid(url),
-		Name: name,
-		Url:  strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
-	}
-}
-
 func (a *AuthorService) GetAllAuthors(genre, zone, age string, page int32, order string) ([]*object.SmallAuthor, int32, int32, error) {
 	url := static.MANGA_AUTHORS_URL + "/" // https://www.manhuagui.com/alist/index_p1.html
 	if zone != "" && zone != "all" {
@@ -88,7 +78,7 @@ func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *object.SmallA
 		Aid:        static.ParseAid(url),
 		Name:       name,
 		Zone:       zone,
-		Cover:      "https://cf.hamreus.com/zpic/none.jpg", // <<<
+		Cover:      static.MANGA_AUTHOR_COVER_URL, // <<<
 		Url:        strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
 		MangaCount: mangaCount,
 		NewestDate: newestDate,
@@ -119,7 +109,7 @@ func (a *AuthorService) GetAuthor(aid uint64) (*object.Author, error) {
 	averageScore, _ := xnumber.Atof32(infoDiv.Find("p:nth-child(7) span").Text())
 	introduction := doc.Find("div#intro-all h2").Text()
 	highestMangaLi := doc.Find("div.book-result li.cf").First()
-	highestManga := a.GetSmallMangaPageFromLi(highestMangaLi)
+	highestManga := a.getSmallMangaPageFromLi(highestMangaLi)
 	highestScore, _ := xnumber.Atof32(highestMangaLi.Find("div.book-score p.score-avg strong").Text())
 	relatedAuthors := make([]*object.TinyZonedAuthor, 0)
 	relatedLis := doc.Find("ul.zzlist li")
@@ -185,14 +175,14 @@ func (a *AuthorService) GetAuthorMangas(aid uint64, page int32, order string) ([
 	if page <= pages {
 		listLis := doc.Find("div.book-result li.cf")
 		listLis.Each(func(idx int, li *goquery.Selection) {
-			mangas = append(mangas, a.GetSmallMangaPageFromLi(li))
+			mangas = append(mangas, a.getSmallMangaPageFromLi(li))
 		})
 	}
 
 	return mangas, limit, total, nil
 }
 
-func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *object.SmallManga {
+func (a *AuthorService) getSmallMangaPageFromLi(li *goquery.Selection) *object.SmallManga {
 	title := li.Find("dt a").AttrOr("title", "")
 	url := li.Find("dt a").AttrOr("href", "")
 	cover := li.Find("div.book-cover img").AttrOr("src", "")
@@ -211,7 +201,7 @@ func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *object.S
 	authorA := li.Find("div.book-detail dl dd.tags:nth-child(4) a")
 	authors := make([]*object.TinyAuthor, 0)
 	authorA.Each(func(idx int, sel *goquery.Selection) {
-		authors = append(authors, a.GetAuthorFromA(sel))
+		authors = append(authors, a.getAuthorFromA(sel))
 	})
 	briefIntroduction := strings.TrimSuffix(strings.TrimPrefix(li.Find("dd.intro").Text(), "简介："), "[详情]")
 
@@ -228,5 +218,15 @@ func (a *AuthorService) GetSmallMangaPageFromLi(li *goquery.Selection) *object.S
 		NewestChapter:     newestChapter,
 		NewestDate:        strings.Split(newestDate, " ")[0],
 		BriefIntroduction: briefIntroduction,
+	}
+}
+
+func (a *AuthorService) getAuthorFromA(sel *goquery.Selection) *object.TinyAuthor {
+	name := sel.AttrOr("title", "")
+	url := strings.TrimSuffix(sel.AttrOr("href", ""), "/")
+	return &object.TinyAuthor{
+		Aid:  static.ParseAid(url),
+		Name: name,
+		Url:  strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
 	}
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -17,22 +17,17 @@ func init() {
 	goapidoc.AddOperations(
 		goapidoc.NewOperation("GET", "/v1/comment/manga/{mid}", "Get manga comments").
 			Tags("Comment").
-			Params(
-				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
-				param.ParamPage,
-			).
+			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamPage).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CommentDto>>")),
 	)
 }
 
 type CommentController struct {
-	config         *config.Config
 	commentService *service.CommentService
 }
 
 func NewCommentService() *CommentController {
 	return &CommentController{
-		config:         xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		commentService: xmodule.MustGetByName(sn.SCommentService).(*service.CommentService),
 	}
 }

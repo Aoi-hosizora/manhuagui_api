@@ -8,6 +8,7 @@ import (
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/ahlib/xpointer"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"gopkg.in/yaml.v2"
@@ -20,16 +21,19 @@ import (
 )
 
 type MessageService struct {
+	config      *config.Config
 	httpService *HttpService
 }
 
 func NewMessageService() *MessageService {
 	return &MessageService{
+		config:      xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		httpService: xmodule.MustGetByName(sn.SHttpService).(*HttpService),
 	}
 }
 
-func (m *MessageService) GetAllMessages(token string) ([]*object.Message, error) {
+func (m *MessageService) GetAllMessages() ([]*object.Message, error) {
+	token := m.config.Message.GitHubToken
 	pageCount, err := m.getCommentPageCount(token)
 	if err != nil {
 		return nil, err
@@ -77,8 +81,8 @@ func (m *MessageService) GetAllMessages(token string) ([]*object.Message, error)
 	return messages, nil
 }
 
-func (m *MessageService) GetLatestMessage(token string) (*object.LatestMessage, error) {
-	messages, err := m.GetAllMessages(token) // almost one page
+func (m *MessageService) GetLatestMessage() (*object.LatestMessage, error) {
+	messages, err := m.GetAllMessages() // almost one page
 	if err != nil {
 		return nil, err
 	}

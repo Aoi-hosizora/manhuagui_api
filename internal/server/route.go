@@ -56,6 +56,7 @@ func setupRoutes(engine *gin.Engine) {
 	mangaGroup := v1.Group("manga")
 	mangaGroup.GET("", mangaController.GetAllMangas)
 	mangaGroup.GET(":mid", mangaController.GetManga)
+	mangaGroup.GET("random", mangaController.GetRandomManga)
 	mangaGroup.GET(":mid/:cid", mangaController.GetMangaChapter)
 
 	listGroup := v1.Group("list")
@@ -74,7 +75,7 @@ func setupRoutes(engine *gin.Engine) {
 
 	searchGroup := v1.Group("search")
 	searchGroup.GET("", searchController.SearchMangas)
-	searchGroup.GET(":keyword", searchController.SearchMangas)
+	searchGroup.GET(":keyword", searchController.SearchMangas) // deprecated
 
 	authorGroup := v1.Group("author")
 	authorGroup.GET("", authorController.GetAllAuthors)
@@ -100,7 +101,7 @@ func setupRoutes(engine *gin.Engine) {
 	shelfGroup := v1.Group("shelf")
 	shelfGroup.GET("", shelfController.GetShelfMangas)
 	shelfGroup.GET(":mid", shelfController.CheckMangaInShelf)
-	shelfGroup.POST(":mid", shelfController.SaveMangaToShelf)
+	shelfGroup.POST(":mid", shelfController.AddMangaToShelf)
 	shelfGroup.DELETE(":mid", shelfController.RemoveMangaFromShelf)
 
 	messageGroup := v1.Group("message")

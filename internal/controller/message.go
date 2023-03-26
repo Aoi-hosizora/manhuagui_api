@@ -4,7 +4,6 @@ import (
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -25,33 +24,33 @@ func init() {
 }
 
 type MessageController struct {
-	config         *config.Config
 	messageService *service.MessageService
 }
 
 func NewMessageController() *MessageController {
 	return &MessageController{
-		config:         xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		messageService: xmodule.MustGetByName(sn.SMessageService).(*service.MessageService),
 	}
 }
 
 // GET /v1/message
 func (m *MessageController) GetMessages(c *gin.Context) *result.Result {
-	messages, err := m.messageService.GetAllMessages(m.config.Message.GitHubToken)
+	messages, err := m.messageService.GetAllMessages()
 	if err != nil {
 		return result.Error(errno.GetMessageError).SetError(err, c)
 	}
+
 	res := dto.BuildMessageDtos(messages)
 	return result.Ok().SetPage(0, int32(len(messages)), int32(len(messages)), res)
 }
 
 // GET /v1/message/latest
 func (m *MessageController) GetLatestMessage(c *gin.Context) *result.Result {
-	latestMessage, err := m.messageService.GetLatestMessage(m.config.Message.GitHubToken)
+	latestMessage, err := m.messageService.GetLatestMessage()
 	if err != nil {
 		return result.Error(errno.GetMessageError).SetError(err, c)
 	}
+
 	res := dto.BuildLatestMessageDto(latestMessage)
 	return result.Ok().SetData(res)
 }

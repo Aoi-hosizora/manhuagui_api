@@ -53,7 +53,7 @@ func (s *SearchService) SearchMangas(keyword string, page int32, order string) (
 	if page <= pages {
 		listLis := doc.Find("div.book-result li.cf")
 		listLis.Each(func(idx int, li *goquery.Selection) {
-			mangas = append(mangas, s.authorService.GetSmallMangaPageFromLi(li))
+			mangas = append(mangas, s.authorService.getSmallMangaPageFromLi(li))
 		})
 	}
 

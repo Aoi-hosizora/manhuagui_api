@@ -5,16 +5,9 @@ import (
 	"github.com/Aoi-hosizora/ahlib-mx/xgin"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
-	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/gin-gonic/gin"
-)
-
-var (
-	ParamPage  = goapidoc.NewQueryParam("page", "integer#int32", false, "current page")
-	ParamLimit = goapidoc.NewQueryParam("limit", "integer#int32", false, "page size")
-	ParamOrder = goapidoc.NewQueryParam("order", "string", false, "order string")
 )
 
 type PageParam struct {
@@ -44,6 +37,15 @@ func BindQueryPage(c *gin.Context) *PageParam {
 	}
 
 	return &PageParam{Page: page, Limit: limit}
+}
+
+// Bind Authorization / ?token
+func BindToken(c *gin.Context) string {
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		token = c.Query("token")
+	}
+	return token
 }
 
 // Bind ?page&limit&order

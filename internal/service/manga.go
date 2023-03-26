@@ -79,7 +79,7 @@ func (m *MangaService) GetMangaPage(mid uint64) (*object.Manga, error) {
 	authorA := detailUl.Find("li:nth-child(2) span:nth-child(2) a")
 	authors := make([]*object.TinyAuthor, 0)
 	authorA.Each(func(idx int, sel *goquery.Selection) {
-		authors = append(authors, m.authorService.GetAuthorFromA(sel))
+		authors = append(authors, m.authorService.getAuthorFromA(sel))
 	})
 	obj := &object.Manga{
 		Mid:               mid,

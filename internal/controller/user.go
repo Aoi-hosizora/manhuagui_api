@@ -82,10 +82,7 @@ func (u *UserController) Login(c *gin.Context) *result.Result {
 
 // POST /v1/user/check_login
 func (u *UserController) CheckLogin(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := param.BindToken(c)
 	ok, username, err := u.userService.CheckLogin(token)
 	if err != nil {
 		return result.Error(errno.CheckLoginError).SetError(err, c)
@@ -98,10 +95,7 @@ func (u *UserController) CheckLogin(c *gin.Context) *result.Result {
 
 // GET /v1/user/info
 func (u *UserController) GetUser(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := param.BindToken(c)
 	user, err := u.userService.GetUser(token)
 	if err != nil {
 		return result.Error(errno.GetUserError).SetError(err, c)
@@ -113,12 +107,10 @@ func (u *UserController) GetUser(c *gin.Context) *result.Result {
 	return result.Ok().SetData(res)
 }
 
-// POST/GET /v1/user/manga/:mid/:cid
+// POST /v1/user/manga/:mid/:cid
+// GET /v1/user/manga/:mid/:cid (deprecated)
 func (u *UserController) RecordManga(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := param.BindToken(c)
 	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
 		return result.BindingError(err, c)

@@ -5,6 +5,7 @@ import (
 	"github.com/Aoi-hosizora/ahlib-mx/xgin"
 	"github.com/Aoi-hosizora/ahlib/xcolor"
 	"github.com/Aoi-hosizora/ahlib/xconstant/headers"
+	"github.com/Aoi-hosizora/ahlib/xgeneric/xgslice"
 	"github.com/Aoi-hosizora/ahlib/xgeneric/xsugar"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
@@ -91,7 +92,7 @@ func LimiterMiddleware() gin.HandlerFunc {
 	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Server
 	fillInterval := time.Second * time.Duration(cfg.BucketPeriod)
 	cleanupDuration := time.Second * time.Duration(cfg.BucketCleanup)
-	ipLimiter := iplimiter.NewIPRateLimiter(cleanupDuration, int16(cfg.BucketSurvived), func() *ratelimit.Bucket {
+	ipLimiter := iplimiter.NewIPRateLimiter(cleanupDuration, cfg.BucketSurvived, func() *ratelimit.Bucket {
 		return ratelimit.NewBucketWithQuantum(fillInterval, int64(cfg.BucketCap), int64(cfg.BucketQua))
 	})
 	return func(c *gin.Context) {
@@ -102,17 +103,20 @@ func LimiterMiddleware() gin.HandlerFunc {
 		c.Header(headers.XRateLimitRemaining, available)
 		c.Header(headers.XRateLimitLimit, capacity)
 		c.Header(headers.XRateLimitReset, reset)
+		c.Header("X-RateLimit-Policy", fmt.Sprintf("%d;q=%d;w=%d", cfg.BucketCap, cfg.BucketQua, cfg.BucketPeriod))
 
 		if takeAvailable(1) == 0 {
-			r := gin.H{"remaining": available, "limit": capacity /* always 0 here */, "reset": reset}
+			r := gin.H{"remaining": available /* always 0 here */, "limit": capacity, "reset": reset}
 			result.Status(http.StatusTooManyRequests).SetData(r).JSON(c)
 			c.Abort()
 		}
 	}
 }
 
+const xBaseRequestIDKey = "X-Base-Request-ID"
+
 func isCached(c *gin.Context) (bool, string) {
-	baseRid := c.Writer.Header().Get("X-Base-Request-ID")
+	baseRid := c.Writer.Header().Get(xBaseRequestIDKey)
 	if baseRid == "" {
 		return false, ""
 	}
@@ -125,13 +129,17 @@ func CacheMiddleware() gin.HandlerFunc {
 	storage := gincache.NewCacheStorage(int16(cfg.CacheSize), cacheExpiration)
 	return func(c *gin.Context) {
 		forceRefresh := xsugar.Let(strings.ToLower(c.Query("force_refresh")), func(t string) bool { return t == "true" || t == "t" || t == "1" })
-		if cfg.DisableCache || c.Request.Method != "GET" || forceRefresh || strings.Contains(c.FullPath(), "swagger") {
+		if !cfg.ServerCache || forceRefresh || c.Request.Method != "GET" {
+			return
+		}
+		whitelist := []string{"swagger", "random"}
+		if xgslice.Any(whitelist, func(s string) bool { return strings.Contains(c.FullPath(), s) }) {
 			return
 		}
 
 		key := fmt.Sprintf("%s-%s", c.Request.URL.RequestURI(), c.GetHeader(headers.Authorization))
 		cached, expiration, _ := storage.GetWithExpiration(key)
-		if cached == nil || (expiration == time.Time{}) || !gincache.Is2XXStatus(cached.Status()) {
+		if cached == nil || !gincache.Is2XXStatus(cached.Status()) {
 			cw := gincache.NewCachedWriter(c.Writer, storage, key)
 			c.Writer = cw
 			c.Next()
@@ -141,17 +149,16 @@ func CacheMiddleware() gin.HandlerFunc {
 			}
 		} else {
 			for k, vs := range cached.Header() {
-				if c.Writer.Header().Get(k) == "" { // header existed => ignore cached header
+				if c.Writer.Header().Get(k) == "" { // ignore existed headers
 					for _, v := range vs {
 						c.Writer.Header().Add(k, v)
 					}
 				}
 			}
-			c.Writer.Header().Set(headers.CacheControl, fmt.Sprintf("private, max-age=%d%s", cacheExpiration/time.Second, xsugar.If(cfg.ClientCache, "", ", no-store")))
-			c.Writer.Header().Set(headers.Expires, expiration.UTC().Format(http.TimeFormat))
-			c.Writer.Header().Set("X-Base-Request-ID", cached.Header().Get(headers.XRequestID))
-			c.Writer.Flush()
-			c.Writer.WriteHeader(cached.Status())
+			c.Header(headers.CacheControl, fmt.Sprintf("private, max-age=%d%s", cacheExpiration/time.Second, xsugar.If(cfg.ClientCache, "", ", no-store")))
+			c.Header(headers.Expires, expiration.UTC().Format(http.TimeFormat))
+			c.Header("X-Base-Request-ID", cached.Header().Get(headers.XRequestID))
+			c.Status(cached.Status())
 			_, _ = c.Writer.Write(cached.Data())
 			c.Abort()
 		}

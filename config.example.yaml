@@ -13,10 +13,10 @@ server:
   bucket-quantum: 50   # token bucket quantum in every interval
   bucket-cleanup: 120  # token bucket cleanup interval in seconds
   bucket-survived: 3   # token bucket max survived times for cleanable tokens
-  disable-cache: false # disable application cache or not
-  cache-size: 50       # application cache size
-  cache-expire: 300    # application cache expiration in seconds
-  client-cache: false  # allow client store cached result
+  server-cache: true   # enable server application cache or not
+  cache-size: 100      # application cache size
+  cache-expire: 180    # application cache expiration in seconds
+  client-cache: false  # allow client to store cached result
   def-limit: 20        # default limit query parameter value
   max-limit: 50        # maximum limit query parameter value
 

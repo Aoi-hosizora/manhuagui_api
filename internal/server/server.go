@@ -9,7 +9,7 @@ import (
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xruntime"
 	"github.com/Aoi-hosizora/goapidoc"
-	"github.com/Aoi-hosizora/manhuagui-api/api"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -27,7 +27,7 @@ import (
 func init() {
 	goapidoc.SetDocument(
 		"<placeholder>", "/",
-		goapidoc.NewInfo("manhuagui-api", "An unofficial backend for manhuagui written in golang/gin.", "v1.0.0").
+		goapidoc.NewInfo("manhuagui-api", "An unofficial backend for manhuagui written in golang/gin.", "v1.0.1").
 			Contact(goapidoc.NewContact("Aoi-hosizora", "https://github.com/Aoi-hosizora", "aoihosizora@hotmail.com")),
 	)
 
@@ -77,7 +77,7 @@ func NewServer() (*Server, error) {
 		xgin.WrapPprofSilently(engine)
 	}
 	if cfg.Meta.Swagger {
-		xgin.WrapSwagger(engine.Group("/v1/swagger"), api.ReadSwaggerDoc, api.SwaggerOptions()...)
+		xgin.WrapSwagger(engine.Group("/v1/swagger"), apidoc.ReadSwaggerDoc, apidoc.SwaggerOptions()...)
 	}
 	setupRoutes(engine)
 

@@ -5,7 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -33,19 +33,17 @@ func init() {
 
 		goapidoc.NewOperation("GET", "/v1/list/updated", "Get recent update mangas").
 			Tags("MangaList").
-			Params(param.ParamPage, param.ParamLimit).
+			Params(apidoc.ParamPage, apidoc.ParamLimit).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 	)
 }
 
 type MangaListController struct {
-	config           *config.Config
 	mangaListService *service.MangaListService
 }
 
 func NewMangaListController() *MangaListController {
 	return &MangaListController{
-		config:           xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		mangaListService: xmodule.MustGetByName(sn.SMangaListService).(*service.MangaListService),
 	}
 }
@@ -97,7 +95,7 @@ func (m *MangaListController) GetHomepageMangas(c *gin.Context) *result.Result {
 // GET /v1/list/updated
 func (m *MangaListController) GetRecentUpdatedMangas(c *gin.Context) *result.Result {
 	pa := param.BindQueryPage(c)
-	pages, tot, err := m.mangaListService.GetRecentUpdatedMangas(pa) // categoryService.GetGenreMangas
+	pages, tot, err := m.mangaListService.GetRecentUpdatedMangas(pa)
 	if err != nil {
 		return result.Error(errno.GetUpdatedMangasError).SetError(err, c)
 	}

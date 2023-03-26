@@ -5,6 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
@@ -17,10 +18,7 @@ func init() {
 	goapidoc.AddOperations(
 		goapidoc.NewOperation("GET", "/v1/shelf", "Get shelf mangas").
 			Tags("Shelf").
-			Params(
-				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
-				param.ParamPage,
-			).
+			Params(goapidoc.NewHeaderParam("Authorization", "string", true, "access token"), apidoc.ParamPage).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<ShelfMangaDto>>")),
 
 		goapidoc.NewOperation("GET", "/v1/shelf/{mid}", "Check manga in shelf").
@@ -65,10 +63,7 @@ func NewShelfController() *ShelfController {
 
 // GET /v1/shelf
 func (s *ShelfController) GetShelfMangas(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := param.BindToken(c)
 	pa := param.BindQueryPage(c)
 
 	mangas, limit, total, err := s.shelfService.GetShelfMangas(token, pa.Page)
@@ -84,10 +79,7 @@ func (s *ShelfController) GetShelfMangas(c *gin.Context) *result.Result {
 
 // GET /v1/shelf/:mid
 func (s *ShelfController) CheckMangaInShelf(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := param.BindToken(c)
 	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
 		return result.BindingError(err, c)
@@ -110,17 +102,14 @@ func (s *ShelfController) CheckMangaInShelf(c *gin.Context) *result.Result {
 }
 
 // POST /v1/shelf/:mid
-func (s *ShelfController) SaveMangaToShelf(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+func (s *ShelfController) AddMangaToShelf(c *gin.Context) *result.Result {
+	token := param.BindToken(c)
 	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
 		return result.BindingError(err, c)
 	}
 
-	auth, existed, err := s.shelfService.SaveMangaToShelf(token, mid)
+	auth, existed, err := s.shelfService.AddMangaToShelf(token, mid)
 	if err != nil {
 		return result.Error(errno.SaveMangaToShelfError).SetError(err, c)
 	} else if !auth {
@@ -135,10 +124,7 @@ func (s *ShelfController) SaveMangaToShelf(c *gin.Context) *result.Result {
 
 // DELETE /v1/shelf/:mid
 func (s *ShelfController) RemoveMangaFromShelf(c *gin.Context) *result.Result {
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := param.BindToken(c)
 	mid, err := param.BindRouteID(c, "mid")
 	if err != nil {
 		return result.BindingError(err, c)

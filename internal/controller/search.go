@@ -6,6 +6,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
@@ -20,20 +21,14 @@ func init() {
 		goapidoc.NewOperation("GET", "/v1/search", "Search mangas").
 			Desc("order by popular / new / update").
 			Tags("Search").
-			Params(
-				goapidoc.NewQueryParam("keyword", "string", true, "search keyword"),
-				param.ParamPage, param.ParamOrder,
-			).
+			Params(goapidoc.NewQueryParam("keyword", "string", true, "search keyword"), apidoc.ParamPage, apidoc.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 
 		goapidoc.NewOperation("GET", "/v1/search/{keyword}", "Search mangas").
 			Desc("order by popular / new / update").
 			Tags("Search").
 			Deprecated(true).
-			Params(
-				goapidoc.NewPathParam("keyword", "string", true, "search keyword"),
-				param.ParamPage, param.ParamOrder,
-			).
+			Params(goapidoc.NewPathParam("keyword", "string", true, "search keyword"), apidoc.ParamPage, apidoc.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 	)
 }
@@ -51,7 +46,7 @@ func NewSearchController() *SearchController {
 }
 
 // GET /v1/search
-// GET /v1/search/:keyword
+// GET /v1/search/:keyword (deprecated)
 func (s *SearchController) SearchMangas(c *gin.Context) *result.Result {
 	pa := param.BindQueryPageOrder(c)
 	keyword := strings.TrimSpace(c.Param("keyword"))

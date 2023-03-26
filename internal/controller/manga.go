@@ -5,7 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -18,7 +18,7 @@ func init() {
 		goapidoc.NewOperation("GET", "/v1/manga", "Get all mangas").
 			Desc("order by popular / new / update").
 			Tags("Manga").
-			Params(param.ParamPage, param.ParamOrder).
+			Params(apidoc.ParamPage, apidoc.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 
 		goapidoc.NewOperation("GET", "/v1/manga/{mid}", "Get manga").
@@ -41,14 +41,12 @@ func init() {
 }
 
 type MangaController struct {
-	config          *config.Config
 	mangaService    *service.MangaService
 	categoryService *service.CategoryService
 }
 
 func NewMangaController() *MangaController {
 	return &MangaController{
-		config:          xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		mangaService:    xmodule.MustGetByName(sn.SMangaService).(*service.MangaService),
 		categoryService: xmodule.MustGetByName(sn.SCategoryService).(*service.CategoryService),
 	}
@@ -67,16 +65,8 @@ func (m *MangaController) GetAllMangas(c *gin.Context) *result.Result {
 	return result.Ok().SetPage(pa.Page, limit, total, res)
 }
 
-// GET /v1/manga/...
-func (m *MangaController) GetManga(c *gin.Context) *result.Result {
-	if c.Param("mid") == "random" {
-		return m.getRandomManga(c)
-	}
-	return m.getManga(c)
-}
-
 // GET /v1/manga/:mid
-func (m *MangaController) getManga(c *gin.Context) *result.Result {
+func (m *MangaController) GetManga(c *gin.Context) *result.Result {
 	id, err := param.BindRouteID(c, "mid")
 	if err != nil {
 		return result.BindingError(err, c)
@@ -94,7 +84,7 @@ func (m *MangaController) getManga(c *gin.Context) *result.Result {
 }
 
 // GET /v1/manga/random
-func (m *MangaController) getRandomManga(c *gin.Context) *result.Result {
+func (m *MangaController) GetRandomManga(c *gin.Context) *result.Result {
 	info, err := m.mangaService.GetRandomMangaInfo()
 	if err != nil || info == nil {
 		return result.Error(errno.GetRandomMangaError).SetError(err, c)

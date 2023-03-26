@@ -59,7 +59,7 @@ func (r *RankService) getRankingListFromDoc(doc *goquery.Document) []*object.Man
 		authorA := tr.Find("div.rank-author a")
 		authors := make([]*object.TinyAuthor, 0)
 		authorA.Each(func(idx int, sel *goquery.Selection) {
-			authors = append(authors, r.authorService.GetAuthorFromA(sel))
+			authors = append(authors, r.authorService.getAuthorFromA(sel))
 		})
 		newestChapter := tr.Find("div.rank-update a").Text()
 		newestDate := tr.Find("td.rank-time").Text()

@@ -10,21 +10,21 @@ import (
 type IPRateLimiter struct {
 	limiters    map[string]*ratelimit.Bucket
 	limitersMu  sync.RWMutex
-	survivors   map[string]int16
+	survivors   map[string]uint16
 	survivorsMu sync.RWMutex
 
 	cleanupInterval time.Duration
-	maxSurvived     int16
+	maxSurvived     uint16
 	bucketCreator   func() *ratelimit.Bucket
 
 	lastCheckTime  time.Time
 	cleanupCheckMu sync.Mutex
 }
 
-func NewIPRateLimiter(cleanupInterval time.Duration, maxSurvived int16, bucketCreator func() *ratelimit.Bucket) *IPRateLimiter {
+func NewIPRateLimiter(cleanupInterval time.Duration, maxSurvived uint16, bucketCreator func() *ratelimit.Bucket) *IPRateLimiter {
 	return &IPRateLimiter{
 		limiters:  make(map[string]*ratelimit.Bucket),
-		survivors: make(map[string]int16),
+		survivors: make(map[string]uint16),
 
 		cleanupInterval: cleanupInterval,
 		maxSurvived:     maxSurvived,
@@ -100,7 +100,7 @@ func (i *IPRateLimiter) checkCleanup() {
 	i.limitersMu.Unlock()
 }
 
-func (i *IPRateLimiter) getSurvivor(clientIP string) (int16, bool) {
+func (i *IPRateLimiter) getSurvivor(clientIP string) (uint16, bool) {
 	i.survivorsMu.RLock()
 	survived, ok := i.survivors[clientIP]
 	i.survivorsMu.RUnlock()
@@ -118,7 +118,7 @@ func (i *IPRateLimiter) delSurvivor(clientIP string) {
 	}
 }
 
-func (i *IPRateLimiter) setSurvivor(clientIP string, newValue int16) {
+func (i *IPRateLimiter) setSurvivor(clientIP string, newValue uint16) {
 	i.survivorsMu.Lock()
 	i.survivors[clientIP] = newValue
 	i.survivorsMu.Unlock()

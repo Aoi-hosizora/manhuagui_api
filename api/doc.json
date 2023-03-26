@@ -4,7 +4,7 @@
   "basePath": "/",
   "info": {
     "title": "manhuagui-api",
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "description": "An unofficial backend for manhuagui written in golang/gin.",
     "contact": {
       "name": "Aoi-hosizora",
@@ -99,6 +99,14 @@
             "required": false,
             "description": "order string",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -126,6 +134,14 @@
             "description": "author id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -169,6 +185,14 @@
             "required": false,
             "description": "order string",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -188,6 +212,16 @@
         "tags": [
           "Category"
         ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 OK",
@@ -205,6 +239,16 @@
         "tags": [
           "Category"
         ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 OK",
@@ -221,6 +265,16 @@
         "operationId": "-v1-category-genre-get",
         "tags": [
           "Category"
+        ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
         ],
         "responses": {
           "200": {
@@ -283,6 +337,14 @@
             "required": false,
             "description": "order string",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -301,6 +363,16 @@
         "operationId": "-v1-category-zone-get",
         "tags": [
           "Category"
+        ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
         ],
         "responses": {
           "200": {
@@ -335,6 +407,14 @@
             "description": "current page",
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -354,6 +434,16 @@
         "tags": [
           "MangaList"
         ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 OK",
@@ -370,6 +460,16 @@
         "operationId": "-v1-list-homepage-get",
         "tags": [
           "MangaList"
+        ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
         ],
         "responses": {
           "200": {
@@ -388,6 +488,16 @@
         "tags": [
           "MangaList"
         ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 OK",
@@ -404,6 +514,16 @@
         "operationId": "-v1-list-serial-get",
         "tags": [
           "MangaList"
+        ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
         ],
         "responses": {
           "200": {
@@ -438,6 +558,14 @@
             "description": "page size",
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -473,6 +601,14 @@
             "required": false,
             "description": "order string",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -491,6 +627,16 @@
         "operationId": "-v1-manga-random-get",
         "tags": [
           "Manga"
+        ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
         ],
         "responses": {
           "200": {
@@ -517,6 +663,14 @@
             "description": "manga id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -552,6 +706,14 @@
             "description": "manga chapter id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -571,6 +733,16 @@
         "tags": [
           "Message"
         ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 OK",
@@ -587,6 +759,16 @@
         "operationId": "-v1-message-latest-get",
         "tags": [
           "Message"
+        ],
+        "parameters": [
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
+          }
         ],
         "responses": {
           "200": {
@@ -612,6 +794,14 @@
             "required": false,
             "description": "manga genre / zone / age, empty or all if all",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -638,6 +828,14 @@
             "required": false,
             "description": "manga genre / zone / age, empty or all if all",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -664,6 +862,14 @@
             "required": false,
             "description": "manga genre / zone / age, empty or all if all",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -690,6 +896,14 @@
             "required": false,
             "description": "manga genre / zone / age, empty or all if all",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -732,6 +946,14 @@
             "required": false,
             "description": "order string",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -775,6 +997,14 @@
             "required": false,
             "description": "order string",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -809,6 +1039,14 @@
             "description": "current page",
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -875,6 +1113,14 @@
             "description": "manga id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -959,6 +1205,14 @@
             "required": true,
             "description": "access token",
             "type": "string"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -1035,6 +1289,14 @@
             "description": "manga chapter id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "force_refresh",
+            "in": "query",
+            "required": false,
+            "description": "flag to refresh in force",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {

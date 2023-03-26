@@ -32,7 +32,6 @@ func Provide(configPath string) error {
 	// 3. services
 	// ===========
 
-	// services
 	xmodule.ProvideByName(sn.SHttpService, service.NewHttpService())           // *service.HttpService
 	xmodule.ProvideByName(sn.SCategoryService, service.NewCategoryService())   // *service.CategoryService
 	xmodule.ProvideByName(sn.SAuthorService, service.NewAuthorService())       // *service.AuthorService

@@ -17,7 +17,7 @@ type Config struct {
 
 type MetaConfig struct {
 	Port    uint16 `yaml:"port"     validate:"required"`
-	Host    string `yaml:"host"     default:"0.0.0.0"`
+	Host    string `yaml:"host"     default:"0.0.0.0" validate:"ip"`
 	RunMode string `yaml:"run-mode" default:"debug"`
 	LogName string `yaml:"log-name" default:"./logs/console"`
 	Pprof   bool   `yaml:"pprof"    default:"false"`
@@ -32,10 +32,10 @@ type ServerConfig struct {
 	BucketCleanup  uint64 `yaml:"bucket-cleanup"  default:"120" validate:"gt=0"`
 	BucketSurvived uint16 `yaml:"bucket-survived" default:"3"   validate:"gt=0"`
 
-	DisableCache bool   `yaml:"disable-cache" default:"false"`
-	CacheSize    uint16 `yaml:"cache-size"    default:"50"  validate:"gt=0"`
-	CacheExpire  uint64 `yaml:"cache-expire"  default:"300" validate:"gt=0"`
-	ClientCache  bool   `yaml:"client-cache"  default:"false"`
+	ServerCache bool   `yaml:"server-cache" default:"false"`
+	CacheSize   uint16 `yaml:"cache-size"   default:"100" validate:"gt=0"`
+	CacheExpire uint64 `yaml:"cache-expire" default:"180" validate:"gt=0"`
+	ClientCache bool   `yaml:"client-cache" default:"false"`
 
 	DefLimit uint32 `yaml:"def-limit"  default:"20"  validate:"gt=0"`
 	MaxLimit uint32 `yaml:"max-limit"  default:"50"  validate:"gt=0"`

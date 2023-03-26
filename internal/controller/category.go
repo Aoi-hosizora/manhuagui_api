@@ -6,7 +6,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -40,20 +40,18 @@ func init() {
 				goapidoc.NewQueryParam("zone", "string", false, "manga zone, (all|japan|hongkong|other|europe|china|korea)"),
 				goapidoc.NewQueryParam("age", "string", false, "manga age, (all|shaonv|shaonian|qingnian|ertong|tongyong)"),
 				goapidoc.NewQueryParam("status", "string", false, "manga status, (all|lianzai|wanjie)"),
-				param.ParamPage, param.ParamOrder,
+				apidoc.ParamPage, apidoc.ParamOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 	)
 }
 
 type CategoryController struct {
-	config          *config.Config
 	categoryService *service.CategoryService
 }
 
 func NewCategoryController() *CategoryController {
 	return &CategoryController{
-		config:          xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		categoryService: xmodule.MustGetByName(sn.SCategoryService).(*service.CategoryService),
 	}
 }

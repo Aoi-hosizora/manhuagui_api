@@ -8,8 +8,8 @@ github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143 h
 github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143/go.mod h1:zvkhCJg3lev81FW6zuSgNPeV9WJ2yCdLWUyzefxvMV8=
 github.com/Aoi-hosizora/ahlib/xgeneric v0.0.0-20230326143001-6c896488caed h1:kIjPjusqo16JLWx/7Vll7ragrV5TKXBJqLQQYMUYvkw=
 github.com/Aoi-hosizora/ahlib/xgeneric v0.0.0-20230326143001-6c896488caed/go.mod h1:E2MgnA/kF5Dvrn38/eHPUoGQp6+cxf1DLablzzmAKDg=
-github.com/Aoi-hosizora/goapidoc v1.3.0 h1:fhDUBijBAlzV750OsiyL3MAVrAdRccZQcNXb7wGj9fE=
-github.com/Aoi-hosizora/goapidoc v1.3.0/go.mod h1:CsTYijB1dB2KXg+Q1yOVhwiDCeI04UiORFAzJBPac2M=
+github.com/Aoi-hosizora/goapidoc v1.3.1 h1:4wN0GH2K7Oiu8se00cYm/y88N4JOqM+2TyJouyu/1Bg=
+github.com/Aoi-hosizora/goapidoc v1.3.1/go.mod h1:mXoNBuuE7qQQFjLQWGL0BGZ/VTeaa+IJGe1e3k3WR2s=
 github.com/PuerkitoBio/goquery v1.8.1 h1:uQxhNlArOIdbrH1tr0UXwdVFgDcZDrZVdcpygAcwmWM=
 github.com/PuerkitoBio/goquery v1.8.1/go.mod h1:Q8ICL1kNUJ2sXGoAhPGUdYDJvgQgHzJsnnd3H7Ho5jQ=
 github.com/andybalholm/cascadia v1.3.1 h1:nhxRkql1kdYCc8Snf7D5/D3spOX+dBgjA6u8x004T2c=
@@ -155,7 +155,6 @@ gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c/go.mod h1:JHkPIbrfpd72SG/EVd6muEfDQjcINNoR0C8j2r3qZ4Q=
 gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
-gopkg.in/yaml.v2 v2.2.8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
 gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

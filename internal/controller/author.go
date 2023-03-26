@@ -5,7 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
-	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
@@ -22,7 +22,7 @@ func init() {
 				goapidoc.NewQueryParam("genre", "string", false, "author genre"),
 				goapidoc.NewQueryParam("zone", "string", false, "author zone"),
 				goapidoc.NewQueryParam("age", "string", false, "author age range, (shaonv|shaonian|qingnian|ertong|tongyong)"),
-				param.ParamPage, param.ParamOrder,
+				apidoc.ParamPage, apidoc.ParamOrder,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallAuthorDto>>")),
 
@@ -34,22 +34,17 @@ func init() {
 		goapidoc.NewOperation("GET", "/v1/author/{aid}/manga", "Get author mangas").
 			Desc("order by popular / new / update").
 			Tags("Author").
-			Params(
-				goapidoc.NewPathParam("aid", "integer#int64", true, "author id"),
-				param.ParamPage, param.ParamOrder,
-			).
+			Params(goapidoc.NewPathParam("aid", "integer#int64", true, "author id"), apidoc.ParamPage, apidoc.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 	)
 }
 
 type AuthorController struct {
-	config        *config.Config
 	authorService *service.AuthorService
 }
 
 func NewAuthorController() *AuthorController {
 	return &AuthorController{
-		config:        xmodule.MustGetByName(sn.SConfig).(*config.Config),
 		authorService: xmodule.MustGetByName(sn.SAuthorService).(*service.AuthorService),
 	}
 }

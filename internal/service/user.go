@@ -27,12 +27,9 @@ func NewUserService() *UserService {
 
 func (u *UserService) Login(username, password string) (string, error) {
 	form := fmt.Sprintf("txtUserName=%s&txtPassword=%s", url.QueryEscape(username), url.QueryEscape(password))
-	req, err := http.NewRequest("POST", static.MANGA_LOGIN_URL, strings.NewReader(form))
-	if err != nil {
-		return "", err
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	bs, resp, err := u.httpService.DoRequest(req)
+	bs, resp, err := u.httpService.HttpPost(static.MANGA_LOGIN_URL, strings.NewReader(form), func(r *http.Request) {
+		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	})
 	if err != nil {
 		return "", err
 	}
@@ -50,12 +47,9 @@ func (u *UserService) Login(username, password string) (string, error) {
 }
 
 func (u *UserService) CheckLogin(token string) (bool, string, error) {
-	req, err := http.NewRequest("POST", static.MANGA_CHECK_LOGIN_URL, nil)
-	if err != nil {
-		return false, "", err
-	}
-	req.Header.Set("Cookie", "my="+token)
-	bs, _, err := u.httpService.DoRequest(req)
+	bs, _, err := u.httpService.HttpPost(static.MANGA_CHECK_LOGIN_URL, nil, func(r *http.Request) {
+		r.Header.Set("Cookie", "my="+token)
+	})
 	if err != nil {
 		return false, "", err
 	}
