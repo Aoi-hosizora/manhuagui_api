@@ -45,10 +45,10 @@ func UpdateAndSave() error {
 	goapidoc.SetHost(host)
 
 	// update param
-	forceRefresh := goapidoc.NewQueryParam("force_refresh", "boolean", false, "flag to refresh in force").Default(false)
+	allowCache := goapidoc.NewQueryParam("allow_cache", "boolean", false, "flag to allow using cache").Default(false) // for backward-compatibility
 	for _, op := range goapidoc.GetOperations() {
 		if op.GetMethod() == "GET" {
-			op.AddParams(forceRefresh)
+			op.AddParams(allowCache)
 		}
 	}
 

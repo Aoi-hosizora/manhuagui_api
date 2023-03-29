@@ -128,8 +128,8 @@ func CacheMiddleware() gin.HandlerFunc {
 	cacheExpiration := time.Second * time.Duration(cfg.CacheExpire)
 	storage := gincache.NewCacheStorage(int16(cfg.CacheSize), cacheExpiration)
 	return func(c *gin.Context) {
-		forceRefresh := xsugar.Let(strings.ToLower(c.Query("force_refresh")), func(t string) bool { return t == "true" || t == "t" || t == "1" })
-		if !cfg.ServerCache || forceRefresh || c.Request.Method != "GET" {
+		allowCache := xsugar.Let(strings.ToLower(c.Query("allow_cache")), func(t string) bool { return t == "true" || t == "t" || t == "1" })
+		if !cfg.ServerCache || !allowCache || c.Request.Method != "GET" {
 			return
 		}
 		whitelist := []string{"swagger", "random"}

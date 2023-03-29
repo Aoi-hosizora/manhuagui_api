@@ -13,7 +13,7 @@ An unofficial backend for manhuagui written in golang/gin.
 
 manga-controller
 
-## Get all mangas [/v1/manga{?page,order,force_refresh}]
+## Get all mangas [/v1/manga{?page,order,allow_cache}]
 
 > `/v1/manga`
 
@@ -28,7 +28,7 @@ order by popular / new / update
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -43,7 +43,7 @@ order by popular / new / update
 
     + Body
 
-## Get manga [/v1/manga/{mid}{?force_refresh}]
+## Get manga [/v1/manga/{mid}{?allow_cache}]
 
 > `/v1/manga/{mid}`
 
@@ -55,7 +55,7 @@ order by popular / new / update
 
     + mid (number, required) - manga id
         (format: int64)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -70,7 +70,7 @@ order by popular / new / update
 
     + Body
 
-## Get random manga [/v1/manga/random{?force_refresh}]
+## Get random manga [/v1/manga/random{?allow_cache}]
 
 > `/v1/manga/random`
 
@@ -80,7 +80,7 @@ order by popular / new / update
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -95,7 +95,7 @@ order by popular / new / update
 
     + Body
 
-## Get manga chapter [/v1/manga/{mid}/{cid}{?force_refresh}]
+## Get manga chapter [/v1/manga/{mid}/{cid}{?allow_cache}]
 
 > `/v1/manga/{mid}/{cid}`
 
@@ -109,7 +109,7 @@ order by popular / new / update
         (format: int64)
     + cid (number, required) - manga chapter id
         (format: int64)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -128,7 +128,7 @@ order by popular / new / update
 
 manga-list-controller
 
-## Get hot serial mangas [/v1/list/serial{?force_refresh}]
+## Get hot serial mangas [/v1/list/serial{?allow_cache}]
 
 > `/v1/list/serial`
 
@@ -138,7 +138,7 @@ manga-list-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -153,7 +153,7 @@ manga-list-controller
 
     + Body
 
-## Get finished mangas [/v1/list/finish{?force_refresh}]
+## Get finished mangas [/v1/list/finish{?allow_cache}]
 
 > `/v1/list/finish`
 
@@ -163,7 +163,7 @@ manga-list-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -178,7 +178,7 @@ manga-list-controller
 
     + Body
 
-## Get latest mangas [/v1/list/latest{?force_refresh}]
+## Get latest mangas [/v1/list/latest{?allow_cache}]
 
 > `/v1/list/latest`
 
@@ -188,7 +188,7 @@ manga-list-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -203,7 +203,7 @@ manga-list-controller
 
     + Body
 
-## Get homepage mangas [/v1/list/homepage{?force_refresh}]
+## Get homepage mangas [/v1/list/homepage{?allow_cache}]
 
 > `/v1/list/homepage`
 
@@ -213,7 +213,7 @@ manga-list-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -228,7 +228,7 @@ manga-list-controller
 
     + Body
 
-## Get recent update mangas [/v1/list/updated{?page,limit,force_refresh}]
+## Get recent update mangas [/v1/list/updated{?page,limit,allow_cache}]
 
 > `/v1/list/updated`
 
@@ -242,7 +242,7 @@ manga-list-controller
         (format: int32)
     + limit (number, optional) - page size
         (format: int32)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -261,7 +261,7 @@ manga-list-controller
 
 category-controller
 
-## Get categories [/v1/category{?force_refresh}]
+## Get categories [/v1/category{?allow_cache}]
 
 > `/v1/category`
 
@@ -271,7 +271,7 @@ category-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -286,7 +286,7 @@ category-controller
 
     + Body
 
-## Get genres [/v1/category/genre{?force_refresh}]
+## Get genres [/v1/category/genre{?allow_cache}]
 
 > `/v1/category/genre`
 
@@ -296,7 +296,7 @@ category-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -311,7 +311,7 @@ category-controller
 
     + Body
 
-## Get zones [/v1/category/zone{?force_refresh}]
+## Get zones [/v1/category/zone{?allow_cache}]
 
 > `/v1/category/zone`
 
@@ -321,7 +321,7 @@ category-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -336,7 +336,7 @@ category-controller
 
     + Body
 
-## Get ages [/v1/category/age{?force_refresh}]
+## Get ages [/v1/category/age{?allow_cache}]
 
 > `/v1/category/age`
 
@@ -346,7 +346,7 @@ category-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -361,7 +361,7 @@ category-controller
 
     + Body
 
-## Get genre mangas [/v1/category/genre/{genre}{?zone,age,status,page,order,force_refresh}]
+## Get genre mangas [/v1/category/genre/{genre}{?zone,age,status,page,order,allow_cache}]
 
 > `/v1/category/genre/{genre}`
 
@@ -380,7 +380,7 @@ order by popular / new / update
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -399,7 +399,7 @@ order by popular / new / update
 
 search-controller
 
-## Search mangas [/v1/search{?keyword,page,order,force_refresh}]
+## Search mangas [/v1/search{?keyword,page,order,allow_cache}]
 
 > `/v1/search`
 
@@ -415,7 +415,7 @@ order by popular / new / update
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -430,7 +430,7 @@ order by popular / new / update
 
     + Body
 
-## Search mangas [/v1/search/{keyword}{?page,order,force_refresh}]
+## Search mangas [/v1/search/{keyword}{?page,order,allow_cache}]
 
 > `/v1/search/{keyword}`
 
@@ -448,7 +448,7 @@ order by popular / new / update
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -467,7 +467,7 @@ order by popular / new / update
 
 author-controller
 
-## Get all authors [/v1/author{?genre,zone,age,page,order,force_refresh}]
+## Get all authors [/v1/author{?genre,zone,age,page,order,allow_cache}]
 
 > `/v1/author`
 
@@ -485,7 +485,7 @@ order by popular / comic / update
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -500,7 +500,7 @@ order by popular / comic / update
 
     + Body
 
-## Get author [/v1/author/{aid}{?force_refresh}]
+## Get author [/v1/author/{aid}{?allow_cache}]
 
 > `/v1/author/{aid}`
 
@@ -512,7 +512,7 @@ order by popular / comic / update
 
     + aid (number, required) - author id
         (format: int64)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -527,7 +527,7 @@ order by popular / comic / update
 
     + Body
 
-## Get author mangas [/v1/author/{aid}/manga{?page,order,force_refresh}]
+## Get author mangas [/v1/author/{aid}/manga{?page,order,allow_cache}]
 
 > `/v1/author/{aid}/manga`
 
@@ -544,7 +544,7 @@ order by popular / new / update
     + page (number, optional) - current page
         (format: int32)
     + order (string, optional) - order string
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -563,7 +563,7 @@ order by popular / new / update
 
 rank-controller
 
-## Get day ranking [/v1/rank/day{?type,force_refresh}]
+## Get day ranking [/v1/rank/day{?type,allow_cache}]
 
 > `/v1/rank/day`
 
@@ -574,7 +574,7 @@ rank-controller
 + Parameters
 
     + type (string, optional) - manga genre / zone / age, empty or all if all
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -589,7 +589,7 @@ rank-controller
 
     + Body
 
-## Get week ranking [/v1/rank/week{?type,force_refresh}]
+## Get week ranking [/v1/rank/week{?type,allow_cache}]
 
 > `/v1/rank/week`
 
@@ -600,7 +600,7 @@ rank-controller
 + Parameters
 
     + type (string, optional) - manga genre / zone / age, empty or all if all
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -615,7 +615,7 @@ rank-controller
 
     + Body
 
-## Get month ranking [/v1/rank/month{?type,force_refresh}]
+## Get month ranking [/v1/rank/month{?type,allow_cache}]
 
 > `/v1/rank/month`
 
@@ -626,7 +626,7 @@ rank-controller
 + Parameters
 
     + type (string, optional) - manga genre / zone / age, empty or all if all
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -641,7 +641,7 @@ rank-controller
 
     + Body
 
-## Get total ranking [/v1/rank/total{?type,force_refresh}]
+## Get total ranking [/v1/rank/total{?type,allow_cache}]
 
 > `/v1/rank/total`
 
@@ -652,7 +652,7 @@ rank-controller
 + Parameters
 
     + type (string, optional) - manga genre / zone / age, empty or all if all
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -671,7 +671,7 @@ rank-controller
 
 comment-controller
 
-## Get manga comments [/v1/comment/manga/{mid}{?page,force_refresh}]
+## Get manga comments [/v1/comment/manga/{mid}{?page,allow_cache}]
 
 > `/v1/comment/manga/{mid}`
 
@@ -685,7 +685,7 @@ comment-controller
         (format: int64)
     + page (number, optional) - current page
         (format: int32)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -753,7 +753,7 @@ user-controller
 
     + Body
 
-## Get authorized user information [/v1/user/info{?force_refresh}]
+## Get authorized user information [/v1/user/info{?allow_cache}]
 
 > `/v1/user/info`
 
@@ -763,7 +763,7 @@ user-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -782,7 +782,7 @@ user-controller
 
     + Body
 
-## Record manga for the authorized user [/v1/user/manga/{mid}/{cid}{?force_refresh}]
+## Record manga for the authorized user [/v1/user/manga/{mid}/{cid}{?allow_cache}]
 
 > `/v1/user/manga/{mid}/{cid}`
 
@@ -798,7 +798,7 @@ user-controller
         (format: int64)
     + cid (number, required) - manga chapter id
         (format: int64)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -852,7 +852,7 @@ user-controller
 
 shelf-controller
 
-## Get shelf mangas [/v1/shelf{?page,force_refresh}]
+## Get shelf mangas [/v1/shelf{?page,allow_cache}]
 
 > `/v1/shelf`
 
@@ -864,7 +864,7 @@ shelf-controller
 
     + page (number, optional) - current page
         (format: int32)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -883,7 +883,7 @@ shelf-controller
 
     + Body
 
-## Check manga in shelf [/v1/shelf/{mid}{?force_refresh}]
+## Check manga in shelf [/v1/shelf/{mid}{?allow_cache}]
 
 > `/v1/shelf/{mid}`
 
@@ -895,7 +895,7 @@ shelf-controller
 
     + mid (number, required) - manga id
         (format: int64)
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -972,7 +972,7 @@ shelf-controller
 
 message-controller
 
-## Get all messages [/v1/message{?force_refresh}]
+## Get all messages [/v1/message{?allow_cache}]
 
 > `/v1/message`
 
@@ -982,7 +982,7 @@ message-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)
@@ -997,7 +997,7 @@ message-controller
 
     + Body
 
-## Get latest message [/v1/message/latest{?force_refresh}]
+## Get latest message [/v1/message/latest{?allow_cache}]
 
 > `/v1/message/latest`
 
@@ -1007,7 +1007,7 @@ message-controller
 
 + Parameters
 
-    + force_refresh (boolean, optional) - flag to refresh in force
+    + allow_cache (boolean, optional) - flag to allow using cache
         + Default: `false`
 
 + Request (application/json)

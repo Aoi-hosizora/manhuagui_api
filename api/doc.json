@@ -101,10 +101,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -136,10 +136,10 @@
             "format": "int64"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -187,10 +187,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -214,10 +214,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -241,10 +241,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -268,10 +268,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -339,10 +339,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -366,10 +366,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -409,10 +409,10 @@
             "format": "int32"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -436,10 +436,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -463,10 +463,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -490,10 +490,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -517,10 +517,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -560,10 +560,10 @@
             "format": "int32"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -603,10 +603,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -630,10 +630,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -665,10 +665,10 @@
             "format": "int64"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -708,10 +708,10 @@
             "format": "int64"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -735,10 +735,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -762,10 +762,10 @@
         ],
         "parameters": [
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -796,10 +796,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -830,10 +830,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -864,10 +864,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -898,10 +898,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -948,10 +948,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -999,10 +999,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -1041,10 +1041,10 @@
             "format": "int32"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -1115,10 +1115,10 @@
             "format": "int64"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -1207,10 +1207,10 @@
             "type": "string"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
@@ -1291,10 +1291,10 @@
             "format": "int64"
           },
           {
-            "name": "force_refresh",
+            "name": "allow_cache",
             "in": "query",
             "required": false,
-            "description": "flag to refresh in force",
+            "description": "flag to allow using cache",
             "type": "boolean",
             "default": false
           }
