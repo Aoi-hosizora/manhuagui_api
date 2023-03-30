@@ -425,6 +425,121 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Add manga comment",
+        "operationId": "-v1-comment-manga-:mid-post",
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "description": "manga id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "description": "comment content",
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/_Result<AddedCommentDto>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/comment/manga/{mid}/{cid}": {
+      "post": {
+        "summary": "Reply manga comment",
+        "operationId": "-v1-comment-manga-:mid-:cid-post",
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "description": "manga id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "comment id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "description": "comment content",
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/_Result<AddedCommentDto>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/comment/{cid}/like": {
+      "post": {
+        "summary": "Like comment",
+        "operationId": "-v1-comment-:cid-like-post",
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "comment id",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
+          }
+        }
       }
     },
     "/v1/list/finish": {
@@ -1068,19 +1183,19 @@
         ],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token",
-            "type": "string"
-          },
-          {
             "name": "mid",
             "in": "path",
             "required": true,
             "description": "manga id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
           }
         ],
         "responses": {
@@ -1100,19 +1215,19 @@
         ],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token",
-            "type": "string"
-          },
-          {
             "name": "mid",
             "in": "path",
             "required": true,
             "description": "manga id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "allow_cache",
@@ -1140,19 +1255,19 @@
         ],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token",
-            "type": "string"
-          },
-          {
             "name": "mid",
             "in": "path",
             "required": true,
             "description": "manga id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
           }
         ],
         "responses": {
@@ -1268,13 +1383,6 @@
         "deprecated": true,
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token",
-            "type": "string"
-          },
-          {
             "name": "mid",
             "in": "path",
             "required": true,
@@ -1289,6 +1397,13 @@
             "description": "manga chapter id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
           },
           {
             "name": "allow_cache",
@@ -1316,13 +1431,6 @@
         ],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token",
-            "type": "string"
-          },
-          {
             "name": "mid",
             "in": "path",
             "required": true,
@@ -1337,6 +1445,13 @@
             "description": "manga chapter id",
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
           }
         ],
         "responses": {
@@ -1351,6 +1466,37 @@
     }
   },
   "definitions": {
+    "AddedCommentDto": {
+      "type": "object",
+      "required": [
+        "cid",
+        "mid",
+        "replied_cid",
+        "content"
+      ],
+      "description": "Added comment response",
+      "properties": {
+        "cid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "comment id"
+        },
+        "mid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "manga id"
+        },
+        "replied_cid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "replied comment id"
+        },
+        "content": {
+          "type": "string",
+          "description": "comment content"
+        }
+      }
+    },
     "AuthorDto": {
       "type": "object",
       "required": [
@@ -2945,6 +3091,29 @@
           "items": {
             "$ref": "#/definitions/TinyMangaDto"
           }
+        }
+      }
+    },
+    "_Result<AddedCommentDto>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "status code"
+        },
+        "message": {
+          "type": "string",
+          "description": "status message"
+        },
+        "data": {
+          "$ref": "#/definitions/AddedCommentDto"
         }
       }
     },

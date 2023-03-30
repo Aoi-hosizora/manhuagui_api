@@ -19,13 +19,17 @@ const (
 	MANGA_COVER_S_URL      = "https://cf.hamreus.com/cpic/g/%s"
 	MANGA_SCORE_URL        = "https://www.manhuagui.com/tools/vote.ashx?act=get&bid=%d"
 	MANGA_COMMENT_URL      = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_list&book_id=%d&page_index=%d"
+	MANGA_LIKE_COMMENT_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_support&comment_id=%d"
+	MANGA_ADD_COMMENT_URL  = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=comment_add"
 	MANGA_LOGIN_URL        = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_login"
 	MANGA_CHECK_LOGIN_URL  = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_check_login"
 	MANGA_SHELF_CHECK_URL  = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_check&book_id=%d"
 	MANGA_SHELF_ADD_URL    = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_add"
 	MANGA_SHELF_DELETE_URL = "https://www.manhuagui.com/tools/submit_ajax.ashx?action=user_book_shelf_delete"
 	MANGA_COUNT_URL        = "https://www.manhuagui.com/tools/count.ashx?bookId=%d&chapterId=%d"
-	MANGA_AUTHOR_COVER_URL = "https://cf.hamreus.com/zpic/none.jpg"
+
+	DEFAULT_USER_AVATAR_URL  = "https://cf.hamreus.com/images/default.png"
+	DEFAULT_AUTHOR_COVER_URL = "https://cf.hamreus.com/zpic/none.jpg"
 
 	MESSAGE_ISSUE_API        = "https://api.github.com/repos/Aoi-hosizora/manhuagui_flutter/issues/21"
 	MESSAGE_COMMENTS_PERPAGE = 100

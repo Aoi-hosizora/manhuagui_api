@@ -90,6 +90,9 @@ func setupRoutes(engine *gin.Engine) {
 
 	commentGroup := v1.Group("comment")
 	commentGroup.GET("manga/:mid", commentController.GetComments)
+	commentGroup.POST(":cid/like", commentController.ListComment)
+	commentGroup.POST("manga/:mid", commentController.AddComment)
+	commentGroup.POST("manga/:mid/:cid", commentController.ReplyComment)
 
 	userGroup := v1.Group("user")
 	userGroup.POST("login", userController.Login)

@@ -60,6 +60,10 @@ var (
 // comment
 var (
 	GetMangaCommentsError = new5(500, "无法获取漫画评论")
+	LikeCommentError      = new5(500, "无法点赞评论")
+	EmptyCommentError     = new4(400, "评论内容为空")
+	AddCommentError       = new5(500, "无法评论漫画")
+	ReplyCommentError     = new5(500, "无法回复评论")
 )
 
 // user

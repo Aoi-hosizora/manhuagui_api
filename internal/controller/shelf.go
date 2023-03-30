@@ -18,31 +18,22 @@ func init() {
 	goapidoc.AddOperations(
 		goapidoc.NewOperation("GET", "/v1/shelf", "Get shelf mangas").
 			Tags("Shelf").
-			Params(goapidoc.NewHeaderParam("Authorization", "string", true, "access token"), apidoc.ParamPage).
+			Params(apidoc.ParamToken, apidoc.ParamPage).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<ShelfMangaDto>>")),
 
 		goapidoc.NewOperation("GET", "/v1/shelf/{mid}", "Check manga in shelf").
 			Tags("Shelf").
-			Params(
-				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
-				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
-			).
+			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "_Result<ShelfStatusDto>")),
 
 		goapidoc.NewOperation("POST", "/v1/shelf/{mid}", "Save manga to shelf").
 			Tags("Shelf").
-			Params(
-				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
-				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
-			).
+			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "Result")),
 
 		goapidoc.NewOperation("DELETE", "/v1/shelf/{mid}", "Remove manga from shelf").
 			Tags("Shelf").
-			Params(
-				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
-				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
-			).
+			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "Result")),
 	)
 }

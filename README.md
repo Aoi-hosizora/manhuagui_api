@@ -37,6 +37,9 @@
 + `GET /v1/rank/month`
 + `GET /v1/rank/total`
 + `GET /v1/comment/manga/:mid`
++ `POST /v1/comment/:cid/like`
++ `POST /v1/comment/manga/:mid`
++ `POST /v1/comment/manga/:mid/:cid`
 + `POST /v1/user/login`
 + `POST /v1/user/check_login`
 + `GET /v1/user/info`

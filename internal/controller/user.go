@@ -5,6 +5,7 @@ import (
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
+	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/apidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/errno"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
@@ -25,30 +26,30 @@ func init() {
 
 		goapidoc.NewOperation("POST", "/v1/user/check_login", "Check login").
 			Tags("User").
-			Params(goapidoc.NewHeaderParam("Authorization", "string", true, "access token")).
+			Params(apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "_Result<UsernameDto>")),
 
 		goapidoc.NewOperation("GET", "/v1/user/info", "Get authorized user information").
 			Tags("User").
-			Params(goapidoc.NewHeaderParam("Authorization", "string", true, "access token")).
+			Params(apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "_Result<UserDto>")),
 
 		goapidoc.NewOperation("GET", "/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
 			Tags("User").
 			Deprecated(true).
 			Params(
-				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewPathParam("cid", "integer#int64", true, "manga chapter id"),
+				apidoc.ParamToken,
 			).
 			Responses(goapidoc.NewResponse(200, "Result")),
 
 		goapidoc.NewOperation("POST", "/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
 			Tags("User").
 			Params(
-				goapidoc.NewHeaderParam("Authorization", "string", true, "access token"),
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewPathParam("cid", "integer#int64", true, "manga chapter id"),
+				apidoc.ParamToken,
 			).
 			Responses(goapidoc.NewResponse(200, "Result")),
 	)

@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
+	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -21,8 +24,8 @@ func NewCommentService() *CommentService {
 }
 
 func (c *CommentService) GetComments(mid uint64, page int32) ([]*object.Comment, int32, error) {
-	url := fmt.Sprintf(static.MANGA_COMMENT_URL, mid, page)
-	bs, _, err := c.httpService.HttpGet(url, nil)
+	u := fmt.Sprintf(static.MANGA_COMMENT_URL, mid, page)
+	bs, _, err := c.httpService.HttpGet(u, nil)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -51,7 +54,7 @@ func (c *CommentService) GetComments(mid uint64, page int32) ([]*object.Comment,
 			cmt.Username = "-"
 		}
 		if cmt.Avatar == "" {
-			cmt.Avatar = "https://cf.hamreus.com/images/default.png"
+			cmt.Avatar = static.DEFAULT_USER_AVATAR_URL
 		}
 
 		timeline := make([]*object.RepliedComment, 0, len(chain)-1)
@@ -64,7 +67,7 @@ func (c *CommentService) GetComments(mid uint64, page int32) ([]*object.Comment,
 						cmt.Username = "-"
 					}
 					if cmt.Avatar == "" {
-						cmt.Avatar = "https://cf.hamreus.com/images/default.png"
+						cmt.Avatar = static.DEFAULT_USER_AVATAR_URL
 					}
 					timeline = append(timeline, cmt)
 				}
@@ -75,4 +78,75 @@ func (c *CommentService) GetComments(mid uint64, page int32) ([]*object.Comment,
 	}
 
 	return out, commentsObj.Total, nil
+}
+
+func (c *CommentService) LikeComment(cid uint64) error {
+	u := fmt.Sprintf(static.MANGA_LIKE_COMMENT_URL, cid)
+	bs, _, err := c.httpService.HttpGet(u, nil)
+	if err != nil {
+		return err
+	}
+
+	type model struct {
+		Status int32 `json:"status"`
+	}
+	m := &model{}
+	err = json.Unmarshal(bs, m)
+	if err != nil {
+		return err
+	}
+
+	// {"status":1}
+	if m.Status == 0 {
+		return fmt.Errorf("can not like comment %d", cid)
+	}
+	return nil
+}
+
+func (c *CommentService) _httpPostWithToken(url, token string, form *url.Values) ([]byte, error) {
+	bs, _, err := c.httpService.HttpPost(url, strings.NewReader(form.Encode()), func(req *http.Request) {
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		req.Header.Set("Cookie", "my="+token)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return bs, nil
+}
+
+func (c *CommentService) AddComment(token string, mid uint64, text string) (comment *object.AddedComment, auth bool, err error) {
+	return c.addComment(token, mid, 0, text)
+}
+
+func (c *CommentService) ReplyComment(token string, mid, cid uint64, text string) (comment *object.AddedComment, auth bool, err error) {
+	return c.addComment(token, mid, cid, text)
+}
+
+func (c *CommentService) addComment(token string, mid, repliedCid uint64, text string) (comment *object.AddedComment, auth bool, err error) {
+	escapedText := url.PathEscape(text) // escape first
+	form := &url.Values{"book_id": {xnumber.U64toa(mid)}, "to_comment_id": {xnumber.U64toa(repliedCid)}, "txtContent": {escapedText}}
+	bs, err := c._httpPostWithToken(static.MANGA_ADD_COMMENT_URL, token, form)
+	if err != nil {
+		return nil, false, err
+	}
+
+	type model struct {
+		Status    int32  `json:"status"`
+		Msg       string `json:"msg"`
+		CommentId uint64 `json:"comment_id"`
+	}
+	m := &model{}
+	err = json.Unmarshal(bs, m)
+	if err != nil {
+		return nil, false, err
+	}
+
+	// {"status": 1, "msg": "恭喜您，评论提交成功！", "comment_id":1247467}
+	// {"status": 0, "msg": "对不起，登录后才能评论！"}
+	if m.Status == 0 {
+		auth = m.Msg != "对不起，登录后才能评论！"
+		return nil, auth, nil
+	}
+	comment = object.NewAddedComment(m.CommentId, mid, repliedCid, text)
+	return comment, true, nil
 }

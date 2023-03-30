@@ -700,6 +700,93 @@ comment-controller
 
     + Body
 
+## Like comment [/v1/comment/{cid}/like]
+
+> `/v1/comment/{cid}/like`
+
+### Like comment [POST]
+
+> `POST /v1/comment/{cid}/like`
+
++ Parameters
+
+    + cid (number, required) - comment id
+        (format: int64)
+
++ Request (application/json)
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (Result)
+
+    + Body
+
+## Add manga comment [/v1/comment/manga/{mid}{?text}]
+
+> `/v1/comment/manga/{mid}`
+
+### Add manga comment [POST]
+
+> `POST /v1/comment/manga/{mid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+    + text (string, required) - comment content
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: (string, required) - access token
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (_Result<AddedCommentDto>)
+
+    + Body
+
+## Reply manga comment [/v1/comment/manga/{mid}/{cid}{?text}]
+
+> `/v1/comment/manga/{mid}/{cid}`
+
+### Reply manga comment [POST]
+
+> `POST /v1/comment/manga/{mid}/{cid}`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+    + cid (number, required) - comment id
+        (format: int64)
+    + text (string, required) - comment content
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: (string, required) - access token
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (_Result<AddedCommentDto>)
+
+    + Body
+
 # Group User
 
 user-controller
@@ -1128,6 +1215,16 @@ message-controller
     (format: int32)
 + comment_time (string, required) - comment create time
 
+## AddedCommentDto (object)
+
++ cid (number, required) - comment id
+    (format: int64)
++ mid (number, required) - manga id
+    (format: int64)
++ replied_cid (number, required) - replied comment id
+    (format: int64)
++ content (string, required) - comment content
+
 ## MangaDto (object)
 
 + mid (number, required) - manga id
@@ -1461,6 +1558,13 @@ message-controller
     (format: int32)
 + message (string, required) - status message
 + data (_Page<CommentDto>, required) - response data
+
+## _Result<AddedCommentDto> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (AddedCommentDto, required) - response data
 
 ## _Result<MangaDto> (object)
 

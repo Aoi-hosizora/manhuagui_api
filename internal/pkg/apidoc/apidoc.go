@@ -14,6 +14,7 @@ var (
 	ParamPage  = goapidoc.NewQueryParam("page", "integer#int32", false, "current page")
 	ParamLimit = goapidoc.NewQueryParam("limit", "integer#int32", false, "page size")
 	ParamOrder = goapidoc.NewQueryParam("order", "string", false, "order string")
+	ParamToken = goapidoc.NewHeaderParam("Authorization", "string", true, "access token")
 )
 
 const (

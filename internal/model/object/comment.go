@@ -47,3 +47,20 @@ func NewRepliedComment(comment *Comment) *RepliedComment {
 		AddTime:      comment.AddTime,
 	}
 }
+
+// 新发布的评论
+type AddedComment struct {
+	Cid        uint64 // 评论编号
+	Mid        uint64 // 漫画编号
+	RepliedCid uint64 // 被回复的评论编号
+	Content    string // 评论内容
+}
+
+func NewAddedComment(cid uint64, mid uint64, repliedCid uint64, content string) *AddedComment {
+	return &AddedComment{
+		Cid:        cid,
+		Mid:        mid,
+		RepliedCid: repliedCid,
+		Content:    content,
+	}
+}

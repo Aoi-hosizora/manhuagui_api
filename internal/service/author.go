@@ -78,7 +78,7 @@ func (a *AuthorService) getSmallUserFromLi(li *goquery.Selection) *object.SmallA
 		Aid:        static.ParseAid(url),
 		Name:       name,
 		Zone:       zone,
-		Cover:      static.MANGA_AUTHOR_COVER_URL, // <<<
+		Cover:      static.DEFAULT_AUTHOR_COVER_URL, // <<<
 		Url:        strings.TrimSuffix(static.HOMEPAGE_URL+url, "/"),
 		MangaCount: mangaCount,
 		NewestDate: newestDate,

@@ -33,6 +33,14 @@ func init() {
 				goapidoc.NewProperty("reply_count", "integer#int32", true, "comment reply count"),
 				goapidoc.NewProperty("comment_time", "string", true, "comment create time"),
 			),
+
+		goapidoc.NewDefinition("AddedCommentDto", "Added comment response").
+			Properties(
+				goapidoc.NewProperty("cid", "integer#int64", true, "comment id"),
+				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewProperty("replied_cid", "integer#int64", true, "replied comment id"),
+				goapidoc.NewProperty("content", "string", true, "comment content"),
+			),
 	)
 }
 
@@ -107,6 +115,31 @@ func BuildRepliedCommentDtos(comments []*object.RepliedComment) []*RepliedCommen
 	out := make([]*RepliedCommentDto, len(comments))
 	for idx, comment := range comments {
 		out[idx] = BuildRepliedCommentDto(comment)
+	}
+	return out
+}
+
+// 新发布的评论
+type AddedCommentDto struct {
+	Cid        uint64 `json:"cid"`
+	Mid        uint64 `json:"mid"`
+	RepliedCid uint64 `json:"replied_cid"`
+	Content    string `json:"content"`
+}
+
+func BuildAddedCommentDto(comment *object.AddedComment) *AddedCommentDto {
+	return &AddedCommentDto{
+		Cid:        comment.Cid,
+		Mid:        comment.Mid,
+		RepliedCid: comment.RepliedCid,
+		Content:    comment.Content,
+	}
+}
+
+func BuildAddedCommentDtos(comments []*object.AddedComment) []*AddedCommentDto {
+	out := make([]*AddedCommentDto, len(comments))
+	for idx, comment := range comments {
+		out[idx] = BuildAddedCommentDto(comment)
 	}
 	return out
 }
