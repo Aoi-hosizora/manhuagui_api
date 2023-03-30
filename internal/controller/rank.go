@@ -13,22 +13,22 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/rank/day", "Get day ranking").
+		goapidoc.NewGetOperation("/v1/rank/day", "Get day ranking").
 			Tags("Rank").
 			Params(goapidoc.NewQueryParam("type", "string", false, "manga genre / zone / age, empty or all if all")).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<MangaRankDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/rank/week", "Get week ranking").
+		goapidoc.NewGetOperation("/v1/rank/week", "Get week ranking").
 			Tags("Rank").
 			Params(goapidoc.NewQueryParam("type", "string", false, "manga genre / zone / age, empty or all if all")).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<MangaRankDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/rank/month", "Get month ranking").
+		goapidoc.NewGetOperation("/v1/rank/month", "Get month ranking").
 			Tags("Rank").
 			Params(goapidoc.NewQueryParam("type", "string", false, "manga genre / zone / age, empty or all if all")).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<MangaRankDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/rank/total", "Get total ranking").
+		goapidoc.NewGetOperation("/v1/rank/total", "Get total ranking").
 			Tags("Rank").
 			Params(goapidoc.NewQueryParam("type", "string", false, "manga genre / zone / age, empty or all if all")).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<MangaRankDto>>")),

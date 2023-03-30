@@ -16,17 +16,17 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/comment/manga/{mid}", "Get manga comments").
+		goapidoc.NewGetOperation("/v1/comment/manga/{mid}", "Get manga comments").
 			Tags("Comment").
 			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamPage).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CommentDto>>")),
 
-		goapidoc.NewOperation("POST", "/v1/comment/{cid}/like", "Like comment").
+		goapidoc.NewPostOperation("/v1/comment/{cid}/like", "Like comment").
 			Tags("Comment").
 			Params(goapidoc.NewPathParam("cid", "integer#int64", true, "comment id")).
 			Responses(goapidoc.NewResponse(200, "Result")),
 
-		goapidoc.NewOperation("POST", "/v1/comment/manga/{mid}", "Add manga comment").
+		goapidoc.NewPostOperation("/v1/comment/manga/{mid}", "Add manga comment").
 			Tags("Comment").
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
@@ -35,7 +35,7 @@ func init() {
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<AddedCommentDto>")),
 
-		goapidoc.NewOperation("POST", "/v1/comment/manga/{mid}/{cid}", "Reply manga comment").
+		goapidoc.NewPostOperation("/v1/comment/manga/{mid}/{cid}", "Reply manga comment").
 			Tags("Comment").
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),

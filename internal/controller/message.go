@@ -13,11 +13,11 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/message", "Get all messages").
+		goapidoc.NewGetOperation("/v1/message", "Get all messages").
 			Tags("Message").
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<MessageDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/message/latest", "Get latest message").
+		goapidoc.NewGetOperation("/v1/message/latest", "Get latest message").
 			Tags("Message").
 			Responses(goapidoc.NewResponse(200, "_Result<LatestMessageDto>")),
 	)

@@ -54,7 +54,9 @@ type Server struct {
 func NewServer() (*Server, error) {
 	// server
 	engine := xgin.NewEngineSilently(
-		xgin.WithDebugPrintRouteFunc(result.PrintRouteFunc(xgin.DefaultColorizedPrintRouteFunc)),
+		xgin.WithDebugPrintRouteFunc(result.PrintRouteFunc(func(httpMethod, absolutePath, handlerName string, numHandlers int) {
+			fmt.Printf("[Gin] %s --> %s (%d handlers)\n", xcolor.Blue.Sprintf("%-6s %-27s", httpMethod, absolutePath), handlerName, numHandlers)
+		})),
 		xgin.WithDefaultWriter(xsugar.If(config.IsDebugMode(), nil, io.Discard)),
 		xgin.WithDefaultErrorWriter(xsugar.If(config.IsDebugMode(), nil, io.Discard)),
 		xgin.WithRedirectTrailingSlash(true),

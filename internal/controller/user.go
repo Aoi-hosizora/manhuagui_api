@@ -16,7 +16,7 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("POST", "/v1/user/login", "Login").
+		goapidoc.NewPostOperation("/v1/user/login", "Login").
 			Tags("User").
 			Params(
 				goapidoc.NewQueryParam("username", "string", true, "login username"),
@@ -24,17 +24,17 @@ func init() {
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<TokenDto>")),
 
-		goapidoc.NewOperation("POST", "/v1/user/check_login", "Check login").
+		goapidoc.NewPostOperation("/v1/user/check_login", "Check login").
 			Tags("User").
 			Params(apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "_Result<UsernameDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/user/info", "Get authorized user information").
+		goapidoc.NewGetOperation("/v1/user/info", "Get authorized user information").
 			Tags("User").
 			Params(apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "_Result<UserDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
+		goapidoc.NewGetOperation("/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
 			Tags("User").
 			Deprecated(true).
 			Params(
@@ -44,7 +44,7 @@ func init() {
 			).
 			Responses(goapidoc.NewResponse(200, "Result")),
 
-		goapidoc.NewOperation("POST", "/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
+		goapidoc.NewPostOperation("/v1/user/manga/{mid}/{cid}", "Record manga for the authorized user").
 			Tags("User").
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),

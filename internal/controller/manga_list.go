@@ -15,23 +15,23 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/list/serial", "Get hot serial mangas").
+		goapidoc.NewGetOperation("/v1/list/serial", "Get hot serial mangas").
 			Tags("MangaList").
 			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/list/finish", "Get finished mangas").
+		goapidoc.NewGetOperation("/v1/list/finish", "Get finished mangas").
 			Tags("MangaList").
 			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/list/latest", "Get latest mangas").
+		goapidoc.NewGetOperation("/v1/list/latest", "Get latest mangas").
 			Tags("MangaList").
 			Responses(goapidoc.NewResponse(200, "_Result<MangaGroupListDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/list/homepage", "Get homepage mangas").
+		goapidoc.NewGetOperation("/v1/list/homepage", "Get homepage mangas").
 			Tags("MangaList").
 			Responses(goapidoc.NewResponse(200, "_Result<HomepageMangaGroupListDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/list/updated", "Get recent update mangas").
+		goapidoc.NewGetOperation("/v1/list/updated", "Get recent update mangas").
 			Tags("MangaList").
 			Params(apidoc.ParamPage, apidoc.ParamLimit).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),

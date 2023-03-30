@@ -16,23 +16,23 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/category", "Get categories").
+		goapidoc.NewGetOperation("/v1/category", "Get categories").
 			Tags("Category").
 			Responses(goapidoc.NewResponse(200, "_Result<CategoryListDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/category/genre", "Get genres").
+		goapidoc.NewGetOperation("/v1/category/genre", "Get genres").
 			Tags("Category").
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/category/zone", "Get zones").
+		goapidoc.NewGetOperation("/v1/category/zone", "Get zones").
 			Tags("Category").
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/category/age", "Get ages").
+		goapidoc.NewGetOperation("/v1/category/age", "Get ages").
 			Tags("Category").
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<CategoryDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/category/genre/{genre}", "Get genre mangas").
+		goapidoc.NewGetOperation("/v1/category/genre/{genre}", "Get genre mangas").
 			Desc("order by popular / new / update").
 			Tags("Category").
 			Params(

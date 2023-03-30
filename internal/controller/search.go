@@ -18,13 +18,13 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/search", "Search mangas").
+		goapidoc.NewGetOperation("/v1/search", "Search mangas").
 			Desc("order by popular / new / update").
 			Tags("Search").
 			Params(goapidoc.NewQueryParam("keyword", "string", true, "search keyword"), apidoc.ParamPage, apidoc.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallMangaDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/search/{keyword}", "Search mangas").
+		goapidoc.NewGetOperation("/v1/search/{keyword}", "Search mangas").
 			Desc("order by popular / new / update").
 			Tags("Search").
 			Deprecated(true).

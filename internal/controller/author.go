@@ -15,7 +15,7 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/author", "Get all authors").
+		goapidoc.NewGetOperation("/v1/author", "Get all authors").
 			Desc("order by popular / comic / update").
 			Tags("Author").
 			Params(
@@ -26,12 +26,12 @@ func init() {
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallAuthorDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/author/{aid}", "Get author").
+		goapidoc.NewGetOperation("/v1/author/{aid}", "Get author").
 			Tags("Author").
 			Params(goapidoc.NewPathParam("aid", "integer#int64", true, "author id")).
 			Responses(goapidoc.NewResponse(200, "_Result<AuthorDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/author/{aid}/manga", "Get author mangas").
+		goapidoc.NewGetOperation("/v1/author/{aid}/manga", "Get author mangas").
 			Desc("order by popular / new / update").
 			Tags("Author").
 			Params(goapidoc.NewPathParam("aid", "integer#int64", true, "author id"), apidoc.ParamPage, apidoc.ParamOrder).

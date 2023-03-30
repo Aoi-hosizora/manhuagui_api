@@ -15,22 +15,22 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/manga", "Get all mangas").
+		goapidoc.NewGetOperation("/v1/manga", "Get all mangas").
 			Desc("order by popular / new / update").
 			Tags("Manga").
 			Params(apidoc.ParamPage, apidoc.ParamOrder).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/manga/{mid}", "Get manga").
+		goapidoc.NewGetOperation("/v1/manga/{mid}", "Get manga").
 			Tags("Manga").
 			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id")).
 			Responses(goapidoc.NewResponse(200, "_Result<MangaDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/manga/random", "Get random manga").
+		goapidoc.NewGetOperation("/v1/manga/random", "Get random manga").
 			Tags("Manga").
 			Responses(goapidoc.NewResponse(200, "_Result<RandomMangaInfoDto>")),
 
-		goapidoc.NewOperation("GET", "/v1/manga/{mid}/{cid}", "Get manga chapter").
+		goapidoc.NewGetOperation("/v1/manga/{mid}/{cid}", "Get manga chapter").
 			Tags("Manga").
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),

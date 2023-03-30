@@ -2,6 +2,7 @@ package module
 
 import (
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xcolor"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/logger"
@@ -10,6 +11,10 @@ import (
 )
 
 func Provide(configPath string) error {
+	xmodule.SetLogger(xmodule.DefaultLogger(xmodule.LogAll, func(moduleName, moduleType string) {
+		fmt.Printf("[Xmodule] Prv: %s <-- %s\n", xcolor.Red.ASprint(-25, moduleName), xcolor.Yellow.Sprint(moduleType))
+	}, nil))
+
 	// ========
 	// 1. basic
 	// ========

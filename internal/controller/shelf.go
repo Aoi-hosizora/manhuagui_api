@@ -16,22 +16,22 @@ import (
 
 func init() {
 	goapidoc.AddOperations(
-		goapidoc.NewOperation("GET", "/v1/shelf", "Get shelf mangas").
+		goapidoc.NewGetOperation("/v1/shelf", "Get shelf mangas").
 			Tags("Shelf").
 			Params(apidoc.ParamToken, apidoc.ParamPage).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<ShelfMangaDto>>")),
 
-		goapidoc.NewOperation("GET", "/v1/shelf/{mid}", "Check manga in shelf").
+		goapidoc.NewGetOperation("/v1/shelf/{mid}", "Check manga in shelf").
 			Tags("Shelf").
 			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "_Result<ShelfStatusDto>")),
 
-		goapidoc.NewOperation("POST", "/v1/shelf/{mid}", "Save manga to shelf").
+		goapidoc.NewPostOperation("/v1/shelf/{mid}", "Save manga to shelf").
 			Tags("Shelf").
 			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "Result")),
 
-		goapidoc.NewOperation("DELETE", "/v1/shelf/{mid}", "Remove manga from shelf").
+		goapidoc.NewDeleteOperation("/v1/shelf/{mid}", "Remove manga from shelf").
 			Tags("Shelf").
 			Params(goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"), apidoc.ParamToken).
 			Responses(goapidoc.NewResponse(200, "Result")),

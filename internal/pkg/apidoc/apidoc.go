@@ -8,6 +8,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/config"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"os"
+	"strings"
 )
 
 var (
@@ -48,7 +49,7 @@ func UpdateAndSave() error {
 	// update param
 	allowCache := goapidoc.NewQueryParam("allow_cache", "boolean", false, "flag to allow using cache").Default(false) // for backward-compatibility
 	for _, op := range goapidoc.GetOperations() {
-		if op.GetMethod() == "GET" {
+		if strings.ToLower(op.GetMethod()) == "get" {
 			op.AddParams(allowCache)
 		}
 	}
