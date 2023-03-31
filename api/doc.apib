@@ -95,6 +95,33 @@ order by popular / new / update
 
     + Body
 
+## Vote manga [/v1/manga/{mid}/vote{?score}]
+
+> `/v1/manga/{mid}/vote`
+
+### Vote manga [POST]
+
+> `POST /v1/manga/{mid}/vote`
+
++ Parameters
+
+    + mid (number, required) - manga id
+        (format: int64)
+    + score (number, required) - manga score
+        (format: int32, 1.000 <= val <= 5.000)
+
++ Request (application/json)
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (_Result<RandomMangaInfoDto>)
+
+    + Body
+
 ## Get manga chapter [/v1/manga/{mid}/{cid}{?allow_cache}]
 
 > `/v1/manga/{mid}/{cid}`

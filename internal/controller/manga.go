@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/Aoi-hosizora/ahlib/xmodule"
+	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/goapidoc"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/dto"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/param"
@@ -28,6 +29,14 @@ func init() {
 
 		goapidoc.NewGetOperation("/v1/manga/random", "Get random manga").
 			Tags("Manga").
+			Responses(goapidoc.NewResponse(200, "_Result<RandomMangaInfoDto>")),
+
+		goapidoc.NewPostOperation("/v1/manga/{mid}/vote", "Vote manga").
+			Tags("Manga").
+			Params(
+				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewQueryParam("score", "integer#int32", true, "manga score").ValueRange(1, 5),
+			).
 			Responses(goapidoc.NewResponse(200, "_Result<RandomMangaInfoDto>")),
 
 		goapidoc.NewGetOperation("/v1/manga/{mid}/{cid}", "Get manga chapter").
@@ -92,6 +101,32 @@ func (m *MangaController) GetRandomManga(c *gin.Context) *result.Result {
 
 	res := dto.BuildRandomMangaInfoDto(info)
 	return result.Ok().SetData(res)
+}
+
+// POST /v1/manga/:mid/vote
+func (m *MangaController) VoteManga(c *gin.Context) *result.Result {
+	id, err := param.BindRouteID(c, "mid")
+	if err != nil {
+		return result.BindingError(err, c)
+	}
+	score := c.Query("score")
+	scoreValue, err := xnumber.Atou8(score)
+	if err != nil {
+		return result.BindingError(err, c)
+	}
+	if scoreValue < 1 {
+		scoreValue = 1
+	}
+	if scoreValue > 5 {
+		scoreValue = 5
+	}
+
+	err = m.mangaService.VoteManga(id, scoreValue)
+	if err != nil {
+		return result.Error(errno.VoteMangaError).SetError(err, c)
+	}
+
+	return result.Ok()
 }
 
 // GET /v1/manga/:mid/:cid

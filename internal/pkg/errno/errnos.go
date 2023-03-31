@@ -18,6 +18,7 @@ var (
 	GetAllMangasError         = new5(500, "无法获取漫画列表")
 	GetMangaError             = new5(500, "无法获取漫画信息")
 	GetRandomMangaError       = new5(500, "无法获取随机漫画")
+	VoteMangaError            = new5(500, "无法对漫画投票")
 	MangaNotFoundError        = new4(404, "漫画未找到")
 	GetMangaChapterError      = new5(500, "无法获取漫画章节")
 	MangaChapterNotFoundError = new4(404, "漫画章节未找到")

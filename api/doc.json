@@ -798,6 +798,43 @@
         }
       }
     },
+    "/v1/manga/{mid}/vote": {
+      "post": {
+        "summary": "Vote manga",
+        "operationId": "-v1-manga-:mid-vote-post",
+        "tags": [
+          "Manga"
+        ],
+        "parameters": [
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "description": "manga id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "score",
+            "in": "query",
+            "required": true,
+            "description": "manga score",
+            "type": "integer",
+            "format": "int32",
+            "maximum": 5,
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/_Result<RandomMangaInfoDto>"
+            }
+          }
+        }
+      }
+    },
     "/v1/manga/{mid}/{cid}": {
       "get": {
         "summary": "Get manga chapter",

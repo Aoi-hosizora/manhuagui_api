@@ -1,11 +1,11 @@
-# manhuagui-api
+# manhuagui_api
 
 + An unofficial backend for manhuagui (https://www.manhuagui.com/) written in Go/Gin.
 
 ### Related repositories
 
 + [Aoi-hosizora/manhuagui_flutter](https://github.com/Aoi-hosizora/manhuagui_flutter): The corresponding manhuagui android client.
-+ [Aoi-hosizora/ahlib](https://github.com/Aoi-hosizora/ahlib): A personal golang library, which is used in this project.
++ [Aoi-hosizora/ahlib](https://github.com/Aoi-hosizora/ahlib): A personal golang library series, which is used in this project.
 
 ### Documentation
 

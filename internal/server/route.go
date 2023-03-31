@@ -57,6 +57,7 @@ func setupRoutes(engine *gin.Engine) {
 	mangaGroup.GET("", mangaController.GetAllMangas)
 	mangaGroup.GET(":mid", mangaController.GetManga)
 	mangaGroup.GET("random", mangaController.GetRandomManga)
+	mangaGroup.POST(":mid/vote", mangaController.VoteManga)
 	mangaGroup.GET(":mid/:cid", mangaController.GetMangaChapter)
 
 	listGroup := v1.Group("list")

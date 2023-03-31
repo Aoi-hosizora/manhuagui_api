@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xconstant/headers"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
@@ -13,6 +14,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"github.com/PuerkitoBio/goquery"
 	"math"
+	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
@@ -230,6 +232,31 @@ func (m *MangaService) GetRandomMangaInfo() (*object.RandomMangaInfo, error) {
 		Url: fmt.Sprintf(static.MANGA_PAGE_URL, mid),
 	}
 	return info, nil
+}
+
+func (m *MangaService) VoteManga(mid uint64, score uint8) error {
+	url := fmt.Sprintf(static.MANGA_VOTE_URL, mid, score) // score: 1-5
+	bs, _, err := m.httpService.HttpGet(url, func(r *http.Request) {
+		r.Header.Set(headers.Referer, fmt.Sprintf(static.MANGA_PAGE_URL, mid))
+	})
+	if err != nil {
+		return err
+	}
+
+	type model struct {
+		Success bool `json:"success"`
+	}
+	mm := &model{}
+	err = json.Unmarshal(bs, mm)
+	if err != nil {
+		return err
+	}
+
+	// { "success": true }
+	if !mm.Success {
+		return fmt.Errorf("can not vote manga %d", mid)
+	}
+	return nil
 }
 
 func (m *MangaService) GetMangaChapter(mid, cid uint64) (*object.MangaChapter, error) {

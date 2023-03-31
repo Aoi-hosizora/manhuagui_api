@@ -13,6 +13,7 @@ const (
 	MANGA_USER_URL     = "https://www.manhuagui.com/user/center/index"
 	MANGA_SHELF_URL    = "https://www.manhuagui.com/user/book/shelf/%d"
 	MANGA_RANDOM_URL   = "https://www.manhuagui.com/tools/random.ashx"
+	MANGA_VOTE_URL     = "https://www.manhuagui.com/tools/vote.ashx?act=vote&bid=%d&s=%d"
 
 	MANGA_SOURCE_URL       = "https://%s.hamreus.com"
 	MANGA_COVER_URL        = "https://cf.hamreus.com/cpic/g/%d.jpg"
