@@ -34,7 +34,7 @@ func Provide(configPath string) error {
 	xmodule.ProvideByName(sn.SLogger, lgr)
 
 	// ===========
-	// 3. services
+	// 2. services
 	// ===========
 
 	xmodule.ProvideByName(sn.SHttpService, service.NewHttpService())           // *service.HttpService

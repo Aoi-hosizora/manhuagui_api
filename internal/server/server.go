@@ -74,11 +74,11 @@ func NewServer() (*Server, error) {
 	engine.Use(middleware.CacheMiddleware())
 
 	// routes
-	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config)
-	if cfg.Meta.Pprof {
+	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Meta
+	if cfg.Pprof {
 		xgin.WrapPprofSilently(engine)
 	}
-	if cfg.Meta.Swagger {
+	if cfg.Swagger {
 		xgin.WrapSwagger(engine.Group("/v1/swagger"), apidoc.ReadSwaggerDoc, apidoc.SwaggerOptions()...)
 	}
 	setupRoutes(engine)

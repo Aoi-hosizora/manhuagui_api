@@ -8,12 +8,13 @@ var (
 func new4(s int32, m string) *Error { errno4xx++; return New(s, errno4xx, m) }
 func new5(s int32, m string) *Error { errno5xx++; return New(s, errno5xx, m) }
 
+// Server related
 var (
 	RequestParamError  = new4(400, "request parameter error")
 	ServerUnknownError = new5(500, "server unknown error")
 )
 
-// manga
+// Manga related
 var (
 	GetAllMangasError         = new5(500, "无法获取漫画列表")
 	GetMangaError             = new5(500, "无法获取漫画信息")
@@ -29,7 +30,7 @@ var (
 	GetUpdatedMangasError     = new5(500, "无法获取最近更新漫画")
 )
 
-// category
+// Category related
 var (
 	GetGenresError      = new5(500, "无法获取类别信息")
 	GetZonesError       = new5(500, "无法获取地区信息")
@@ -39,12 +40,12 @@ var (
 	GetCategoriesError  = new5(500, "无法获取漫画分类信息")
 )
 
-// search
+// Search related
 var (
 	SearchMangasError = new5(500, "无法获取漫画搜索结果")
 )
 
-// author
+// Author related
 var (
 	GetAllAuthorsError   = new5(500, "无法获取漫画家列表")
 	GetAuthorError       = new5(500, "无法获取漫画家信息")
@@ -52,13 +53,13 @@ var (
 	GetAuthorMangasError = new5(500, "无法获取漫画家的漫画列表")
 )
 
-// rank
+// Rank related
 var (
 	GetRankingError          = new5(500, "无法获取排行榜")
 	RankingTypeNotFoundError = new4(404, "排行榜类别未找到")
 )
 
-// comment
+// Comment related
 var (
 	GetMangaCommentsError = new5(500, "无法获取漫画评论")
 	LikeCommentError      = new5(500, "无法点赞评论")
@@ -67,7 +68,7 @@ var (
 	ReplyCommentError     = new5(500, "无法回复评论")
 )
 
-// user
+// User related
 var (
 	LoginError                = new5(500, "无法登录")
 	PasswordError             = new4(401, "用户名或密码错误")
@@ -83,7 +84,7 @@ var (
 	CountMangaError           = new5(500, "无法记录漫画阅读历史")
 )
 
-// message
+// Message related
 var (
 	GetMessageError = new5(500, "无法获取消息")
 )

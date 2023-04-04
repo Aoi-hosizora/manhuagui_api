@@ -24,10 +24,10 @@ func Setup() (*logrus.Logger, error) {
 		xlogrus.WithTimeLocation(time.Local),
 	))
 
-	logName := xmodule.MustGetByName(sn.SConfig).(*config.Config).Meta.LogName
+	cfg := xmodule.MustGetByName(sn.SConfig).(*config.Config).Meta
 	rotation, err := xrotation.New(
-		logName+".%Y%m%d.log",
-		xrotation.WithSymlinkFilename(logName+".current.log"),
+		cfg.LogName+".%Y%m%d.log",
+		xrotation.WithSymlinkFilename(cfg.LogName+".current.log"),
 		xrotation.WithRotationTime(24*time.Hour),
 		xrotation.WithRotationMaxAge(15*24*time.Hour),
 		xrotation.WithClock(xtime.Local),

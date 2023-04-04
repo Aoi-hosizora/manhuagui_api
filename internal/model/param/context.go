@@ -21,7 +21,6 @@ type PageOrderParam struct {
 	Order string `json:"order"`
 }
 
-// Bind ?page&limit
 func BindQueryPage(c *gin.Context) *PageParam {
 	page, err := xnumber.Atoi32(c.Query("page"))
 	if err != nil || page <= 0 {
@@ -39,7 +38,6 @@ func BindQueryPage(c *gin.Context) *PageParam {
 	return &PageParam{Page: page, Limit: limit}
 }
 
-// Bind Authorization / ?token
 func BindToken(c *gin.Context) string {
 	token := c.GetHeader("Authorization")
 	if token == "" {
@@ -48,14 +46,12 @@ func BindToken(c *gin.Context) string {
 	return token
 }
 
-// Bind ?page&limit&order
 func BindQueryPageOrder(c *gin.Context) *PageOrderParam {
 	page := BindQueryPage(c)
 	order := c.DefaultQuery("order", "")
 	return &PageOrderParam{Page: page.Page, Limit: page.Limit, Order: order}
 }
 
-// Bind :xid
 func BindRouteID(c *gin.Context, name string) (uint64, error) {
 	s := c.Param(name)
 	id, err := xnumber.Atou64(s)
@@ -69,7 +65,6 @@ func BindRouteID(c *gin.Context, name string) (uint64, error) {
 	return id, nil
 }
 
-// Bind body
 func BindBody[T any](c *gin.Context, obj T) (T, error) {
 	err := c.ShouldBind(obj)
 	if err != nil {

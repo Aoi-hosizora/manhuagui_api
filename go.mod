@@ -42,6 +42,6 @@ require (
 )
 
 replace (
-	github.com/Aoi-hosizora/ahlib v0.0.0-00010101000000-000000000000 => github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed
-	github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-00010101000000-000000000000 => github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143
+	github.com/Aoi-hosizora/ahlib => github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed
+	github.com/Aoi-hosizora/ahlib-mx/xvalidator => github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143
 )
