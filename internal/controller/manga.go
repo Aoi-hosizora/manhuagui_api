@@ -36,6 +36,7 @@ func init() {
 			Params(
 				goapidoc.NewPathParam("mid", "integer#int64", true, "manga id"),
 				goapidoc.NewQueryParam("score", "integer#int32", true, "manga score").ValueRange(1, 5),
+				apidoc.ParamToken,
 			).
 			Responses(goapidoc.NewResponse(200, "_Result<RandomMangaInfoDto>")),
 
@@ -109,6 +110,10 @@ func (m *MangaController) VoteManga(c *gin.Context) *result.Result {
 	if err != nil {
 		return result.BindingError(err, c)
 	}
+	token := param.BindToken(c)
+	if token == "" {
+		return result.Error(errno.UnauthorizedError)
+	}
 	score := c.Query("score")
 	scoreValue, err := xnumber.Atou8(score)
 	if err != nil {
@@ -121,7 +126,7 @@ func (m *MangaController) VoteManga(c *gin.Context) *result.Result {
 		scoreValue = 5
 	}
 
-	err = m.mangaService.VoteManga(id, scoreValue)
+	err = m.mangaService.VoteManga(token, id, scoreValue)
 	if err != nil {
 		return result.Error(errno.VoteMangaError).SetError(err, c)
 	}

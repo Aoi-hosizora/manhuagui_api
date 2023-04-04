@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xconstant/headers"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/ahlib/xpointer"
@@ -119,8 +120,8 @@ func (m *MessageService) GetLatestMessage() (*object.LatestMessage, error) {
 
 func (m *MessageService) getCommentPageCount(token string) (int32, error) {
 	bs, resp, err := m.httpService.HttpGet(static.MESSAGE_ISSUE_API, func(r *http.Request) {
-		r.Header.Set("Accept", static.GITHUB_ACCEPT)
-		r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+		r.Header.Set(headers.Accept, static.GITHUB_ACCEPT)
+		r.Header.Set(headers.Authorization, fmt.Sprintf("Bearer %s", token))
 	})
 	if err != nil {
 		return 0, err
@@ -143,8 +144,8 @@ func (m *MessageService) getCommentPageCount(token string) (int32, error) {
 func (m *MessageService) getMessages(page int32, token string) ([]*object.Message, error) {
 	apiUrl := fmt.Sprintf(static.MESSAGE_COMMENTS_API, page, static.MESSAGE_COMMENTS_PERPAGE /* 100 */)
 	bs, resp, err := m.httpService.HttpGet(apiUrl, func(r *http.Request) {
-		r.Header.Set("Accept", static.GITHUB_ACCEPT)
-		r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+		r.Header.Set(headers.Accept, static.GITHUB_ACCEPT)
+		r.Header.Set(headers.Authorization, fmt.Sprintf("Bearer %s", token))
 	})
 	if err != nil {
 		return nil, err

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xconstant/headers"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
@@ -28,7 +29,7 @@ func NewShelfService() *ShelfService {
 
 func (s *ShelfService) _httpGetWithToken(url, token string) ([]byte, *goquery.Document, error) {
 	bs, doc, err := s.httpService.HttpGetDocument(url, func(req *http.Request) {
-		req.Header.Set("Cookie", "my="+token)
+		req.Header.Set(headers.Cookie, "my="+token)
 	})
 	if err != nil {
 		return nil, nil, err
@@ -41,8 +42,8 @@ func (s *ShelfService) _httpGetWithToken(url, token string) ([]byte, *goquery.Do
 
 func (s *ShelfService) _httpPostWithToken(url, token string, form *url.Values) ([]byte, error) {
 	bs, _, err := s.httpService.HttpPost(url, strings.NewReader(form.Encode()), func(req *http.Request) {
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Set("Cookie", "my="+token)
+		req.Header.Set(headers.ContentType, "application/x-www-form-urlencoded")
+		req.Header.Set(headers.Cookie, "my="+token)
 	})
 	if err != nil {
 		return nil, err

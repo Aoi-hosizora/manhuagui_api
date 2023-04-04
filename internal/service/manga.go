@@ -234,9 +234,10 @@ func (m *MangaService) GetRandomMangaInfo() (*object.RandomMangaInfo, error) {
 	return info, nil
 }
 
-func (m *MangaService) VoteManga(mid uint64, score uint8) error {
+func (m *MangaService) VoteManga(token string, mid uint64, score uint8) error {
 	url := fmt.Sprintf(static.MANGA_VOTE_URL, mid, score) // score: 1-5
 	bs, _, err := m.httpService.HttpGet(url, func(r *http.Request) {
+		r.Header.Set(headers.Cookie, "my="+token)
 		r.Header.Set(headers.Referer, fmt.Sprintf(static.MANGA_PAGE_URL, mid))
 	})
 	if err != nil {

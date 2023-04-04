@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xconstant/headers"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
@@ -28,7 +29,7 @@ func NewUserService() *UserService {
 func (u *UserService) Login(username, password string) (string, error) {
 	form := fmt.Sprintf("txtUserName=%s&txtPassword=%s", url.QueryEscape(username), url.QueryEscape(password))
 	bs, resp, err := u.httpService.HttpPost(static.MANGA_LOGIN_URL, strings.NewReader(form), func(r *http.Request) {
-		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		r.Header.Set(headers.ContentType, "application/x-www-form-urlencoded")
 	})
 	if err != nil {
 		return "", err
@@ -48,7 +49,7 @@ func (u *UserService) Login(username, password string) (string, error) {
 
 func (u *UserService) CheckLogin(token string) (bool, string, error) {
 	bs, _, err := u.httpService.HttpPost(static.MANGA_CHECK_LOGIN_URL, nil, func(r *http.Request) {
-		r.Header.Set("Cookie", "my="+token)
+		r.Header.Set(headers.Cookie, "my="+token)
 	})
 	if err != nil {
 		return false, "", err
@@ -69,7 +70,7 @@ func (u *UserService) CheckLogin(token string) (bool, string, error) {
 
 func (u *UserService) _httpGetWithToken(url, token string) ([]byte, *goquery.Document, error) {
 	bs, doc, err := u.httpService.HttpGetDocument(url, func(req *http.Request) {
-		req.Header.Set("Cookie", "my="+token)
+		req.Header.Set(headers.Cookie, "my="+token)
 	})
 	if err != nil {
 		return nil, nil, err

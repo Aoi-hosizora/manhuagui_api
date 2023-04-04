@@ -823,6 +823,13 @@
             "format": "int32",
             "maximum": 5,
             "minimum": 1
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token",
+            "type": "string"
           }
         ],
         "responses": {
