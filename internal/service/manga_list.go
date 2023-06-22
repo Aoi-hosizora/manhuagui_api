@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/Aoi-hosizora/ahlib/xconstant/headers"
 	"github.com/Aoi-hosizora/ahlib/xmodule"
 	"github.com/Aoi-hosizora/ahlib/xnumber"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/model/object"
@@ -9,6 +10,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/module/sn"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/static"
 	"github.com/PuerkitoBio/goquery"
+	"net/http"
 	"strings"
 	"sync"
 )
@@ -339,6 +341,119 @@ func (m *MangaListService) GetRecentUpdatedMangas(pa *param.PageParam) ([]*objec
 	end := start + pa.Limit
 	for i := start; i < end && i < totalLength; i++ {
 		out = append(out, allMangas[i])
+	}
+	return out, totalLength, nil
+}
+
+func (m *MangaListService) getSmallerMangaFromMobile(li *goquery.Selection) *object.SmallerManga {
+	title := li.Find("h3").Text()
+	cover := li.Find("img").AttrOr("data-src", "")
+	url := li.Find("a").AttrOr("href", "")
+	status := li.Find("i").Text()
+	authors := li.Find("dl:nth-of-type(1) dd").Text()
+	genres := li.Find("dl:nth-of-type(2) dd").Text()
+	newestChapter := li.Find("dl:nth-of-type(3) dd").Text()
+	newestDate := li.Find("dl:nth-of-type(4) dd").Text()
+	return &object.SmallerManga{
+		Mid:           static.ParseMid(url),
+		Title:         title,
+		Cover:         static.ParseCoverUrl(cover),
+		Url:           static.HOMEPAGE_URL + url,
+		Finished:      status == "完结",
+		Authors:       strings.Split(authors, ","),
+		Genres:        strings.Split(genres, ","),
+		NewestChapter: newestChapter,
+		NewestDate:    newestDate,
+	}
+}
+
+func (m *MangaListService) GetRecentUpdatedMangasFromMobile(pa *param.PageParam, needTotal bool) ([]*object.SmallerManga, int32, error) {
+	wg := sync.WaitGroup{}
+
+	out, err1 := make([]*object.SmallerManga, 0), error(nil)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		_, doc, err := m.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_UPDATE_MURL, pa.Page), func(r *http.Request) {
+			r.Header.Set(headers.UserAgent, static.USER_AGENT_M)
+		})
+		if err != nil {
+			err1 = err
+			return
+		}
+		doc.Find("li").Each(func(idx int, li *goquery.Selection) {
+			manga := m.getSmallerMangaFromMobile(li)
+			out = append(out, manga)
+		})
+	}()
+
+	totalLength, err2 := int32(0), error(nil)
+	if needTotal {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			_, doc, err := m.httpService.HttpGetDocument(static.MANGA_UPDATE_URL, nil)
+			if err != nil {
+				err2 = err
+				return
+			}
+			totalLength = int32(doc.Find("div.latest-cont a.cover").Length())
+		}()
+	}
+
+	wg.Wait()
+	if err1 != nil {
+		return nil, 0, err1
+	}
+	if err2 != nil {
+		return nil, 0, err2
+	}
+	return out, totalLength, nil
+}
+
+func (m *MangaListService) GetRecentPublishedMangasFromMobile(pa *param.PageParam, needTotal bool) ([]*object.SmallerManga, int32, error) {
+	wg := sync.WaitGroup{}
+
+	out, err1 := make([]*object.SmallerManga, 0), error(nil)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		_, doc, err := m.httpService.HttpGetDocument(fmt.Sprintf(static.MANGA_OVERALL_MURL, pa.Page), func(r *http.Request) {
+			r.Header.Set(headers.UserAgent, static.USER_AGENT_M)
+		})
+		if err != nil {
+			err1 = err
+			return
+		}
+		doc.Find("li").Each(func(idx int, li *goquery.Selection) {
+			manga := m.getSmallerMangaFromMobile(li)
+			out = append(out, manga)
+		})
+	}()
+
+	totalLength, err2 := int32(0), error(nil)
+	if needTotal {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			_, doc, err := m.httpService.HttpGetDocument(static.MANGA_CATEGORY_URL, nil)
+			if err != nil {
+				err2 = err
+				return
+			}
+			totalLength, err = xnumber.Atoi32(doc.Find("div.result-count strong:nth-child(3)").Text())
+			if err != nil {
+				err2 = err
+			}
+		}()
+	}
+
+	wg.Wait()
+	if err1 != nil {
+		return nil, 0, err1
+	}
+	if err2 != nil {
+		return nil, 0, err2
 	}
 	return out, totalLength, nil
 }

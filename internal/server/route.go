@@ -66,6 +66,8 @@ func setupRoutes(engine *gin.Engine) {
 	listGroup.GET("latest", mangaListController.GetLatestMangas)
 	listGroup.GET("homepage", mangaListController.GetHomepageMangas)
 	listGroup.GET("updated", mangaListController.GetRecentUpdatedMangas)
+	listGroup.GET("updated_v2", mangaListController.GetRecentUpdatedMangasV2)
+	listGroup.GET("published_v2", mangaListController.GetRecentPublishedMangasV2)
 
 	categoryGroup := v1.Group("category")
 	categoryGroup.GET("", categoryController.GetCategories)

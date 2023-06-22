@@ -5,6 +5,8 @@ const (
 	MANGA_PAGE_URL     = "https://www.manhuagui.com/comic/%d"
 	MANGA_CHAPTER_URL  = "https://www.manhuagui.com/comic/%d/%d.html"
 	MANGA_UPDATE_URL   = "https://www.manhuagui.com/update/d30.html"
+	MANGA_UPDATE_MURL  = "https://m.manhuagui.com/update/?page=%d&ajax=1&order="
+	MANGA_OVERALL_MURL = "https://m.manhuagui.com/list/?page=%d&catid=0&ajax=1&order="
 	MANGA_CATEGORY_URL = "https://www.manhuagui.com/list"
 	MANGA_SEARCH_URL   = "https://www.manhuagui.com/s/%s_p%d.html"
 	MANGA_AUTHORS_URL  = "https://www.manhuagui.com/alist"
@@ -39,6 +41,7 @@ const (
 
 const (
 	USER_AGENT    = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"
+	USER_AGENT_M  = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36"
 	REFERER       = "https://www.manhuagui.com/"
 	GITHUB_ACCEPT = "application/vnd.github+json"
 

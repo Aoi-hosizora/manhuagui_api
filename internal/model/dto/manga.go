@@ -66,6 +66,19 @@ func init() {
 				goapidoc.NewProperty("brief_introduction", "string", true, "manga brief introduction"),
 			),
 
+		goapidoc.NewDefinition("SmallerMangaDto", "Smaller manga response").
+			Properties(
+				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
+				goapidoc.NewProperty("title", "string", true, "manga name"),
+				goapidoc.NewProperty("cover", "string", true, "manga cover"),
+				goapidoc.NewProperty("url", "string", true, "manga link"),
+				goapidoc.NewProperty("finished", "boolean", true, "manga is finished"),
+				goapidoc.NewProperty("authors", "string[]", true, "manga authors, empty if not supported"),
+				goapidoc.NewProperty("genres", "string[]", true, "manga genres, empty if not supported"),
+				goapidoc.NewProperty("newest_chapter", "string", true, "manga last update chapter"),
+				goapidoc.NewProperty("newest_date", "string", true, "manga last update date"),
+			),
+
 		goapidoc.NewDefinition("TinyMangaDto", "Tiny manga response").
 			Properties(
 				goapidoc.NewProperty("mid", "integer#int64", true, "manga id"),
@@ -305,6 +318,49 @@ func BuildSmallMangaDtos(mangas []*object.SmallManga) []*SmallMangaDto {
 	out := make([]*SmallMangaDto, len(mangas))
 	for idx, manga := range mangas {
 		out[idx] = BuildSmallMangaDto(manga)
+	}
+	return out
+}
+
+// 漫画页的部分信息 object.SmallerManga
+type SmallerMangaDto struct {
+	Mid           uint64   `json:"mid"`
+	Title         string   `json:"title"`
+	Cover         string   `json:"cover"`
+	Url           string   `json:"url"`
+	Finished      bool     `json:"finished"`
+	Authors       []string `json:"authors"` // non-nillable
+	Genres        []string `json:"genres"`  // non-nillable
+	NewestChapter string   `json:"newest_chapter"`
+	NewestDate    string   `json:"newest_date"`
+}
+
+func BuildSmallerMangaDto(manga *object.SmallerManga) *SmallerMangaDto {
+	authors := manga.Authors
+	if len(authors) == 0 {
+		authors = make([]string, 0)
+	}
+	genres := manga.Genres
+	if len(genres) == 0 {
+		genres = make([]string, 0)
+	}
+	return &SmallerMangaDto{
+		Mid:           manga.Mid,
+		Title:         manga.Title,
+		Cover:         manga.Cover,
+		Url:           manga.Url,
+		Finished:      manga.Finished,
+		Authors:       authors,
+		Genres:        genres,
+		NewestChapter: manga.NewestChapter,
+		NewestDate:    manga.NewestDate,
+	}
+}
+
+func BuildSmallerMangaDtos(mangas []*object.SmallerManga) []*SmallerMangaDto {
+	out := make([]*SmallerMangaDto, len(mangas))
+	for idx, manga := range mangas {
+		out[idx] = BuildSmallerMangaDto(manga)
 	}
 	return out
 }

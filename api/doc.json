@@ -623,6 +623,49 @@
         }
       }
     },
+    "/v1/list/published_v2": {
+      "get": {
+        "summary": "Get recent published mangas (new version)",
+        "operationId": "-v1-list-published_v2-get",
+        "tags": [
+          "MangaList"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "current page",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "need_total",
+            "in": "query",
+            "required": false,
+            "description": "query total whether needed",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "name": "allow_cache",
+            "in": "query",
+            "required": false,
+            "description": "flag to allow using cache",
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/_Result<_Page<SmallerMangaDto>>"
+            }
+          }
+        }
+      }
+    },
     "/v1/list/serial": {
       "get": {
         "summary": "Get hot serial mangas",
@@ -688,6 +731,49 @@
             "description": "200 OK",
             "schema": {
               "$ref": "#/definitions/_Result<_Page<TinyMangaDto>>"
+            }
+          }
+        }
+      }
+    },
+    "/v1/list/updated_v2": {
+      "get": {
+        "summary": "Get recent update mangas (new version)",
+        "operationId": "-v1-list-updated_v2-get",
+        "tags": [
+          "MangaList"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "current page",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "need_total",
+            "in": "query",
+            "required": false,
+            "description": "query total whether needed",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "name": "allow_cache",
+            "in": "query",
+            "required": false,
+            "description": "flag to allow using cache",
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "schema": {
+              "$ref": "#/definitions/_Result<_Page<SmallerMangaDto>>"
             }
           }
         }
@@ -2582,6 +2668,66 @@
         }
       }
     },
+    "SmallerMangaDto": {
+      "type": "object",
+      "required": [
+        "mid",
+        "title",
+        "cover",
+        "url",
+        "finished",
+        "authors",
+        "genres",
+        "newest_chapter",
+        "newest_date"
+      ],
+      "description": "Smaller manga response",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "manga id"
+        },
+        "title": {
+          "type": "string",
+          "description": "manga name"
+        },
+        "cover": {
+          "type": "string",
+          "description": "manga cover"
+        },
+        "url": {
+          "type": "string",
+          "description": "manga link"
+        },
+        "finished": {
+          "type": "boolean",
+          "description": "manga is finished"
+        },
+        "authors": {
+          "type": "array",
+          "description": "manga authors, empty if not supported",
+          "items": {
+            "type": "string"
+          }
+        },
+        "genres": {
+          "type": "array",
+          "description": "manga genres, empty if not supported",
+          "items": {
+            "type": "string"
+          }
+        },
+        "newest_chapter": {
+          "type": "string",
+          "description": "manga last update chapter"
+        },
+        "newest_date": {
+          "type": "string",
+          "description": "manga last update date"
+        }
+      }
+    },
     "TinyAuthorDto": {
       "type": "object",
       "required": [
@@ -3104,6 +3250,40 @@
         }
       }
     },
+    "_Page<SmallerMangaDto>": {
+      "type": "object",
+      "required": [
+        "page",
+        "limit",
+        "total",
+        "data"
+      ],
+      "description": "page response",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "description": "current page"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int32",
+          "description": "page size"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "data count"
+        },
+        "data": {
+          "type": "array",
+          "description": "page data",
+          "items": {
+            "$ref": "#/definitions/SmallerMangaDto"
+          }
+        }
+      }
+    },
     "_Page<TinyMangaDto>": {
       "type": "object",
       "required": [
@@ -3595,6 +3775,29 @@
         },
         "data": {
           "$ref": "#/definitions/_Page<SmallMangaDto>"
+        }
+      }
+    },
+    "_Result<_Page<SmallerMangaDto>>": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "data"
+      ],
+      "description": "global response",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "status code"
+        },
+        "message": {
+          "type": "string",
+          "description": "status message"
+        },
+        "data": {
+          "$ref": "#/definitions/_Page<SmallerMangaDto>"
         }
       }
     },

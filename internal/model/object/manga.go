@@ -66,6 +66,19 @@ type SmallManga struct {
 	BriefIntroduction string        // 简要介绍
 }
 
+// 漫画页的部分信息 (Smaller)
+type SmallerManga struct {
+	Mid           uint64   // 漫画编号
+	Title         string   // 漫画标题
+	Cover         string   // 漫画封面
+	Url           string   // 漫画链接
+	Finished      bool     // 是否完结
+	Authors       []string // 漫画作者
+	Genres        []string // 漫画分类
+	NewestChapter string   // 最新章节
+	NewestDate    string   // 更新时间
+}
+
 // 漫画页的部分信息 (Tiny)
 type TinyManga struct {
 	Mid           uint64 // 漫画编号

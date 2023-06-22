@@ -288,6 +288,64 @@ manga-list-controller
 
     + Body
 
+## Get recent update mangas (new version) [/v1/list/updated_v2{?page,need_total,allow_cache}]
+
+> `/v1/list/updated_v2`
+
+### Get recent update mangas (new version) [GET]
+
+> `GET /v1/list/updated_v2`
+
++ Parameters
+
+    + page (number, optional) - current page
+        (format: int32)
+    + need_total (boolean, optional) - query total whether needed
+        + Default: `true`
+    + allow_cache (boolean, optional) - flag to allow using cache
+        + Default: `false`
+
++ Request (application/json)
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (_Result<_Page<SmallerMangaDto>>)
+
+    + Body
+
+## Get recent published mangas (new version) [/v1/list/published_v2{?page,need_total,allow_cache}]
+
+> `/v1/list/published_v2`
+
+### Get recent published mangas (new version) [GET]
+
+> `GET /v1/list/published_v2`
+
++ Parameters
+
+    + page (number, optional) - current page
+        (format: int32)
+    + need_total (boolean, optional) - query total whether needed
+        + Default: `true`
+    + allow_cache (boolean, optional) - flag to allow using cache
+        + Default: `false`
+
++ Request (application/json)
+
+    + Body
+
++ Response 200 (application/json)
+
+    200 OK
+
+    + Attributes (_Result<_Page<SmallerMangaDto>>)
+
+    + Body
+
 # Group Category
 
 category-controller
@@ -1321,6 +1379,19 @@ message-controller
 + newest_date (string, required) - manga last update date
 + brief_introduction (string, required) - manga brief introduction
 
+## SmallerMangaDto (object)
+
++ mid (number, required) - manga id
+    (format: int64)
++ title (string, required) - manga name
++ cover (string, required) - manga cover
++ url (string, required) - manga link
++ finished (boolean, required) - manga is finished
++ authors (array[string], required) - manga authors, empty if not supported
++ genres (array[string], required) - manga genres, empty if not supported
++ newest_chapter (string, required) - manga last update chapter
++ newest_date (string, required) - manga last update date
+
 ## TinyMangaDto (object)
 
 + mid (number, required) - manga id
@@ -1631,6 +1702,23 @@ message-controller
     (format: int32)
 + message (string, required) - status message
 + data (HomepageMangaGroupListDto, required) - response data
+
+## _Page<SmallerMangaDto> (object)
+
++ page (number, required) - current page
+    (format: int32)
++ limit (number, required) - page size
+    (format: int32)
++ total (number, required) - data count
+    (format: int32)
++ data (array[SmallerMangaDto], required) - page data
+
+## _Result<_Page<SmallerMangaDto>> (object)
+
++ code (number, required) - status code
+    (format: int32)
++ message (string, required) - status message
++ data (_Page<SmallerMangaDto>, required) - response data
 
 ## _Page<MessageDto> (object)
 

@@ -11,6 +11,7 @@ import (
 	"github.com/Aoi-hosizora/manhuagui-api/internal/pkg/result"
 	"github.com/Aoi-hosizora/manhuagui-api/internal/service"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 func init() {
@@ -35,6 +36,16 @@ func init() {
 			Tags("MangaList").
 			Params(apidoc.ParamPage, apidoc.ParamLimit).
 			Responses(goapidoc.NewResponse(200, "_Result<_Page<TinyMangaDto>>")),
+
+		goapidoc.NewGetOperation("/v1/list/updated_v2", "Get recent update mangas (new version)").
+			Tags("MangaList").
+			Params(apidoc.ParamPage, goapidoc.NewQueryParam("need_total", "boolean", false, "query total whether needed").Default(true)).
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallerMangaDto>>")),
+
+		goapidoc.NewGetOperation("/v1/list/published_v2", "Get recent published mangas (new version)").
+			Tags("MangaList").
+			Params(apidoc.ParamPage, goapidoc.NewQueryParam("need_total", "boolean", false, "query total whether needed").Default(true)).
+			Responses(goapidoc.NewResponse(200, "_Result<_Page<SmallerMangaDto>>")),
 	)
 }
 
@@ -102,4 +113,33 @@ func (m *MangaListController) GetRecentUpdatedMangas(c *gin.Context) *result.Res
 
 	res := dto.BuildTinyMangaDtos(pages)
 	return result.Ok().SetPage(pa.Page, pa.Limit, tot, res)
+}
+
+// GET /v1/list/updated_v2
+func (m *MangaListController) GetRecentUpdatedMangasV2(c *gin.Context) *result.Result {
+	pa := param.BindQueryPage(c)
+	needTotalVar := strings.ToLower(strings.TrimSpace(c.Query("need_total")))
+	needTotal := needTotalVar == "1" || needTotalVar == "t" || needTotalVar == "true"
+	mangas, tot, err := m.mangaListService.GetRecentUpdatedMangasFromMobile(pa, needTotal)
+	if err != nil {
+		return result.Error(errno.GetUpdatedMangasError).SetError(err, c)
+	}
+
+	res := dto.BuildSmallerMangaDtos(mangas)
+	return result.Ok().SetPage(pa.Page, int32(len(mangas)), tot, res)
+}
+
+// GET /v1/list/published_v2
+func (m *MangaListController) GetRecentPublishedMangasV2(c *gin.Context) *result.Result {
+	pa := param.BindQueryPage(c)
+	needTotalVar := strings.ToLower(strings.TrimSpace(c.Query("need_total")))
+	needTotal := needTotalVar == "1" || needTotalVar == "t" || needTotalVar == "true"
+
+	mangas, total, err := m.mangaListService.GetRecentPublishedMangasFromMobile(pa, needTotal)
+	if err != nil {
+		return result.Error(errno.GetAllMangasError).SetError(err, c)
+	}
+
+	res := dto.BuildSmallerMangaDtos(mangas)
+	return result.Ok().SetPage(pa.Page, int32(len(mangas)), total, res)
 }
