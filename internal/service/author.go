@@ -111,13 +111,13 @@ func (a *AuthorService) GetAuthor(aid uint64) (*object.Author, error) {
 	highestMangaLi := doc.Find("div.book-result li.cf").First()
 	highestManga := a.getSmallMangaPageFromLi(highestMangaLi)
 	highestScore, _ := xnumber.Atof32(highestMangaLi.Find("div.book-score p.score-avg strong").Text())
-	relatedAuthors := make([]*object.TinyZonedAuthor, 0)
+	relatedAuthors := make([]*object.SmallerAuthor, 0)
 	relatedLis := doc.Find("ul.zzlist li")
 	relatedLis.Each(func(i int, li *goquery.Selection) {
 		a := li.Find("a")
 		font := li.Find("font")
 		href := a.AttrOr("href", "")
-		relatedAuthors = append(relatedAuthors, &object.TinyZonedAuthor{
+		relatedAuthors = append(relatedAuthors, &object.SmallerAuthor{
 			Aid:  static.ParseAid(href),
 			Name: a.AttrOr("title", ""),
 			Url:  static.HOMEPAGE_URL + href,

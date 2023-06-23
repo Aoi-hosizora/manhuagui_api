@@ -27,7 +27,7 @@ func init() {
 				goapidoc.NewProperty("average_score", "number#float", true, "author average score"),
 				goapidoc.NewProperty("popularity", "number#int32", true, "author popularity"),
 				goapidoc.NewProperty("introduction", "string", true, "author introduction"),
-				goapidoc.NewProperty("related_authors", "TinyZonedAuthorDto[]", true, "author related authors"),
+				goapidoc.NewProperty("related_authors", "SmallerAuthorDto[]", true, "author related authors"),
 			),
 
 		goapidoc.NewDefinition("SmallAuthorDto", "Small author response").
@@ -41,19 +41,19 @@ func init() {
 				goapidoc.NewProperty("newest_date", "string", true, "author update newest date"),
 			),
 
-		goapidoc.NewDefinition("TinyAuthorDto", "Tiny author response").
-			Properties(
-				goapidoc.NewProperty("aid", "integer#int64", true, "author id"),
-				goapidoc.NewProperty("name", "string", true, "author name"),
-				goapidoc.NewProperty("url", "string", true, "author url"),
-			),
-
-		goapidoc.NewDefinition("TinyZonedAuthorDto", "Tiny author with zone response").
+		goapidoc.NewDefinition("SmallerAuthorDto", "Smaller author response").
 			Properties(
 				goapidoc.NewProperty("aid", "integer#int64", true, "author id"),
 				goapidoc.NewProperty("name", "string", true, "author name"),
 				goapidoc.NewProperty("url", "string", true, "author url"),
 				goapidoc.NewProperty("zone", "string", true, "author zone"),
+			),
+
+		goapidoc.NewDefinition("TinyAuthorDto", "Tiny author response").
+			Properties(
+				goapidoc.NewProperty("aid", "integer#int64", true, "author id"),
+				goapidoc.NewProperty("name", "string", true, "author name"),
+				goapidoc.NewProperty("url", "string", true, "author url"),
 			),
 	)
 }
@@ -76,8 +76,8 @@ type AuthorDto struct {
 	HighestScore      float32               `json:"highest_score"`
 	AverageScore      float32               `json:"average_score"`
 	Popularity        int32                 `json:"popularity"`
-	Introduction      string                `json:"introduction"`
-	RelatedAuthors    []*TinyZonedAuthorDto `json:"related_authors"`
+	Introduction      string              `json:"introduction"`
+	RelatedAuthors    []*SmallerAuthorDto `json:"related_authors"`
 }
 
 func BuildAuthorDto(author *object.Author) *AuthorDto {
@@ -142,6 +142,30 @@ func BuildSmallAuthorDtos(authors []*object.SmallAuthor) []*SmallAuthorDto {
 	return out
 }
 
+type SmallerAuthorDto struct {
+	Aid  uint64 `json:"aid"`
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Zone string `json:"zone"`
+}
+
+func BuildTinyZonedAuthorDto(author *object.SmallerAuthor) *SmallerAuthorDto {
+	return &SmallerAuthorDto{
+		Aid:  author.Aid,
+		Name: author.Name,
+		Url:  author.Url,
+		Zone: author.Zone,
+	}
+}
+
+func BuildTinyZonedAuthorDtos(authors []*object.SmallerAuthor) []*SmallerAuthorDto {
+	out := make([]*SmallerAuthorDto, len(authors))
+	for idx, author := range authors {
+		out[idx] = BuildTinyZonedAuthorDto(author)
+	}
+	return out
+}
+
 type TinyAuthorDto struct {
 	Aid  uint64 `json:"aid"`
 	Name string `json:"name"`
@@ -160,30 +184,6 @@ func BuildTinyAuthorDtos(authors []*object.TinyAuthor) []*TinyAuthorDto {
 	out := make([]*TinyAuthorDto, len(authors))
 	for idx, author := range authors {
 		out[idx] = BuildTinyAuthorDto(author)
-	}
-	return out
-}
-
-type TinyZonedAuthorDto struct {
-	Aid  uint64 `json:"aid"`
-	Name string `json:"name"`
-	Url  string `json:"url"`
-	Zone string `json:"zone"`
-}
-
-func BuildTinyZonedAuthorDto(author *object.TinyZonedAuthor) *TinyZonedAuthorDto {
-	return &TinyZonedAuthorDto{
-		Aid:  author.Aid,
-		Name: author.Name,
-		Url:  author.Url,
-		Zone: author.Zone,
-	}
-}
-
-func BuildTinyZonedAuthorDtos(authors []*object.TinyZonedAuthor) []*TinyZonedAuthorDto {
-	out := make([]*TinyZonedAuthorDto, len(authors))
-	for idx, author := range authors {
-		out[idx] = BuildTinyZonedAuthorDto(author)
 	}
 	return out
 }
