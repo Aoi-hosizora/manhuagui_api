@@ -114,7 +114,7 @@ func (s *Server) Serve() {
 
 	log.Println(xcolor.Bold.Sprintf("[Gin] Listening and serving HTTP on %s", addr))
 	fmt.Println()
-	err := server.ListenAndServe()
+	err := xgin.ListenAndServeWithReuse(context.Background(), server)
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatalln("Failed to serve:", err)
 	}

@@ -1735,7 +1735,7 @@
           "type": "array",
           "description": "author related authors",
           "items": {
-            "$ref": "#/definitions/TinyZonedAuthorDto"
+            "$ref": "#/definitions/SmallerAuthorDto"
           }
         }
       }
@@ -2668,6 +2668,35 @@
         }
       }
     },
+    "SmallerAuthorDto": {
+      "type": "object",
+      "required": [
+        "aid",
+        "name",
+        "url",
+        "zone"
+      ],
+      "description": "Smaller author response",
+      "properties": {
+        "aid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "author id"
+        },
+        "name": {
+          "type": "string",
+          "description": "author name"
+        },
+        "url": {
+          "type": "string",
+          "description": "author url"
+        },
+        "zone": {
+          "type": "string",
+          "description": "author zone"
+        }
+      }
+    },
     "SmallerMangaDto": {
       "type": "object",
       "required": [
@@ -2883,35 +2912,6 @@
         "newest_date": {
           "type": "string",
           "description": "manga last update date"
-        }
-      }
-    },
-    "TinyZonedAuthorDto": {
-      "type": "object",
-      "required": [
-        "aid",
-        "name",
-        "url",
-        "zone"
-      ],
-      "description": "Tiny author with zone response",
-      "properties": {
-        "aid": {
-          "type": "integer",
-          "format": "int64",
-          "description": "author id"
-        },
-        "name": {
-          "type": "string",
-          "description": "author name"
-        },
-        "url": {
-          "type": "string",
-          "description": "author url"
-        },
-        "zone": {
-          "type": "string",
-          "description": "author zone"
         }
       }
     },

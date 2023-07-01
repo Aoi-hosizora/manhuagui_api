@@ -2,8 +2,8 @@ github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed h1:lkxBQ8pgMv
 github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed/go.mod h1:69tHdnDy1yjwzNKV4jD0ltnGxTWgFra+sqbadYc0Dmk=
 github.com/Aoi-hosizora/ahlib-more v1.5.1-0.20230317135735-8e68ae315a63 h1:MsM7IqJiFhxJkYqT6SLUCFATNmYxNMQHdyeqZx2LfyY=
 github.com/Aoi-hosizora/ahlib-more v1.5.1-0.20230317135735-8e68ae315a63/go.mod h1:iaSPwg6xgBnytIvIDRKKnz3ls7T0FDo69aJyDYJNZR4=
-github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230326143111-3876231a4143 h1:YeGZDiA+xU0rQUSdG0Xn+2MZoDFrp5FbXH/+kSJIQqA=
-github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230326143111-3876231a4143/go.mod h1:W6CQK141M9G1q4FXWLE5KiuOeqliulAXJ7ONfPLi6eM=
+github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230701204408-2f11a2cf42d5 h1:pVJlcatxOJqaM61gbccDk77wAk3ww4g4jcwHX6JY+ek=
+github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230701204408-2f11a2cf42d5/go.mod h1:uqfUXmA922XcNbvq0+7tbrgFCkk0WGI/Plm5F6C3DVU=
 github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143 h1:XQAwXERRGDm4+ZunNkSVNU2hyLZORcLT+VZ4G+SLY2U=
 github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143/go.mod h1:zvkhCJg3lev81FW6zuSgNPeV9WJ2yCdLWUyzefxvMV8=
 github.com/Aoi-hosizora/ahlib/xgeneric v0.0.0-20230326143001-6c896488caed h1:kIjPjusqo16JLWx/7Vll7ragrV5TKXBJqLQQYMUYvkw=

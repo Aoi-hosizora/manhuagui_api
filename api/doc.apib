@@ -1227,7 +1227,7 @@ message-controller
 + popularity (number, required) - author popularity
     (format: int32)
 + introduction (string, required) - author introduction
-+ related_authors (array[TinyZonedAuthorDto], required) - author related authors
++ related_authors (array[SmallerAuthorDto], required) - author related authors
 
 ## SmallAuthorDto (object)
 
@@ -1241,20 +1241,20 @@ message-controller
     (format: int32)
 + newest_date (string, required) - author update newest date
 
-## TinyAuthorDto (object)
-
-+ aid (number, required) - author id
-    (format: int64)
-+ name (string, required) - author name
-+ url (string, required) - author url
-
-## TinyZonedAuthorDto (object)
+## SmallerAuthorDto (object)
 
 + aid (number, required) - author id
     (format: int64)
 + name (string, required) - author name
 + url (string, required) - author url
 + zone (string, required) - author zone
+
+## TinyAuthorDto (object)
+
++ aid (number, required) - author id
+    (format: int64)
++ name (string, required) - author name
++ url (string, required) - author url
 
 ## CategoryDto (object)
 

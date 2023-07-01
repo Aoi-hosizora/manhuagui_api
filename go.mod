@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Aoi-hosizora/ahlib v1.5.1-0.20230326143001-6c896488caed
 	github.com/Aoi-hosizora/ahlib-more v1.5.1-0.20230317135735-8e68ae315a63
-	github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230326143111-3876231a4143
+	github.com/Aoi-hosizora/ahlib-mx/xgin v0.0.0-20230701204408-2f11a2cf42d5
 	github.com/Aoi-hosizora/ahlib-mx/xvalidator v0.0.0-20230326143111-3876231a4143
 	github.com/Aoi-hosizora/ahlib/xgeneric v0.0.0-20230326143001-6c896488caed
 	github.com/Aoi-hosizora/goapidoc v1.3.1
