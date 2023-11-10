@@ -23,8 +23,11 @@ type Manga struct {
 	ScoreCount        int32                // 给分人数
 	AverageScore      float32              // 平均给分
 	PerScores         [6]string            // 具体给分
-	Banned            bool                 // 是否屏蔽
+	Banned            bool                 // 是否屏蔽 (x)
+	Downed            bool                 // 是否下架
 	Copyright         bool                 // 拥有版权
+	Violent           bool                 // 色情暴力
+	Lawblocked        bool                 // 法律屏蔽
 	ChapterGroups     []*MangaChapterGroup // 章节链接
 }
 

@@ -29,8 +29,11 @@ func init() {
 				goapidoc.NewProperty("score_count", "integer#int32", true, "manga score count"),
 				goapidoc.NewProperty("average_score", "number#float", true, "manga average score"),
 				goapidoc.NewProperty("per_scores", "string[]", true, "manga per scores, skip 0, from 1 to 5"),
-				goapidoc.NewProperty("banned", "boolean", true, "manga is banned"),
-				goapidoc.NewProperty("copyright", "boolean", true, "has copyright"),
+				goapidoc.NewProperty("banned", "boolean", true, "manga is banned, actually means violent (deprecated)"),
+				goapidoc.NewProperty("downed", "boolean", true, "manga is downed by some reasons"),
+				goapidoc.NewProperty("copyright", "boolean", true, "manhuagui has this manga's copyright"),
+				goapidoc.NewProperty("violent", "boolean", true, "manga is violent"),
+				goapidoc.NewProperty("lawblocked", "boolean", true, "manga is blocked by law"),
 				goapidoc.NewProperty("chapter_groups", "MangaChapterGroupDto[]", true, "manga chapter groups"),
 			),
 
@@ -200,7 +203,10 @@ type MangaDto struct {
 	AverageScore      float32                 `json:"average_score"`
 	PerScores         [6]string               `json:"per_scores"`
 	Banned            bool                    `json:"banned"`
+	Downed            bool                    `json:"downed"`
 	Copyright         bool                    `json:"copyright"`
+	Violent           bool                    `json:"violent"`
+	Lawblocked        bool                    `json:"lawblocked"`
 	ChapterGroups     []*MangaChapterGroupDto `json:"chapter_groups"`
 }
 
@@ -227,7 +233,10 @@ func BuildMangaDto(manga *object.Manga) *MangaDto {
 		AverageScore:      manga.AverageScore,
 		PerScores:         manga.PerScores,
 		Banned:            manga.Banned,
+		Downed:            manga.Downed,
 		Copyright:         manga.Copyright,
+		Violent:           manga.Violent,
+		Lawblocked:        manga.Lawblocked,
 		ChapterGroups:     BuildMangaChapterGroupDtos(manga.ChapterGroups),
 	}
 }

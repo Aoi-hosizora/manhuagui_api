@@ -1339,8 +1339,11 @@ message-controller
 + average_score (number, required) - manga average score
     (format: float)
 + per_scores (array[string], required) - manga per scores, skip 0, from 1 to 5
-+ banned (boolean, required) - manga is banned
-+ copyright (boolean, required) - has copyright
++ banned (boolean, required) - manga is banned, actually means violent (deprecated)
++ downed (boolean, required) - manga is downed by some reasons
++ copyright (boolean, required) - manhuagui has this manga's copyright
++ violent (boolean, required) - manga is violent
++ lawblocked (boolean, required) - manga is blocked by law
 + chapter_groups (array[MangaChapterGroupDto], required) - manga chapter groups
 
 ## MangaChapterDto (object)

@@ -150,8 +150,11 @@ func (m *MangaService) GetMangaPage(mid uint64) (*object.Manga, error) {
 		}
 	}
 
+	obj.Banned = doc.Find("a#checkAdult").Length() != 0 // deprecated
+	obj.Downed = doc.Find("li.status span.gray").Text() == "已下架"
 	obj.Copyright = !bytes.Contains(bs, []byte("版权方的要求"))
-	obj.Banned = doc.Find("a#checkAdult").Length() != 0
+	obj.Violent = doc.Find("a#checkAdult").Length() != 0
+	obj.Lawblocked = bytes.Contains(bs, []byte("根据中国法律法规"))
 
 	// get chapter groups
 	newDoc := doc

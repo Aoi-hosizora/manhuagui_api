@@ -2063,7 +2063,10 @@
         "average_score",
         "per_scores",
         "banned",
+        "downed",
         "copyright",
+        "violent",
+        "lawblocked",
         "chapter_groups"
       ],
       "description": "Mange page response",
@@ -2162,11 +2165,23 @@
         },
         "banned": {
           "type": "boolean",
-          "description": "manga is banned"
+          "description": "manga is banned, actually means violent (deprecated)"
+        },
+        "downed": {
+          "type": "boolean",
+          "description": "manga is downed by some reasons"
         },
         "copyright": {
           "type": "boolean",
-          "description": "has copyright"
+          "description": "manhuagui has this manga's copyright"
+        },
+        "violent": {
+          "type": "boolean",
+          "description": "manga is violent"
+        },
+        "lawblocked": {
+          "type": "boolean",
+          "description": "manga is blocked by law"
         },
         "chapter_groups": {
           "type": "array",
